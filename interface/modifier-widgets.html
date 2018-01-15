@@ -1,0 +1,67 @@
+<!-- Modal -->
+<div class="modal fade" id="Modifier" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modifier un widget</h4>
+            </div>
+            <div class="modal-body">
+
+                   <form role="form">
+
+                    <p>choisir le widgets que vous voulez modifier：</p>
+                    <select>
+                        <option value ="graphe1">graphe1 </option>
+                        <option value ="graphe2">graphe2</option>
+                        <option value="graphe3"> graphe3</option>
+                        <option value="graphe4">graphe4</option>
+                    </select>
+                    <p>axe </p>
+
+                       <p><button ng-click="todoAdd()">ajouter</button></p>
+
+                    <br>
+
+                    <div ng-repeat="x in todoList">
+                        <input type="checkbox" ng-model="x.done"> <span ng-bind="x.todoText"></span>
+                    </div>
+
+                    <p><button ng-click="remove()">supprimer</button></p>
+                    <p>Modifier le type de graphe</p>
+                    <select>
+                        <option value ="Camembert">Camembert </option>
+                        <option value ="histogramme">histogramme</option>
+                        <option value="Diagramme">Diagramme en bâton</option>
+                        <option value="Nuage">Nuage de points</option>
+                    </select>
+
+                    <p>Graphes proposés</p>
+                    <select>
+                        <option value ="Camembert">Camembert </option>
+                        <option value ="histogramme">histogramme</option>
+                        <option value="Diagramme">Diagramme en bâton</option>
+                        <option value="Nuage">Nuage de points</option>
+                    </select>
+
+                    <p>Choisir la section du graphe</p>
+                    <select>
+                        <option value ="Ventes">Ventes </option>
+                        <option value ="Achats">Achats</option>
+                        <option value="Cients">Cients</option>
+                        <option value="Collectivités">Collectivités</option>
+                        <option value="Operateurs">Operateurs</option>
+                        <option value="Produits">Produits</option>
+                    </select>
+                    <button type="submit" class="btn btn-success btn-block"> Modifier</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
