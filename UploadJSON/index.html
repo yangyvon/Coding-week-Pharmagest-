@@ -22,7 +22,7 @@
 		<link rel="stylesheet" href="http://cdn.jsdelivr.net/angular.ngtable/0.3.2/ng-table.css">
         <script src="http://cdn.jsdelivr.net/angular.ngtable/0.3.2/ng-table.js"></script>
 
-		<title>PI Pharmagest</title>
+		<title>OffiBoard</title>
 		<script>document.write('<base href="' + document.location + '" />');</script>
 		<link rel="stylesheet" href="styleDSQ.css" />
 		<script data-require="angular.js@1.0.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js" data-semver="1.0.8"></script>
@@ -37,54 +37,35 @@
 	<body>
  
 		<div ng-controller="JsonUploadController" class="container">
-			<h1>Upload du Json</h1>
-			<form>
-				<input type="file" read-text="onFileSelect($files)">
-			</form>
-			<br>
-			<i ng-hide="jsonSrc">Aucun json sélectionné</i>
+			<div style="margin-bottom:50px;">
+				<center><h2><span style="color:green;">O</span>ffi<span style="color:green;">B</span>oard</h2></center>
+			</div>
 			
 			<div id="flexDisplay">
 				
 					<div id="conteneur">
 					
-						<div ng-show="jsonSrc" style class="col-md-6">
+						<div style="margin: 0 auto;" class="col-md-6">
 						
-							Select X : 
+							<form>
+								<input type="file" read-text="onFileSelect($files)">
+							</form>
+							<br>
+							<i ng-hide="jsonSrc">Aucun json sélectionné</i>
+						
+							<span><b>Select X :</b></span> 
 							<select ng-model="selectedX">
 								<option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
 							</select>
 									
 							<br><br>
 									
-							Selected X Attribute : {{selectedX}}
-							<br>
-									
-							<br><br>
-									
-							Select Y : 
+							<span><b>Select Y :</b></span>
 							<select ng-model="selectedY">
 								<option ng-repeat="key2 in keys" value="{{key2}}">{{key2}}</option>
 							</select>
 									
 							<br><br>
-									
-							Selected Y Attribute : {{selectedY}}
-							<br>
-									
-							<br><br>
-								
-							<button  type="button" class="btn btn-primary" ng-click="getValues2(selectedX, selectedY)">
-							Ok
-							</button>
-								
-						</div>
-							
-					</div>
-					
-					<div id="conteneur">
-					
-						<div ng-show="jsonSrc" style class="col-md-6">
 							
 							Première ligne affichée:
 							<input ng-model="display_limit1" type="text">
@@ -93,24 +74,35 @@
 							<input ng-model="display_limit2" type="text">
 							
 							<br><br>
-							
+								
+							<button  type="button" class="btn btn-primary" ng-click="getValues2(selectedX, selectedY)">Ok</button>
+								
 						</div>
-					</div> 
+							
+					</div>
 					
 					<div id="conteneur">
-						<table class="table table-bordered table-condensed table-striped">
-							<tr>
-								<th>{{selectedX}}</th><th>{{selectedY}}</th>
-							</tr>
-							<tr ng-repeat="value in resXY.slice(display_limit1, display_limit2)">
-								<td>
-									{{ value.id }}
-								</td>
-								<td>
-									{{ value.val }}
-								</td>   
-							</tr>
+						<table class="table table-bordered table-condensed table-striped" style="margin: 0 auto;">
+							<thead>
+								<tr>
+									<th>{{selectedX}}</th><th>{{selectedY}}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="value in resXY.slice(display_limit1, display_limit2)">
+									<td>
+										{{ value.id }}
+									</td>
+									<td>
+										{{ value.val }}
+									</td>   
+								</tr>
+							</tbody>
 						</table>
+					</div>
+					
+					<div id="conteneur">
+						
 					</div>
 			</div>
 		</div>

@@ -60,17 +60,6 @@ var JsonUploadController = function ($scope, $filter, ngTableParams, fileReader)
 		
 		$scope.resXY = res;
 		//console.log($scope.resXY);
-		
-		$scope.usersTable = new ngTableParams({
-                page: 1,
-                count: 10
-            }, {
-                total: $scope.resXY.length, 
-                getData: function ($defer, params) {
-                    $scope.data = $scope.resXY.slice((params.page() - 1) * params.count(), params.page() * params.count());
-                    $defer.resolve($scope.data);
-                }
-            });
       };
 
   };
