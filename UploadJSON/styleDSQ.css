@@ -52,6 +52,12 @@
   justify-content: space-between;
 }
 
+#flexDisplay {
+  width :100%;
+  display:flex;
+  justify-content: space-between;
+}
+
 table, th , td  {
   border: 1px solid grey;
   border-collapse: collapse;
