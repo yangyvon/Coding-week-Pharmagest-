@@ -5,6 +5,46 @@ ul {
 	overflow: hidden;
 	background-color: #333;
 }
+#droit {
+	float: right;
+}
+/* Custom CSS Styles */
+#droit {
+	font-family: 'Lato', sans-serif;
+	font-size: 18px;
+	width: 200px;
+}
+#droit ul a,
+#droit ul a:link,
+#droit ul a:visited {
+	display: block;
+	color: #848889;
+	text-decoration: none;
+	font-weight: 200;
+}
+
+#droit ul {
+	background: #fff;
+}
+
+#droit > ul > li {
+	border-left: 3px solid #d7d8da;
+}
+#droit > ul > li > a {
+	padding: 10px 20px;
+}
+#droit > ul > li:hover {
+	border-left: 3px solid #3dbd99;
+}
+#droit ul li:hover > a {
+	color: #3dbd99;
+}
+
+
+#droit > ul > li:hover {
+	background: #f6f6f6;
+}
+
 
 li {
 	float: left;
@@ -20,6 +60,21 @@ li a {
 
 li a:hover {
 	background-color: #111;
+}
+
+/* Contenu principal */
+#contenu {
+	color: #363B29;
+	background: #cbd888;
+}
+#contenu a {
+	color: #332510;
+}
+#contenu a:hover, #contenu a:focus {
+	color: #6E5122;
+}
+#contenu strong {
+	color: #181A12;
 }
 
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
