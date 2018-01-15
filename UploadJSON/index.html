@@ -101,37 +101,36 @@
 							
 						<br><br>
 						
+						<button  type="button" class="btn btn-primary" ng-click="getValues2(selectedX, selectedY)">
+						Ok
+						</button>
+						
+						<br><br>
+						
+						<!--
+						<div class="box" scroll-position>
 						<table>
 							<tr>
-									<th>{{selectedX}}</th>
-									<td ng-repeat="key in getValues(selectedX)">{{ key }}</td>
+									<th>{{selectedX}}</th><th>{{selectedY}}</th>
 							</tr>
-							<tr>
-									<th>{{selectedY}}</th>
-									<td ng-repeat="key2 in getValues(selectedY)">{{ key2 }}</td>
+							<tr ng-repeat="value in resXY | limitTo:display_limit">
+									<td>{{ value.id }}</td>
+									<td>{{ value.val }}</td>
 							</tr>
 						</table>
+						</div>
+						-->
+						
+						<br><br>
 						
 						<table ng-table="usersTable" show-filter="true" class="table table-striped">
-						   <tr ng-repeat="user in data">
-							   <td data-title="'Id'" sortable="'id'">
-								   {{user.id}}
+						   <tr ng-repeat="value in resXY">
+							   <td data-title="selectedX" sortable="'id'">
+								   {{ value.id }}
 							   </td>
-							   <td data-title="'First Name'" sortable="'first_name'" filter="{ 'first_name': 'text' }">
-								   {{user.first_name}}
-							   </td>
-							   <td data-title="'Last Name'" >
-								   {{user.last_name}}
-							   </td>    
-							   <td data-title="'e-mail'" >
-								   {{user.email}}
-							   </td>    
-							   <td data-title="'Country'">
-								   {{user.country}}
-							   </td>    
-							   <td data-title="'IP'" >
-								   {{user.ip_address}}
-							   </td>    
+							   <td data-title="selectedY" sortable="'first_name'" filter="{ 'first_name': 'text' }">
+								   {{ value.val }}
+							   </td>   
 						   </tr>
 						</table>
 						
