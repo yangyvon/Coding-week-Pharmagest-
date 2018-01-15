@@ -84,7 +84,7 @@
 		</div>
 		-->
  
-		<div ng-controller="JsonUploadController ">
+		<div ng-controller="JsonUploadController " class="container">
 			<h1>Upload du Json</h1>
 			<form>
 				<input type="file" read-text="onFileSelect($files)" >
@@ -94,12 +94,15 @@
 			<i ng-hide="jsonSrc">Aucun json sélectionné</i>
 
 			<div id="conteneur">
+				<!--
 				<div ng-show="jsonSrc" class="col-md-6">
 					<ul ng-repeat="ligne in lignes">{{ligne}}</ul>
 				</div>
+				-->
 				
 				<div ng-show="jsonSrc" style class="col-md-6">
 
+					<!--
 					Keys : 
 						
 						<ul>
@@ -107,7 +110,9 @@
 								{{key}}
 							</li>
 						</ul>
+					-->
 						
+					<!--
 					Values de la première ligne :
 
 						<ul>
@@ -115,6 +120,7 @@
 								{{value}}
 							</li>
 						</ul>
+					-->
 
 					<div>
 						Select X : 
@@ -126,7 +132,7 @@
 							
 						Selected X Attribute : {{selectedX}}
 						<br>
-						X values : {{getValues(selectedX)}}
+						<!-- X values : {{getValues(selectedX)}} -->
 							
 						<br><br>
 							
@@ -139,12 +145,25 @@
 							
 						Selected Y Attribute : {{selectedY}}
 						<br>
-						Y values : {{getValues(selectedY)}}
+						<!-- Y values : {{getValues(selectedY)}} -->
 							
 						<br><br>
+						
+						
+						<table>
+							<tr>
+									<th>{{selectedX}}</th>
+									<td ng-repeat="key in getValues(selectedX)">{{ key }}</td>
+							</tr>
+							<tr>
+									<th>{{selectedY}}</th>
+									<td ng-repeat="key2 in getValues(selectedY)">{{ key2 }}</td>
+							</tr>
+						</table>
 					</div>
 				</div>
 
+				<!--
 				<div ng-show ="jsonSrc" id= "chart_d3" style="width: 100%; height: 800px;">
 					<style>
 
@@ -290,10 +309,13 @@
 								}
 						</script>
 				</div>
+				-->
 
+				<!--
 				<div ng-show="jsonSrc" id="chart_google" style="width: 100%; height: 800px;">
 					<script src="googleChart.js"></script>
 				</div>
+				-->
 
 			</div> 
 		</div>
