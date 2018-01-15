@@ -53,30 +53,32 @@
 							<br>
 							<i ng-hide="jsonSrc">Aucun json sélectionné</i>
 							
-							Select X : 
+							<br>
+							
+							<span><b>Select X :</b></span> 
 							<select ng-model="selectedX" ng-options="keys.indexOf(key) as key for key in keys">
 							</select>
 							<br>
-							<br>
 							Type de X : {{types[selectedX]}}
-							<br>
-							<!-- X values : {{getValues(selectedX)}} -->
 							
 							<br><br>
 							
-							Select Y : 
+							<span><b>Select Y :</b></span> 
 							<select ng-model="selectedY" ng-options="keys.indexOf(key2) as key2 for key2 in keys">
 							</select>
-							
 							<br>
-							<br>
-
 							Type de Y : {{types[selectedY]}}
-							<!-- Y values : {{getValues(selectedY)}} -->
-							<br>
-									
+					
 							<br><br>
+							
+							Première ligne affichée:
+							<input ng-model="display_limit1" type="text">
+							<br>
+							Dernière ligne affichée (max : {{getValues(keys[selectedX]).length}}) :
+							<input ng-model="display_limit2" type="text">
 								
+							<br><br>
+							
 							<button  type="button" class="btn btn-primary" ng-click="getValues2(keys[selectedX], keys[selectedY])">
 							Ok
 							</button>
@@ -104,30 +106,12 @@
 									</tr>
 							</table>
 					</div>
-
-					<div id="conteneur">
-					
-						<div ng-show="jsonSrc" style class="col-md-6">
-							
-							Première ligne affichée:
-							<input ng-model="display_limit1" type="text">
-							<br>
-							Dernière ligne affichée (max : {{getValues(keys[selectedX]).length}}) :
-							<input ng-model="display_limit2" type="text">
-							
-							<br><br>
-								
-							<button  type="button" class="btn btn-primary" ng-click="getValues2(selectedX, selectedY)">Ok</button>
-								
-						</div>
-							
-					</div>
 					
 					<div id="conteneur">
 						<table class="table table-bordered table-condensed table-striped" style="margin: 0 auto;">
 							<thead>
 								<tr>
-									<th>{{selectedX}}</th><th>{{selectedY}}</th>
+									<th>{{keys[selectedX]}}</th><th>{{keys[selectedY]}}</th>
 								</tr>
 							</thead>
 							<tbody>
