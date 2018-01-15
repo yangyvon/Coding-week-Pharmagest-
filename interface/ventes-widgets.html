@@ -1,14 +1,33 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="TestUploadFile">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Personnaliser</title>
     <link href="dropdown-menu.css" media="screen" rel="stylesheet" type="text/css" />
 
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+    <script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.5/angular-material.js"></script>
+    <script data-require="angular.js@1.0.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js" data-semver="1.0.8"></script>
+
+
+    <!-- Bootstraps -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <!-- ng-table-->
+
+    <script src="http://cdn.jsdelivr.net/angular.ngtable/0.3.2/ng-table.js"></script>
+
+    <script>
+        var app = angular.module('TestUploadFile', ["ngTable"]);
+    </script>
+
+    <!-- incluede du fichier html -->
     <script>
         $(function(){
             $("#includedAjout").load("ajouter-widgets.html");
@@ -17,30 +36,16 @@
             $("#includedSupprimer").load("supprimer.html");
         });
     </script>
+
+    <script src="upload.js"></script>
+    <script src="app.js"></script>
 </head>
-<script src= "http://cdn.bootcss.com/angular.js/1.4.6/angular.min.js"></script>
+
+<body>
+<!--
 <body ng-app="myApp" ng-controller="todoCtrl">
+-->
 
-<script>//un controlleur todoCtrl avec 3fonction
-var app = angular.module('myApp', []);
-app.controller('todoCtrl', function($scope) {
-    $scope.todoList = [{todoText:'Axe X', done:false},{todoText:'Axe Y', done:false}];
-
-    $scope.todoAdd = function() {
-        $scope.todoInput = "Axe";
-        $scope.todoList.push({todoText:$scope.todoInput, done:false});
-
-    };
-
-    $scope.remove = function() {
-        var oldList = $scope.todoList;
-        $scope.todoList = []; //initialiser la liste
-        angular.forEach(oldList, function(x) {
-            if (!x.done) $scope.todoList.push(x); //si x n'est pas coche, alors le ajouter dans le list
-        });
-    };
-});
-</script>
 
 
 <div id="includedmenu"></div>
@@ -63,28 +68,44 @@ app.controller('todoCtrl', function($scope) {
                 <h4 class="modal-title">Ajouter un widget</h4>
             </div>
             <div class="modal-body">
-                <p>selectionner un fichier：</p>
-                <form>
-                    <input type="file" read-text="onFileSelect($files)" >
-                    <!-- <input type="file" ng-file-select="onFileSelect($files)" multiple> -->
-                </form>
-                <br/>
+                <div ng-controller="JsonUploadController " class="container">
+                    <p>selectionner un fichier：</p>
+                    <form>
+                        <input type="file" read-text="onFileSelect($files)" >
+                        <!-- <input type="file" ng-file-select="onFileSelect($files)" multiple> -->
+                    </form>
+                    <b>Aperçu du json :</b><br />
+                    <i ng-hide="jsonSrc">Aucun json sélectionné</i>
 
+                    <div id="conteneur">
+
+
+                        <div ng-show="jsonSrc" style class="col-md-6">
+
+
+                            <div>
+                                Select X :
+                                <select ng-model="selectedX">
+                                    <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+                                </select>
+
+                                <br><br>
+                                Select Y :
+                                <select ng-model="selectedY">
+                                    <option ng-repeat="key2 in keys" value="{{key2}}">{{key2}}</option>
+                                </select>
+
+                                <br><br>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <form role="form">
-                    <p>axe </p>
 
-
-                    <p><button ng-click="todoAdd()">ajouter</button></p>
-
-                    <br>
-
-
-                    <div ng-repeat="x in todoList">
-                        <input type="checkbox" ng-model="x.done"> <span ng-bind="x.todoText"></span>
-                    </div>
-
-                    <p><button ng-click="remove()">supprimer</button></p>
 
                     <p>Graphes proposés</p>
                     <select>
