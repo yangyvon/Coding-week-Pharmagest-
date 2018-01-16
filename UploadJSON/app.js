@@ -4,8 +4,7 @@ var JsonUploadController = function ($scope, $filter, ngTableParams, fileReader)
      return monthsNames;
     }
 	
-	$scope.display_limit1 = 0;
-	$scope.display_limit2 = 10;
+	$scope.display_limit1 = 10;
  
     $scope.$on("fileProgress", function(e, progress) {
         $scope.progress = progress.loaded / progress.total;
