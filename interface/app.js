@@ -1,4 +1,3 @@
-
 var ImageUploadController = function ($scope, fileReader) {
      console.log(fileReader)
     $scope.getFile = function () {
@@ -14,7 +13,17 @@ var ImageUploadController = function ($scope, fileReader) {
     });
  
 };
-var JsonUploadController = function ($scope, $filter, ngTableParams, fileReader) {
+var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, fileReader) {
+	
+	$scope.clock = "loading clock...";
+	$scope.tickInterval = 1000
+
+	var tick = function () {
+		$scope.clock = Date.now()
+		$timeout(tick, $scope.tickInterval);
+	}
+
+	$timeout(tick, $scope.tickInterval);
 	
 	$scope.resXY = [];
      console.log(fileReader)
@@ -80,31 +89,6 @@ var JsonUploadController = function ($scope, $filter, ngTableParams, fileReader)
   };
 };
 
-// var JsonController=function($scope,$http){
-//   //Ici remplacer $scope.acteurs par le json input
-//   $scope.acteurs ={};
-
-//   $http.get('acteurs.json').success(function (data){
-//     $scope.acteurs = data;
-//     headers = /*data.*/data[0];
-//           $scope.keys = [];
-//           $scope.values = [];
-//           angular.forEach(headers, function(value, key) {
-//             $scope.keys.push(key);
-//             $scope.values.push(value);
-//           })
-//   });
-//   $scope.getTotalActeurs = function(){
-//         return $scope.acteurs.length;    
-//     }
-
-//   $scope.getJson = function(){
-//         return $scope.acteurs;
-//   }
-
-    
-
-//};
 app.directive("ngFileSelect",function(){
 
   return {

@@ -15,6 +15,9 @@
 		<script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.5/angular-material.js"></script>
 		<script data-require="angular.js@1.0.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js" data-semver="1.0.8"></script>
 
+		<!-- Dates en français -->
+		<script src="angular-locale_fr-fr.js"></script>
+		
 		<!-- Bootstraps -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -32,10 +35,10 @@
 		<script src="app.js"></script>
 	</head>
 
-	<body>
+	<body ng-controller="JsonUploadController">
 
 		<ul id="navigation" class="nav-main">
-			<li><a href="#">OffiBoard</a></li>
+			<li class="offiTitle">OffiBoard</li>
 			<li><a href="accueil.html">Accueil</a></li>
 			<li><a href="#">Ventes</a></li>
 			<li><a href="#">Achats</a></li>
@@ -45,6 +48,12 @@
 			<li><a href="#">Produits</a></li>
 			<li><a href="personnaliser.html">Personnaliser</a></li>
 		</ul>
+		
+		<p>
+		<div class="container">
+			<p>Aujourd'hui, nous sommes le {{ clock | date:"EEEE dd MMMM yyyy"}}, il est {{ clock | date:"HH:mm:ss"}}</p>
+		</div>
+		</p>
 
 		<br><br>
 		<span><center><h1><font face="verdana">Liste des Widgets</font></h1></center></span>

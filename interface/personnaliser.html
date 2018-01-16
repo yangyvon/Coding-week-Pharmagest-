@@ -14,12 +14,15 @@
 		
 		<!-- AngularJS -->
 		<script src= "http://cdn.bootcss.com/angular.js/1.4.6/angular.min.js"></script>
+		
+		<!-- Dates en français -->
+		<script src="angular-locale_fr-fr.js"></script>
 	</head>
 
 	<body ng-app="myApp" ng-controller="todoCtrl">
 
 		<ul id="navigation" class="nav-main">
-			<li><a href="#">OffiBoard</a></li>
+			<li class="offiTitle">OffiBoard</li>
 			<li><a href="accueil.html">Accueil</a></li>
 			<li><a href="#">Ventes</a></li>
 			<li><a href="#">Achats</a></li>
@@ -29,6 +32,12 @@
 			<li><a href="#">Produits</a></li>
 			<li><a href="personnaliser.html">Personnaliser</a></li>
 		</ul>
+		
+		<p>
+		<div class="container" ng-controller='TimeCtrl'>
+			<p>Aujourd'hui, nous sommes le {{ clock | date:"EEEE dd MMMM yyyy"}}, il est {{ clock | date:"HH:mm:ss"}}</p>
+		</div>
+		</p>
 
 		<br><br>
 		<span><center><h1><font face="verdana">Liste des Widgets</font></h1></center></span>
@@ -119,7 +128,7 @@
 					</div>
 					
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
 					</div>
 				</div>
 			</div>
@@ -193,7 +202,7 @@
 					</div>
 					
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
 					</div>
 				</div>
 			</div>
@@ -245,7 +254,7 @@
 					</div>
 					
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
 					</div>
 				</div>
 			</div>
@@ -255,6 +264,7 @@
 	
 	<script>
 		var app = angular.module('myApp', []);
+		
 		app.controller('todoCtrl', function($scope) {
 			$scope.todoList = [{todoText:'Axe X', done:false},{todoText:'Axe Y', done:false} ];
 
@@ -270,6 +280,18 @@
 					if (!x.done) $scope.todoList.push(x);
 				});
 			};
+		});
+		
+		app.controller("TimeCtrl", function($scope, $timeout) {
+			$scope.clock = "loading clock...";
+			$scope.tickInterval = 1000
+
+			var tick = function () {
+				$scope.clock = Date.now()
+				$timeout(tick, $scope.tickInterval);
+			}
+
+			$timeout(tick, $scope.tickInterval);
 		});
 	</script>
 		
