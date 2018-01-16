@@ -65,6 +65,94 @@ var JsonUploadController = function ($scope, $filter, ngTableParams, fileReader)
   };
 
   };
+
+  var uniqId = 1;
+  var selectedOptionDataList = new Array();
+
+function regenerateSelectbox(){
+    $('select.dyn-select').each(function(){
+        var _selector = $(this);
+        var _curVal = _selector.val();
+        
+        _selector.html(generateOption());
+        if(_curVal == ""){
+            _selector.append('<option value="'+ _curVal +'">select</option>');
+        }else{
+            _selector.append('<option value="'+ _curVal +'">'+ _curVal +'</option>');
+        }
+        _selector.val(_curVal);
+    })
+}
+
+function checkOptionExistences(listOptionVal){
+    var _found = false;
+    
+    $.each(selectedOptionDataList, function(inn, vnn){  
+        if(vnn.selectboxoption == listOptionVal){
+            _found = true;
+        }
+    });
+    
+    return _found;
+}
+
+function generateOption(){
+    var optionArr = new Array();
+    optionArr.push('<option value="">Choisir Axe</option>');
+    
+    $.each($scope.lignes, function(i, v){
+        if(!checkOptionExistences(v.value)){
+          optionArr.push('<option value="'+ v.value +'">'+ v.name +'</option>');
+        }
+    });
+    
+    return optionArr.join('\n');
+}
+
+function removeSelectedOptionFromList(param){
+    var tmpArrList = selectedOptionDataList;
+    selectedOptionDataList = new Array();
+    
+    $.each(tmpArrList, function(i, v){
+        if(param.selectboxid != v.selectboxid){
+            selectedOptionDataList.push({'selectboxid':v.selectboxid, 'selectboxoption':v.selectboxoption});
+        }
+    });
+}
+
+function selectedOptionList(param){
+    var _found = false;
+    $.each(selectedOptionDataList, function(i, v){
+        if(param.selectboxid == v.selectboxid){
+            _found = true;
+            v.selectboxoption = param.selectboxoption;
+        }
+    });
+    
+    if(!_found){
+        selectedOptionDataList.push({'selectboxid':param.selectboxid, 'selectboxoption':param.selectboxoption});
+    }
+}
+
+$('#ajoutAxe').click(function(){
+    if(selectedOptionDataList.length == $scope.lignes.length){
+        alert('Plus d axe disponible !');
+    }else{
+      $('div#axesY').append('<select class="dyn-select" id="select-'+ uniqId +'">'+ generateOption() +'</select>');
+      uniqId++;
+    }
+});
+
+$(document).on('change', 'select.dyn-select', function(){
+    var _selector = $(this);
+    if(_selector.val() == ""){
+        removeSelectedOptionFromList({'selectboxid':_selector.attr('id')});
+    }else{
+        selectedOptionList({'selectboxid':_selector.attr('id'), 'selectboxoption':_selector.val()});
+    }
+    
+    regenerateSelectbox();
+});
 };
 
 app.directive("ngFileSelect",function(){

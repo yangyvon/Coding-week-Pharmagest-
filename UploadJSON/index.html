@@ -17,7 +17,8 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
 		<script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.5/angular-material.js"></script>
-		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 		<!-- ng-table -->
 		<link rel="stylesheet" href="http://cdn.jsdelivr.net/angular.ngtable/0.3.2/ng-table.css">
         <script src="http://cdn.jsdelivr.net/angular.ngtable/0.3.2/ng-table.js"></script>
@@ -55,20 +56,22 @@
 							
 							<br>
 							
-							<span><b>Select X :</b></span> 
-							<select ng-model="selectedX" ng-options="keys.indexOf(key) as key for key in keys">
+							<span><b ng-show="jsonSrc">Choisir le premier axe :</b></span> 
+							<select ng-show="jsonSrc" ng-model="selectedX" ng-options="keys.indexOf(key) as key for key in keys">
 							</select>
 							<br>
-							Type de X : {{types[selectedX]}}
+							<span ng-show="types[selectedX]"> Type du premier axe : {{types[selectedX]}} </span>
 							
 							<br><br>
 							
-							<span><b>Select Y :</b></span> 
-							<select ng-model="selectedY" ng-options="keys.indexOf(key2) as key2 for key2 in keys">
+							<span><b ng-show="jsonSrc">Choisir le second axe :</b></span> 
+							<select ng-show="jsonSrc" ng-model="selectedY" ng-options="keys.indexOf(key2) as key2 for key2 in keys">
 							</select>
+							<button ng-show="jsonSrc" id="ajoutAxe">+</button>
 							<br>
-							Type de Y : {{types[selectedY]}}
-								
+							<span ng-show="types[selectedY]">Type du second axe : {{types[selectedY]}}</span>
+							<div id="axesY"></div>
+
 						</div>
 							
 					</div>
@@ -94,7 +97,7 @@
 						</div>
 					</div>
 					
-					<div id="conteneur">
+					<div id="conteneur" ng-show="keys[selectedX] && keys[selectedY]">
 					
 						<div>
 							Nombre de lignes affichées :
