@@ -61,21 +61,9 @@ var JsonUploadController = function ($scope, $filter, ngTableParams, fileReader)
         months[date.getMonth()] += +output;
       }
     }
-    console.log(months);
+    //console.log(months);
     return(months);
   };
-	  
-	$scope.getValues2 = function(string1, string2) {
-      
-        var res = [];
-        
-        for (var i = 0 ; i < $scope.lignes.length ; i++) {    
-          res.push({id:$scope.lignes[i][string1],val:$scope.lignes[i][string2]}); 
-        }
-		
-		$scope.resXY = res;
-		//console.log($scope.resXY);
-      };
 
   };
 };

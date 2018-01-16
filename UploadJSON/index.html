@@ -77,62 +77,62 @@
 							Dernière ligne affichée (max : {{getValues(keys[selectedX]).length}}) :
 							<input ng-model="display_limit2" type="text">
 								
-							<br><br>
-							
-							<button  type="button" class="btn btn-primary" ng-click="getValues2(keys[selectedX], keys[selectedY])">
-							Ok
-							</button>
-							<br><br>
-								
 						</div>
 							
 					</div>
 
-					<div ng-show="types[selectedX]=='date' && selectedY ">
-						Fonction somme par mois : 
-						<input type="text" placeholder="Choisissez l'année" ng-model="selectedYear">
-						<br>
-						<div ng-show="selectedYear">
-						{{keys[selectedY].toString()}} par mois pour l'année {{selectedYear}} : 
-						<br>
-						<table>
+					<div id="conteneur">
+						<div ng-show="types[selectedX]=='date' && selectedY ">
+							Fonction somme par mois : 
+							<input type="text" placeholder="Choisissez l'année" ng-model="selectedYear">
+							<br>
+							<div ng-show="selectedYear">
+								<span>{{keys[selectedY].toString()}} par mois pour l'année {{selectedYear}} :</span>
+								<br><br>
+								<table style="margin: 0 auto;">
 									<tr>
-											<th>Mois</th>
-											<td ng-repeat="month in getMonthsNames()">{{ month }}</td>
+										<th>Mois</th><th>{{keys[selectedY]}}</th>
 									</tr>
-									<tr>
-											<th>{{keys[selectedY]}}</th>
-											<td ng-repeat="CA in sumValuesByMonth(keys[selectedX].toString(),keys[selectedY].toString(),selectedYear)">{{CA}}</td>
+									<tr ng-repeat="CA in sumValuesByMonth(keys[selectedX].toString(),keys[selectedY].toString(),selectedYear)">
+										<td>{{ getMonthsNames()[$index] }}</td>
+										<td >{{ sumValuesByMonth(keys[selectedX].toString(),keys[selectedY].toString(),selectedYear)[$index] }}</td>
 									</tr>
-							</table>
+								</table>
+							</div>
+						</div>
 					</div>
 					
 					<div id="conteneur">
 						<table class="table table-bordered table-condensed table-striped" style="margin: 0 auto;">
 							<thead>
 								<tr>
-									<th>{{keys[selectedX]}}</th><th>{{keys[selectedY]}}</th>
+									<th width="200">{{keys[selectedX]}}</th><th width="200">{{keys[selectedY]}}</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr ng-repeat="value in resXY.slice(display_limit1, display_limit2)">
-									<td>
-										{{ value.id }}
-									</td>
-									<td>
-										{{ value.val }}
-									</td>   
-								</tr>
-							</tbody>
+							<div class="scrollit">
+								<tbody>
+									<tr>
+										<td colspan="2">
+											<div class="scrollit">
+												<table>
+													<tr ng-repeat="value in getValues(keys[selectedX]).slice(display_limit1, display_limit2)">
+														<td width="200">
+															{{ getValues(keys[selectedX])[$index] }}
+														</td>
+														<td width="200">
+															{{ getValues(keys[selectedY])[$index] }}
+														</td>   
+													</tr>
+												</table>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</div>
 						</table>
-					</div>
-					
-					<div id="conteneur">
-						
 					</div>
 			</div>
 		</div>
-
 	</body>
 
 </html>

@@ -58,11 +58,6 @@
   justify-content: space-around;
 }
 
-tbody {
-    overflow-y: auto;    /* Trigger vertical scroll    */
-    overflow-x: hidden;  /* Hide the horizontal scroll */
-}
-
 table, th , td  {
   border: 1px solid grey;
   border-collapse: collapse;
@@ -73,4 +68,9 @@ table tr:nth-child(odd) {
 }
 table tr:nth-child(even) {
   background-color: #ffffff;
+}
+
+tbody div{
+    overflow:scroll;
+    height:400px;
 }
