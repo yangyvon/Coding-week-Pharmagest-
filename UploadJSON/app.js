@@ -100,9 +100,9 @@ function generateOption(){
     var optionArr = new Array();
     optionArr.push('<option value="">Choisir Axe</option>');
     
-    $.each($scope.lignes, function(i, v){
-        if(!checkOptionExistences(v.value)){
-          optionArr.push('<option value="'+ v.value +'">'+ v.name +'</option>');
+    $.each($scope.lignes[0], function(key, val){
+        if(!checkOptionExistences(key)){
+          optionArr.push('<option value="'+ key +'">'+ key +'</option>');
         }
     });
     
@@ -135,7 +135,7 @@ function selectedOptionList(param){
 }
 
 $('#ajoutAxe').click(function(){
-    if(selectedOptionDataList.length == $scope.lignes.length){
+    if(selectedOptionDataList.length == Object.keys($scope.lignes[0]).length){
         alert('Plus d axe disponible !');
     }else{
       $('div#axesY').append('<select class="dyn-select" id="select-'+ uniqId +'">'+ generateOption() +'</select>');
