@@ -1,149 +1,279 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml" ng-app="TestUploadFile">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Personnaliser</title>
-    <link href="dropdown-menu.css" media="screen" rel="stylesheet" type="text/css" />
 
-    <!-- AngularJS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
-    <script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.5/angular-material.js"></script>
-    <script data-require="angular.js@1.0.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js" data-semver="1.0.8"></script>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Personnaliser</title>
+		<link href="dropdown-menu.css" media="screen" rel="stylesheet" type="text/css" />
 
+		<!-- AngularJS -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+		<script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.5/angular-material.js"></script>
+		<script data-require="angular.js@1.0.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js" data-semver="1.0.8"></script>
 
-    <!-- Bootstraps -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<!-- Dates en français -->
+		<script src="angular-locale_fr-fr.js"></script>
+		
+		<!-- Bootstraps -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <!-- ng-table-->
+		<!-- ng-table-->
 
-    <script src="http://cdn.jsdelivr.net/angular.ngtable/0.3.2/ng-table.js"></script>
+		<script src="http://cdn.jsdelivr.net/angular.ngtable/0.3.2/ng-table.js"></script>
 
-    <script>
-        var app = angular.module('TestUploadFile', ["ngTable"]);
-    </script>
+		<script>
+			var app = angular.module('TestUploadFile', ["ngTable"]);
+		</script>
 
-    <!-- incluede du fichier html -->
-    <script>
-        $(function(){
-            $("#includedAjout").load("ajouter-widgets.html");
-            $("#includedModifier").load("modifier-widgets.html");
-            $("#includedmenu").load("menu.html");
-            $("#includedSupprimer").load("supprimer.html");
-        });
-    </script>
+		<script src="upload.js"></script>
+		<script src="app.js"></script>
+	</head>
 
-    <script src="upload.js"></script>
-    <script src="app.js"></script>
-</head>
+	<body ng-controller="JsonUploadController">
 
-<body>
-<!--
-<body ng-app="myApp" ng-controller="todoCtrl">
--->
+		<ul id="navigation" class="nav-main">
+			<li class="offiTitle">OffiBoard</li>
+			<li><a href="accueil.html">Accueil</a></li>
+			<li><a href="#">Ventes</a></li>
+			<li><a href="#">Achats</a></li>
+			<li><a href="#">Clients</a></li>
+			<li><a href="#">Collectivités</a></li>
+			<li><a href="#">Opérateurs</a></li>
+			<li><a href="#">Produits</a></li>
+			<li><a href="personnaliser.html">Personnaliser</a></li>
+		</ul>
+		
+		<p>
+		<div class="container">
+			<p style="float: right;">Le {{ clock | date:"EEEE dd MMMM yyyy"}} à {{ clock | date:"HH:mm:ss"}}</p>
+		</div>
+		</p>
 
+		<br><br>
+		<span><center><h1><font face="verdana">Liste des Widgets</font></h1></center></span>
 
+		<div id="cssmenu">
+			<div id="wrapper">
+				<ul>
+					<li><a href="ventes-widgets.html">Ventes</a></li>
+					<li><a href="#">Achats</a></li>
+					<li><a href="#">Clients</a></li>
+					<li><a href="#">Collectivités</a></li>
+					<li><a href="#">Opérateurs</a></li>
+					<li><a href="#">Produits</a></li>
+				</ul>
+			</div>
+		</div>
 
-<div id="includedmenu"></div>
+		<div id="contenu">
+			<span>Graphe 1</span>
+			<br>
+			<span>Graphe 2</span>
+		</div>
 
-<div id="contenu">
-    <img>graphe1</img>
-    <img>graphe2</img>
-</div>
+		<div id="droit">
+			<ul>
+				<a href="#"><button type="button"  data-toggle="modal" data-target="#Ajout">Ajouter</button></a>
+				<a href="#"><button type="button" data-toggle="modal" data-target="#Modifier">Modifier</button></a>
+				<a href="#"><button type="button" data-toggle="modal" data-target="#Supprimer">Supprimer</button></a>
+			</ul>
+		</div>
 
+		<!-- Modal -->
+		<div class="modal fade" id="Ajout" role="dialog">
+			<div class="modal-dialog">
 
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Ajouter un Widget</h4>
+					</div>
+					<div class="modal-body">
+						<div ng-controller="JsonUploadController " class="container">
+							<p>Sélectionner un fichier :</p>
+							<form>
+								<input type="file" read-text="onFileSelect($files)" >
+								<!-- <input type="file" ng-file-select="onFileSelect($files)" multiple> -->
+							</form>
+							<b>Aperçu du json :</b><br>
+							<i ng-hide="jsonSrc">Aucun json sélectionné</i>
 
-<!-- Modal -->
-<div class="modal fade" id="Ajout" role="dialog">
-    <div class="modal-dialog">
+							<div id="conteneur">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Ajouter un widget</h4>
-            </div>
-            <div class="modal-body">
-                <div ng-controller="JsonUploadController " class="container">
-                    <p>Sélectionner un fichier json：</p>
-                    <form>
-                        <input type="file" read-text="onFileSelect($files)" >
-                        <!-- <input type="file" ng-file-select="onFileSelect($files)" multiple> -->
-                    </form>
-                    <i ng-hide="jsonSrc">Aucun fichier json sélectionné</i>
+								<div ng-show="jsonSrc" style class="col-md-6">
 
-                    <div id="conteneur">
+									<div>
+										Select X :
+										<select ng-model="selectedX">
+											<option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
+										</select>
 
+										<br><br>
+										Select Y :
+										<select ng-model="selectedY">
+											<option ng-repeat="key2 in keys" value="{{key2}}">{{key2}}</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
 
-                        <div ng-show="jsonSrc" style class="col-md-6">
-
-
-                            <div>
-                                Select X :
-                                <select ng-model="selectedX">
-                                    <option ng-repeat="key in keys" value="{{key}}">{{key}}</option>
-                                </select>
-
-                                <br><br>
-                                Select Y :
-                                <select ng-model="selectedY">
-                                    <option ng-repeat="key2 in keys" value="{{key2}}">{{key2}}</option>
-                                </select>
-
-                                <br><br>
-
-
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <form role="form">
-
-
-                    <p>Graphes proposés</p>
-                    <select>
-                        <option value ="Camembert">Camembert </option>
-                        <option value ="histogramme">histogramme</option>
-                        <option value="Diagramme">Diagramme en bâton</option>
-                        <option value="Nuage">Nuage de points</option>
-                    </select>
-
-                    <p>Choisir la section du graphe</p>
-                    <select>
-                        <option value ="Ventes">Ventes </option>
-                        <option value ="Achats">Achats</option>
-                        <option value="Cients">Cients</option>
-                        <option value="Collectivités">Collectivités</option>
-                        <option value="Operateurs">Operateurs</option>
-                        <option value="Produits">Produits</option>
-                    </select>
-
-
-                    <button type="submit" class="btn btn-success btn-block"> Ajouter</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-
-    </div>
-</div>
+						<form role="form">
 
 
-<div id="includedModifier"></div>
+							<p>Graphes proposés</p>
+							<select>
+								<option value ="Camembert">Camembert </option>
+								<option value ="Histogramme">Histogramme</option>
+								<option value="Diagramme">Diagramme en bâtons</option>
+								<option value="Nuage">Nuage de points</option>
+							</select>
 
-<div id="includedSupprimer"></div>
+							<p>Choisir la section du graphe</p>
+							<select>
+								<option value ="Ventes">Ventes</option>
+								<option value ="Achats">Achats</option>
+								<option value="Clients">Clients</option>
+								<option value="Collectivites">Collectivités</option>
+								<option value="Operateurs">Opérateurs</option>
+								<option value="Produits">Produits</option>
+							</select>
 
 
+							<button type="submit" class="btn btn-success btn-block">Ajouter</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
+					</div>
+				</div>
 
+			</div>
+		</div>
 
+		<!-- Modal -->
+		<div class="modal fade" id="Modifier" role="dialog">
+			<div class="modal-dialog">
 
-</body>
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Modifier un Widget</h4>
+					</div>
+					<div class="modal-body">
+
+						   <form role="form">
+
+							<p>Choisir le Widget à modifier :</p>
+							<select>
+								<option value ="graphe1">Graphe 1 </option>
+								<option value ="graphe2">Graphe 2</option>
+								<option value="graphe3"> Graphe 3</option>
+								<option value="graphe4">Graphe 4</option>
+							</select>
+							<p>axe </p>
+
+							   <p><button ng-click="todoAdd()">Ajouter</button></p>
+
+							<br>
+
+							<div ng-repeat="x in todoList">
+								<input type="checkbox" ng-model="x.done"> <span ng-bind="x.todoText"></span>
+							</div>
+
+							<p><button ng-click="remove()">Supprimer</button></p>
+							<p>Modifier le type de graphe</p>
+							<select>
+								<option value ="Camembert">Camembert </option>
+								<option value ="Histogramme">Histogramme</option>
+								<option value="Diagramme">Diagramme en bâtons</option>
+								<option value="Nuage">Nuage de points</option>
+							</select>
+
+							<p>Graphes proposés</p>
+							<select>
+								<option value ="Camembert">Camembert </option>
+								<option value ="Histogramme">Histogramme</option>
+								<option value="Diagramme">Diagramme en bâtons</option>
+								<option value="Nuage">Nuage de points</option>
+							</select>
+
+							<p>Choisir la section du graphe</p>
+							<select>
+								<option value ="Ventes">Ventes </option>
+								<option value ="Achats">Achats</option>
+								<option value="Clients">Clients</option>
+								<option value="Collectivites">Collectivités</option>
+								<option value="Operateurs">Opérateurs</option>
+								<option value="Produits">Produits</option>
+							</select>
+							<button type="submit" class="btn btn-success btn-block">Modifier</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="Supprimer" role="dialog">
+			<div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Supprimer un Widget</h4>
+					</div>
+					<div class="modal-body">
+
+						<form role="form" action="#">
+
+							<p>Choisir les Widgets à supprimer :</p>
+							<table border="1">
+								<tr>
+									<td>Nom du Widget</td>
+									<td>Supprimer</td>
+								</tr>
+								<tr>
+									<td>Widget 1</td>
+									<td><input type="checkbox" name="Graphe1" value="Graphe1" /></td>
+								</tr>
+								<tr>
+									<td>Widget 2</td>
+									<td><input type="checkbox" name="Graphe2" value="Graphe2" /></td>
+								</tr>
+								<tr>
+									<td>Widget 3</td>
+									<td><input type="checkbox" name="Graphe3" value="Graphe3" /></td>
+								</tr>
+								<tr>
+									<td>Widget 4</td>
+									<td><input type="checkbox" name="Graphe4" value="Graphe4" /></td>
+								</tr>
+							</table>
+
+							<button type="submit" class="btn btn-success btn-block">Supprimer</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</body>
 </html>

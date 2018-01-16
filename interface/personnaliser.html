@@ -1,125 +1,298 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Personnaliser</title>
-    <link href="dropdown-menu.css" media="screen" rel="stylesheet" type="text/css" />
-    <!-- Bootstraps -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <!-- include fichier.html -->
-    <script>
-        $(function(){
-            $("#includedAjout").load("ajouter-widgets.html");
-            $("#includedmenu").load("menu.html");
-            $("#includedModifier").load("modifier-widgets.html");
-            $("#includedSupprimer").load("supprimer.html");
-        });
-    </script>
-</head>
-    <!-- AngularJS -->
-    <script src= "http://cdn.bootcss.com/angular.js/1.4.6/angular.min.js"></script>
-<body ng-app="myApp" ng-controller="todoCtrl">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Personnaliser</title>
+		<link href="dropdown-menu.css" media="screen" rel="stylesheet" type="text/css" />
+		
+		<!-- Bootstraps -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		
+		<!-- AngularJS -->
+		<script src= "http://cdn.bootcss.com/angular.js/1.4.6/angular.min.js"></script>
+		
+		<!-- Dates en français -->
+		<script src="angular-locale_fr-fr.js"></script>
+	</head>
 
-<script>//un controlleur todoCtrl avec 3fonction
-var app = angular.module('myApp', []);
-app.controller('todoCtrl', function($scope) {
-    $scope.todoList = [{todoText:'Axe X', done:false},{todoText:'Axe Y', done:false} ];
+	<body ng-app="myApp" ng-controller="todoCtrl">
 
-    $scope.todoAdd = function() {
-        $scope.todoInput = "Axe"; //remettre automatique en null
-        $scope.todoList.push({todoText:$scope.todoInput, done:false});
+		<ul id="navigation" class="nav-main">
+			<li class="offiTitle">OffiBoard</li>
+			<li><a href="accueil.html">Accueil</a></li>
+			<li><a href="#">Ventes</a></li>
+			<li><a href="#">Achats</a></li>
+			<li><a href="#">Clients</a></li>
+			<li><a href="#">Collectivités</a></li>
+			<li><a href="#">Opérateurs</a></li>
+			<li><a href="#">Produits</a></li>
+			<li><a href="personnaliser.html">Personnaliser</a></li>
+		</ul>
+		
+		<p>
+		<div class="container" ng-controller='TimeCtrl'>
+			<p style="float: right;">Le {{ clock | date:"EEEE dd MMMM yyyy"}} à {{ clock | date:"HH:mm:ss"}}</p>
+		</div>
+		</p>
 
-    };
+		<br><br>
+		<span><center><h1><font face="verdana">Liste des Widgets</font></h1></center></span>
 
-    $scope.remove = function() {
-        var oldList = $scope.todoList;
-        $scope.todoList = []; //initialiser la liste
-        angular.forEach(oldList, function(x) {
-            if (!x.done) $scope.todoList.push(x); //si x n'est pas coche, alors le ajouter dans le list
-        });
-    };
-});
-</script>
+		<div id="cssmenu">
+			<div id="wrapper">
+				<ul>
+					<li><a href="ventes-widgets.html">Ventes</a></li>
+					<li><a href="#">Achats</a></li>
+					<li><a href="#">Clients</a></li>
+					<li><a href="#">Collectivités</a></li>
+					<li><a href="#">Opérateurs</a></li>
+					<li><a href="#">Produits</a></li>
+				</ul>
+			</div>
+		</div>
 
+		<div id="contenu">
+			<span>A gauche, choix du domaine (achats, ventes, ...)</span>
+			<br>
+			<span>A droite, ajout, suppression ou modification d'un widget</span>
+		</div>
 
-<div id="includedmenu"></div>
+		<div id="droit">
+			<ul>
+				<a href="#"><button type="button"  data-toggle="modal" data-target="#Ajout">Ajouter</button></a>
+				<a href="#"><button type="button" data-toggle="modal" data-target="#Modifier">Modifier</button></a>
+				<a href="#"><button type="button" data-toggle="modal" data-target="#Supprimer">Supprimer</button></a>
+			</ul>
+		</div>
 
-<div id="contenu">
-    <img>A gauche choisi  les domaine pour afficher les graphe ou tableau associé</img>
+		<!-- Modal -->
+		<div class="modal fade" id="Ajout" role="dialog">
+		
+			<div class="modal-dialog">
 
-    <h2>A droit  on peux ajouter,supprimer ou modifier </h2>
+				<!-- Modal content-->
+				<div class="modal-content">
+				
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Ajouter un Widget</h4>
+					</div>
+					
+					<div class="modal-body">
+					
+						<p>Sélectionner un fichier :</p>
+						
+						<form>
+							<input type="file" read-text="onFileSelect($files)" >
+						</form>
+						
+						<br>
 
-</div>
+						<form role="form">
+							<p>Axe</p>
+							
+							<p><button ng-click="todoAdd()">Ajouter</button></p>
 
+							<br>
 
-<!-- Modal -->
-<div class="modal fade" id="Ajout" role="dialog">
-    <div class="modal-dialog">
+							<div ng-repeat="x in todoList">
+								<input type="checkbox" ng-model="x.done"> <span ng-bind="x.todoText"></span>
+							</div>
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Ajouter un widget</h4>
-            </div>
-            <div class="modal-body">
-                <p>selectionner un fichier：</p>
-                <form>
-                    <input type="file" read-text="onFileSelect($files)" >
-                    <!-- <input type="file" ng-file-select="onFileSelect($files)" multiple> -->
-                </form>
-                <br/>
+							<p><button ng-click="remove()">Supprimer</button></p>
 
+							<p>Graphes proposés</p>
+							<select>
+								<option value ="Camembert">Camembert </option>
+								<option value ="Histogramme">Histogramme</option>
+								<option value="Diagramme">Diagramme en bâtons</option>
+								<option value="Nuage">Nuage de points</option>
+							</select>
 
-                <form role="form">
-                    <p>axe </p>
+							<p>Choisir la section du graphe</p>
+							<select>
+								<option value ="Ventes">Ventes </option>
+								<option value ="Achats">Achats</option>
+								<option value="Cients">Cients</option>
+								<option value="Collectivités">Collectivités</option>
+								<option value="Operateurs">Opérateurs</option>
+								<option value="Produits">Produits</option>
+							</select>
 
+							<button type="submit" class="btn btn-success btn-block">Ajouter</button>
+						</form>
+					</div>
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-                    <p><button ng-click="todoAdd()">ajouter</button></p>
+		<!-- Modal -->
+		<div class="modal fade" id="Modifier" role="dialog">
+		
+			<div class="modal-dialog">
 
-                    <br>
+				<!-- Modal content-->
+				<div class="modal-content">
+				
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Modifier un Widget</h4>
+					</div>
+					
+					<div class="modal-body">
 
+						<form role="form">
 
-                    <div ng-repeat="x in todoList">
-                        <input type="checkbox" ng-model="x.done"> <span ng-bind="x.todoText"></span>
-                    </div>
+							<p>Choisir le Widget à modifier：</p>
+								
+							<select>
+								<option value ="graphe1">Widget 1 </option>
+								<option value ="graphe2">Widget 2</option>
+								<option value="graphe3">Widget 3</option>
+								<option value="graphe4">Widget 4</option>
+							</select>
+							
+							<p>Axe</p>
 
-                    <p><button ng-click="remove()">supprimer</button></p>
+							<p><button ng-click="todoAdd()">Ajouter</button></p>
 
-                    <p>Graphes proposés</p>
-                    <select>
-                        <option value ="Camembert">Camembert </option>
-                        <option value ="histogramme">histogramme</option>
-                        <option value="Diagramme">Diagramme en bâton</option>
-                        <option value="Nuage">Nuage de points</option>
-                    </select>
+							<br>
 
-                    <p>Choisir la section du graphe</p>
-                    <select>
-                        <option value ="Ventes">Ventes </option>
-                        <option value ="Achats">Achats</option>
-                        <option value="Cients">Cients</option>
-                        <option value="Collectivités">Collectivités</option>
-                        <option value="Operateurs">Operateurs</option>
-                        <option value="Produits">Produits</option>
-                    </select>
+							<div ng-repeat="x in todoList">
+								<input type="checkbox" ng-model="x.done"> <span ng-bind="x.todoText"></span>
+							</div>
 
+							<p><button ng-click="remove()">Supprimer</button></p>
+							<p>Modifier le type de graphe</p>
+							<select>
+								<option value ="Camembert">Camembert </option>
+								<option value ="Histogramme">Histogramme</option>
+								<option value="Diagramme">Diagramme en bâtons</option>
+								<option value="Nuage">Nuage de points</option>
+							</select>
 
-                    <button type="submit" class="btn btn-success btn-block"> Ajouter</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
+							<p>Graphes proposés</p>
+							<select>
+								<option value ="Camembert">Camembert </option>
+								<option value ="Histogramme">Histogramme</option>
+								<option value="Diagramme">Diagramme en bâtons</option>
+								<option value="Nuage">Nuage de points</option>
+							</select>
 
-    </div>
-</div>
-<div id="includedModifier"></div>
-<div id="includedSupprimer"></div>
+							<p>Choisir la section du graphe</p>
+							<select>
+								<option value ="Ventes">Ventes </option>
+								<option value ="Achats">Achats</option>
+								<option value="Clients">Clients</option>
+								<option value="Collectivites">Collectivités</option>
+								<option value="Operateurs">Opérateurs</option>
+								<option value="Produits">Produits</option>
+							</select>
+							
+							<button type="submit" class="btn btn-success btn-block">Modifier</button>
+						</form>
+					</div>
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-</body>
+		<!-- Modal -->
+		<div class="modal fade" id="Supprimer" role="dialog">
+		
+			<div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+				
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Supprimer un Widget</h4>
+					</div>
+					
+					<div class="modal-body">
+
+						<form role="form" action="#">
+
+							<p>Choisir les Widgets à supprimer :</p>
+							<table border="1">
+								<tr>
+									<td>Nom du Widget</td>
+									<td>Supprimer</td>
+								</tr>
+								<tr>
+									<td>Widget 1</td>
+									<td><input type="checkbox" name="Graphe1" value="Graphe1" /></td>
+								</tr>
+								<tr>
+									<td>Widget 2</td>
+									<td><input type="checkbox" name="Graphe2" value="Graphe2" /></td>
+								</tr>
+								<tr>
+									<td>Widget 3</td>
+									<td><input type="checkbox" name="Graphe3" value="Graphe3" /></td>
+								</tr>
+								<tr>
+									<td>Widget 4</td>
+									<td><input type="checkbox" name="Graphe4" value="Graphe4" /></td>
+								</tr>
+							</table>
+
+							<button type="submit" class="btn btn-success btn-block">Supprimer</button>
+						</form>
+					</div>
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+	
+	<script>
+		var app = angular.module('myApp', []);
+		
+		app.controller('todoCtrl', function($scope) {
+			$scope.todoList = [{todoText:'Axe X', done:false},{todoText:'Axe Y', done:false} ];
+
+			$scope.todoAdd = function() {
+				$scope.todoInput = "Axe"; 
+				$scope.todoList.push({todoText:$scope.todoInput, done:false});
+			};
+
+			$scope.remove = function() {
+				var oldList = $scope.todoList;
+				$scope.todoList = [];
+				angular.forEach(oldList, function(x) {
+					if (!x.done) $scope.todoList.push(x);
+				});
+			};
+		});
+		
+		app.controller("TimeCtrl", function($scope, $timeout) {
+			$scope.clock = "loading clock...";
+			$scope.tickInterval = 1000
+
+			var tick = function () {
+				$scope.clock = Date.now()
+				$timeout(tick, $scope.tickInterval);
+			}
+
+			$timeout(tick, $scope.tickInterval);
+		});
+	</script>
+		
 </html>
