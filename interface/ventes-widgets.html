@@ -69,13 +69,12 @@
             </div>
             <div class="modal-body">
                 <div ng-controller="JsonUploadController " class="container">
-                    <p>selectionner un fichier：</p>
+                    <p>Sélectionner un fichier json：</p>
                     <form>
                         <input type="file" read-text="onFileSelect($files)" >
                         <!-- <input type="file" ng-file-select="onFileSelect($files)" multiple> -->
                     </form>
-                    <b>Aperçu du json :</b><br />
-                    <i ng-hide="jsonSrc">Aucun json sélectionné</i>
+                    <i ng-hide="jsonSrc">Aucun fichier json sélectionné</i>
 
                     <div id="conteneur">
 
