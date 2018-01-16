@@ -4,7 +4,7 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>Personnaliser</title>
+		<title>OffiBoard - Personnaliser</title>
 		<link href="dropdown-menu.css" media="screen" rel="stylesheet" type="text/css" />
 		
 		<!-- Bootstraps -->
@@ -33,32 +33,31 @@
 			<li><a href="personnaliser.html">Personnaliser</a></li>
 		</ul>
 		
-		<p>
 		<div class="container" ng-controller='TimeCtrl'>
 			<p style="float: right;">Le {{ clock | date:"EEEE dd MMMM yyyy"}} à {{ clock | date:"HH:mm:ss"}}</p>
 		</div>
-		</p>
 
-		<br><br>
-		<span><center><h1><font face="verdana">Liste des Widgets</font></h1></center></span>
+		<br>
+		<span><center><h3><font face="verdana">Liste des Widgets</font></h3></center></span>
 
 		<div id="cssmenu">
 			<div id="wrapper">
 				<ul>
-					<li><a href="ventes-widgets.html">Ventes</a></li>
-					<li><a href="#">Achats</a></li>
-					<li><a href="#">Clients</a></li>
-					<li><a href="#">Collectivités</a></li>
-					<li><a href="#">Opérateurs</a></li>
-					<li><a href="#">Produits</a></li>
+					<li><a href="#">Tous les Widgets</a></li>
+					<li><a href="#">Widgets Ventes</a></li>
+					<li><a href="#">Widgets Achats</a></li>
+					<li><a href="#">Widgets Clients</a></li>
+					<li><a href="#">Widgets Collectivités</a></li>
+					<li><a href="#">Widgets Opérateurs</a></li>
+					<li><a href="#">Widgets Produits</a></li>
 				</ul>
 			</div>
 		</div>
 
 		<div id="contenu">
-			<span>A gauche, choix du domaine (achats, ventes, ...)</span>
+			<span>A gauche, filtres sur le domaine des Widgets.</span>
 			<br>
-			<span>A droite, ajout, suppression ou modification d'un widget</span>
+			<span>A droite, ajout, suppression ou modification d'un Widget.</span>
 		</div>
 
 		<div id="droit">
@@ -84,47 +83,9 @@
 					
 					<div class="modal-body">
 					
-						<p>Sélectionner un fichier :</p>
-						
-						<form>
-							<input type="file" read-text="onFileSelect($files)" >
-						</form>
-						
-						<br>
-
-						<form role="form">
-							<p>Axe</p>
-							
-							<p><button ng-click="todoAdd()">Ajouter</button></p>
-
-							<br>
-
-							<div ng-repeat="x in todoList">
-								<input type="checkbox" ng-model="x.done"> <span ng-bind="x.todoText"></span>
-							</div>
-
-							<p><button ng-click="remove()">Supprimer</button></p>
-
-							<p>Graphes proposés</p>
-							<select>
-								<option value ="Camembert">Camembert </option>
-								<option value ="Histogramme">Histogramme</option>
-								<option value="Diagramme">Diagramme en bâtons</option>
-								<option value="Nuage">Nuage de points</option>
-							</select>
-
-							<p>Choisir la section du graphe</p>
-							<select>
-								<option value ="Ventes">Ventes </option>
-								<option value ="Achats">Achats</option>
-								<option value="Cients">Cients</option>
-								<option value="Collectivités">Collectivités</option>
-								<option value="Operateurs">Opérateurs</option>
-								<option value="Produits">Produits</option>
-							</select>
-
-							<button type="submit" class="btn btn-success btn-block">Ajouter</button>
-						</form>
+						<div id="ajoutModal"></div>
+					
+						<script>document.getElementById("ajoutModal").innerHTML='<object type="text/html" data="index.html" ></object>';</script>
 					</div>
 					
 					<div class="modal-footer">
