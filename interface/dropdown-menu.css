@@ -7,6 +7,21 @@
 	text-decoration: none;	
 }
 
+.flexDisplayHoriz {
+  width :100%;
+  display:flex;
+  justify-content: space-around;
+  color:grey;
+}
+
+.flexDisplayVert {
+  width :100%;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: center; 
+}
+
 ul {
 	list-style-type: none;
 	margin: 0;
@@ -74,7 +89,9 @@ li a {
 }
 
 li a:hover {
-	background-color: rgb(237,237,237);
+	color: white;
+	text-decoration: none;
+	background-color: rgb(169,169,169);
 }
 
 /* Contenu principal */
