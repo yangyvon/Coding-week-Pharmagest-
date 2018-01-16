@@ -3,7 +3,7 @@ ul {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: #333;
+	background-color: rgb(128,128,128); 
 }
 #droit {
 	float: right;
@@ -59,7 +59,7 @@ li a {
 }
 
 li a:hover {
-	background-color: #111;
+	background-color: rgb(237,237,237);
 }
 
 /* Contenu principal */
