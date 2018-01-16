@@ -38,8 +38,9 @@
 	<body>
  
 		<div ng-controller="JsonUploadController" class="container">
-			<div style="margin-bottom:50px;">
-				<center><h2><span style="color:green;">O</span>ffi<span style="color:green;">B</span>oard</h2></center>
+			
+			<div style="float:left;">
+				<button class="btn btn-success" onclick="myFunc()">Ajouter</button>
 			</div>
 			
 			<div id="flexDisplay">
@@ -137,5 +138,14 @@
 			</div>
 		</div>
 	</body>
+	
+	<script>
+	
+	function myFunc() {
+		
+		console.log("Ajout du Widget");
+	}
+			
+	</script>
 
 </html>
