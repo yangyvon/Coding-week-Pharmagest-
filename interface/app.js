@@ -1,5 +1,49 @@
 var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, fileReader) {
 	
+	$scope.listWidgets = [];
+	$scope.checkBoxId = [];
+	
+	$scope.remove1 = function($index){ 
+	  $scope.checkBoxId.splice($index, 1);     
+	}
+	
+	$scope.remove2 = function($index){ 
+	  $scope.listWidgets.splice($index, 1);     
+	}
+	
+	$scope.widgetAdd = function(jsonName, selectedX, selectedY) {
+		
+		$scope.listWidgets.push({"jsonName":jsonName, "selectX":selectedX, "selectY":selectedY});
+	}
+	
+	$scope.widgetDelete = function() {
+		
+		var nbSupprimes = 0;
+		for (var i = 0 ; i < $scope.checkBoxId.length ; i++) {
+			
+			$scope.remove2($scope.checkBoxId[i]-nbSupprimes);
+			nbSupprimes = nbSupprimes+1;
+		}
+		
+		$scope.checkBoxId = [];
+		console.log("CheckboxId list : ");
+		console.log($scope.checkBoxId);
+	}
+	
+	$scope.checkBoxClick = function(nb) {
+		
+		if(($scope.checkBoxId).indexOf(nb) < 0) {
+			$scope.checkBoxId.push(nb);
+		}
+		
+		else {
+			$scope.remove1(nb);
+		}
+		
+		console.log("CheckboxId list : ");
+		console.log($scope.checkBoxId);
+	}
+	
 	$scope.clock = "loading clock...";
 	$scope.tickInterval = 1000
 
@@ -9,6 +53,21 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 	}
 
 	$timeout(tick, $scope.tickInterval);
+	
+	$scope.todoList = [{todoText:'Axe X', done:false},{todoText:'Axe Y', done:false} ];
+
+			$scope.todoAdd = function() {
+				$scope.todoInput = "Axe"; 
+				$scope.todoList.push({todoText:$scope.todoInput, done:false});
+			};
+
+			$scope.remove = function() {
+				var oldList = $scope.todoList;
+				$scope.todoList = [];
+				angular.forEach(oldList, function(x) {
+					if (!x.done) $scope.todoList.push(x);
+				});
+			};
 	
 	$scope.getMonthsNames = function() {
      var monthsNames= ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
