@@ -23,6 +23,9 @@
 		<link rel="stylesheet" href="http://cdn.jsdelivr.net/angular.ngtable/0.3.2/ng-table.css">
         <script src="http://cdn.jsdelivr.net/angular.ngtable/0.3.2/ng-table.js"></script>
 
+        <!-- ChartJS-->
+        <script src=https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js></script>
+
 		<title>OffiBoard</title>
 		<script>document.write('<base href="' + document.location + '" />');</script>
 		<link rel="stylesheet" href="styleDSQ.css" />
@@ -71,6 +74,7 @@
 							<br>
 							<span ng-show="types[selectedY]">Type du second axe : {{types[selectedY]}}</span>
 							<div id="axesY"></div>
+							
 
 						</div>
 							
@@ -82,6 +86,11 @@
 							<input type="text" placeholder="Choisissez l'année" ng-model="selectedYear">
 							<br>
 							<div ng-show="selectedYear">
+								<div class="row-lg-12">
+								<canvas id="Chart">
+									{{getChart(keys[selectedX].toString(),keys[selectedY].toString(),selectedYear)}}
+								</canvas>
+								</div>
 								<span>{{keys[selectedY].toString()}} par mois pour l'année {{selectedYear}} :</span>
 								<br><br>
 								<table style="margin: 0 auto;">
@@ -96,7 +105,10 @@
 							</div>
 						</div>
 					</div>
-					
+	<div id=graphe>
+		
+		
+	</div>
 					<div id="conteneur" ng-show="keys[selectedX] && keys[selectedY]">
 					
 						<div>

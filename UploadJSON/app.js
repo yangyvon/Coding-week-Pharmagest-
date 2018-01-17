@@ -1,4 +1,5 @@
 var JsonUploadController = function ($scope, $filter, ngTableParams, fileReader) {
+
 	$scope.getMonthsNames = function() {
      var monthsNames= ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
      return monthsNames;
@@ -60,19 +61,50 @@ var JsonUploadController = function ($scope, $filter, ngTableParams, fileReader)
         months[date.getMonth()] += +output;
       }
     }
-    //console.log(months);
     return(months);
+  };
+
+    $scope.getChart = function(cleX,cleY,annee) {
+      var Canvas = $("#Chart");
+      var barChart = new Chart(Canvas, {
+  type: 'bar',
+  data: {
+    labels: $scope.getMonthsNames(),
+    tooltips:{
+      enabled:false
+    },
+    datasets: [{
+      label: cleY,
+      data: $scope.sumValuesByMonth(cleX,cleY,annee),
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.6)',
+        'rgba(54, 162, 235, 0.6)',
+        'rgba(255, 206, 86, 0.6)',
+        'rgba(75, 192, 192, 0.6)',
+        'rgba(153, 102, 255, 0.6)',
+        'rgba(255, 159, 64, 0.6)',
+        'rgba(255, 99, 132, 0.6)',
+        'rgba(54, 162, 235, 0.6)',
+        'rgba(255, 206, 86, 0.6)',
+        'rgba(75, 192, 192, 0.6)',
+        'rgba(153, 102, 255, 0.6)',
+        'rgba(255, 159, 64, 0.6)'
+      ]
+    }]
+  }
+});
   };
 
   };
 
   var uniqId = 1;
-  var selectedOptionDataList = new Array();
+  $scope.selectedOptionDataList = new Array();
 
 function regenerateSelectbox(){
     $('select.dyn-select').each(function(){
         var _selector = $(this);
         var _curVal = _selector.val();
+        $scope.selectedCol=_selector.val();
         
         _selector.html(generateOption());
         if(_curVal == ""){
@@ -87,7 +119,7 @@ function regenerateSelectbox(){
 function checkOptionExistences(listOptionVal){
     var _found = false;
     
-    $.each(selectedOptionDataList, function(inn, vnn){  
+    $.each($scope.selectedOptionDataList, function(inn, vnn){  
         if(vnn.selectboxoption == listOptionVal){
             _found = true;
         }
@@ -110,19 +142,19 @@ function generateOption(){
 }
 
 function removeSelectedOptionFromList(param){
-    var tmpArrList = selectedOptionDataList;
-    selectedOptionDataList = new Array();
+    var tmpArrList = $scope.selectedOptionDataList;
+    $scope.selectedOptionDataList = new Array();
     
     $.each(tmpArrList, function(i, v){
         if(param.selectboxid != v.selectboxid){
-            selectedOptionDataList.push({'selectboxid':v.selectboxid, 'selectboxoption':v.selectboxoption});
+            $scope.selectedOptionDataList.push({'selectboxid':v.selectboxid, 'selectboxoption':v.selectboxoption});
         }
     });
 }
 
 function selectedOptionList(param){
     var _found = false;
-    $.each(selectedOptionDataList, function(i, v){
+    $.each($scope.selectedOptionDataList, function(i, v){
         if(param.selectboxid == v.selectboxid){
             _found = true;
             v.selectboxoption = param.selectboxoption;
@@ -130,12 +162,12 @@ function selectedOptionList(param){
     });
     
     if(!_found){
-        selectedOptionDataList.push({'selectboxid':param.selectboxid, 'selectboxoption':param.selectboxoption});
+        $scope.selectedOptionDataList.push({'selectboxid':param.selectboxid, 'selectboxoption':param.selectboxoption});
     }
 }
 
 $('#ajoutAxe').click(function(){
-    if(selectedOptionDataList.length == Object.keys($scope.lignes[0]).length){
+    if($scope.selectedOptionDataList.length == Object.keys($scope.lignes[0]).length){
         alert('Plus d axe disponible !');
     }else{
       $('div#axesY').append('<select class="dyn-select" id="select-'+ uniqId +'">'+ generateOption() +'</select>');
@@ -151,7 +183,7 @@ $(document).on('change', 'select.dyn-select', function(){
         selectedOptionList({'selectboxid':_selector.attr('id'), 'selectboxoption':_selector.val()});
     }
     
-    regenerateSelectbox();
+    //regenerateSelectbox();
 });
 };
 
