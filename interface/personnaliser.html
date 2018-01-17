@@ -58,24 +58,19 @@
 		<br>
 		<span><center><h3><font face="verdana">Liste des Widgets</font></h3></center></span>
 
-		<div id="cssmenu">
-			<div id="wrapper">
-				<ul>
-					<li><a href="#">Tous les Widgets</a></li>
-					<li><a href="#">Widgets Ventes</a></li>
-					<li><a href="#">Widgets Achats</a></li>
-					<li><a href="#">Widgets Clients</a></li>
-					<li><a href="#">Widgets Collectivités</a></li>
-					<li><a href="#">Widgets Opérateurs</a></li>
-					<li><a href="#">Widgets Produits</a></li>
-				</ul>
-			</div>
-		</div>
-
-		<div id="contenu">
-		
-		Dans la Widget List : {{listWidgets}}
+		<div id="flexDisplay2">
 			
+			<div ng-repeat="widget in listWidgets">
+				<b>Nom : </b>{{widget.nomWidget}}
+				<br>
+				<b>JSON : </b>{{widget.jsonName}}
+				<br>
+				<b>Axe X : </b>{{widget.selectX}}
+				<br>
+				<b>Axe Y : </b>{{widget.selectY}}
+				<br>
+				<b>Section : </b>{{widget.sectionWidget}}
+			</div>
 		</div>
 
 		<div id="droit">
@@ -107,15 +102,12 @@
 		
 							</div>
 							<script>document.getElementById("ajoutModal").innerHTML='<object style="width:100%; height:500px;" type="text/html" data="index.html" ></object>';</script> -->
-							<div style="float:left;">
-								<button class="btn btn-success" ng-click="widgetAdd(selectedJson, keys[selectedX],keys[selectedY])" data-dismiss="modal">Ajouter</button>
-							</div>
 						
 							<div id="flexDisplay">
 									
-								<div id="conteneur">
+								<div id="conteneur" style="margin: 0;">
 										
-									<div style="margin: 0 auto;" class="col-md-6">
+									<div class="col-md-8">
 											
 										<form>
 											<input type="file" ng-model="selectedJson" read-text="onFileSelect($files)">
@@ -145,15 +137,15 @@
 												
 								</div>
 
-								<div id="conteneur">
+								<div id="conteneur"  style="margin: 0 auto;">
 									<div ng-show="types[selectedX]=='date' && selectedY ">
 										Fonction somme par mois : 
 										<input type="text" placeholder="Choisissez l'année" ng-model="selectedYear">
 										<br>
 										<div ng-show="selectedYear">
-											<span>{{keys[selectedY].toString()}} par mois pour l'année {{selectedYear}} :</span>
+											<span>{{keys[selectedY].toString()}} par mois en {{selectedYear}} :</span>
 											<br><br>
-											<table style="margin: 0 auto;">
+											<table>
 												<tr>
 													<th>Mois</th><th>{{keys[selectedY]}}</th>
 												</tr>
@@ -169,12 +161,12 @@
 								<div id="conteneur" ng-show="keys[selectedX] && keys[selectedY]">
 										
 									<div>
-										Nombre de lignes affichées (max : {{getValues(keys[selectedX]).length}}) :
+										Lignes affichées (max : {{getValues(keys[selectedX]).length}}) :
 										<input ng-model="display_limit1" type="text" size="5">
 												
-										<br>
+										<br><br>
 											
-										<table class="table table-bordered table-condensed table-striped" style="margin: 0 auto;">
+										<table class="table table-bordered table-condensed table-striped">
 											<thead>
 												<tr>
 													<th width="200">{{keys[selectedX]}}</th><th width="200">{{keys[selectedY]}}</th>
@@ -202,6 +194,19 @@
 											</div>
 										</table>
 									</div>
+								</div>
+								
+								<div style="margin: 0 auto;">
+									<b>Nom du Widget :</b>
+									<input ng-model="widgetName" type="text" placeholder="">
+									<br><br>
+									
+									<b>Section du Widget :</b>
+									<select ng-model="sectionWidget" ng-init="sectionWidget = listeSection[0]" ng-options="option for option in listeSection">
+									</select>
+									
+									<br><br>
+									<center><button class="btn btn-success" ng-click="widgetAdd(selectedJson, keys[selectedX],keys[selectedY], sectionWidget, widgetName)" data-dismiss="modal">Ajouter</button></center>
 								</div>
 							</div>
 						</form>
@@ -304,11 +309,21 @@
 							<p>Choisir les Widgets à supprimer :</p>
 							<table border="1">
 								<tr>
-									<td>Nom du Widget</td>
+									<td>Liste des Widgets</td>
 									<td>Supprimer</td>
 								</tr>
 								<tr ng-repeat="widget in listWidgets">
-									<td>{{widget}}</td>
+									<td>
+										<b>Nom : </b>{{widget.nomWidget}}
+										<br>
+										<b>JSON : </b>{{widget.jsonName}}
+										<br>
+										<b>Axe X : </b>{{widget.selectX}}
+										<br>
+										<b>Axe Y : </b>{{widget.selectY}}
+										<br>
+										<b>Section : </b>{{widget.sectionWidget}}
+									</td>
 									<td><input type="checkbox" ng-click="checkBoxClick($index)"/></td>
 								</tr>
 							</table>
