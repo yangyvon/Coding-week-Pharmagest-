@@ -83,10 +83,10 @@
 					<div id="conteneur">
 						<div ng-show="types[selectedX]=='date' && selectedY ">
 							Fonction somme par mois : 
-							<input type="text" placeholder="Choisissez l'année" ng-model="selectedYear">
+							<input type="text" placeholder="Choisissez l'année" ng-model="selectedYear"/>
 							<br>
 							<div ng-show="selectedYear">
-								<div class="row-md-12">
+								<div class="row-xs-12">
 								<canvas id="Chart">
 									{{getChart(keys[selectedX].toString(),keys[selectedY].toString(),selectedYear)}}
 								</canvas>
