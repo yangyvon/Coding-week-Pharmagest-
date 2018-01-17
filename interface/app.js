@@ -1,5 +1,7 @@
 var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, fileReader) {
 	
+	$scope.listeSection = ["Ventes","Achats","Clients","Collectivites","Operateurs","Produits"];
+	
 	$scope.listWidgets = [];
 	$scope.checkBoxId = [];
 	
@@ -11,9 +13,9 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 	  $scope.listWidgets.splice($index, 1);     
 	}
 	
-	$scope.widgetAdd = function(jsonName, selectedX, selectedY) {
+	$scope.widgetAdd = function(jsonName, selectedX, selectedY, sectionWidg, nameWidg) {
 		
-		$scope.listWidgets.push({"jsonName":jsonName, "selectX":selectedX, "selectY":selectedY});
+		$scope.listWidgets.push({"nomWidget":nameWidg, "jsonName":jsonName, "selectX":selectedX, "selectY":selectedY, "sectionWidget":sectionWidg});
 	}
 	
 	$scope.widgetDelete = function() {
