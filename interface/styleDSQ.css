@@ -76,6 +76,7 @@ table tr:nth-child(even) {
 }
 
 tbody div {
+	width:500px;
+	height:400px;
     overflow:scroll;
-    height:400px;
 }
