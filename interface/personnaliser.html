@@ -115,7 +115,7 @@
 										
 									<div class="col-md-8">
 											
-										<form>
+										<form method="POST" enctype="multipart/form-data">
 											<input id="selectedFile" type="file" ng-model="selectedJson" read-text="onFileSelect($files)" style="display: none;">
 											<input type="button" value="Choix du JSON" onclick="document.getElementById('selectedFile').click();"/>
 											<span>Json sélectionné : {{jsonFileName}}</span>
@@ -216,11 +216,13 @@
 												
 										<br><br>
 										
+										<!--
 										<pre>Sort by = {{propertyName}}; reverse = {{reverse}}</pre>
 										<hr/>
 										<button ng-click="propertyName = null; reverse = false">Set to unsorted</button>
 										<hr/>
 										<br><br>
+										-->
 											
 										<table class="table table-bordered table-condensed table-striped">
 												
@@ -232,12 +234,12 @@
 																	<tr>
 																		<th ng-repeat="sel in selecteds | limitTo: colCount" width="200">
 																			<button ng-click="sortBy(keys[sel])">{{keys[sel]}}</button>
-																			<span class="sortorder" ng-show="propertyName == keys[sel].toString()" ng-class="{reverse: reverse}"></span>
+																			<span class="sortorder" ng-show="propertyName == keys[sel]" ng-class="{reverse: reverse}"></span>
 																		</th>
 																	</tr>
 																	<tr ng-repeat="value in lignes | orderBy:propertyName:reverse | limitTo:display_limit1" ng-init="parentIndex = $index">
 																		<td ng-repeat="sel in selecteds | limitTo: colCount" width="200">
-																			{{ getValues(keys[sel])[parentIndex] }}
+																			{{getValues(keys[sel])[parentIndex]}}
 																		</td>  
 																	</tr>
 																</table>
