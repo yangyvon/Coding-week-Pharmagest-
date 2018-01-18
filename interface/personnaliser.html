@@ -63,13 +63,10 @@
 			<div ng-repeat="widget in listWidgets">
 				<b>Nom : </b>{{widget.nomWidget}}
 				<br>
-				<b>JSON : </b>{{widget.jsonName}}
-				<br>
-				<b>Axe X : </b>{{widget.selectX}}
-				<br>
-				<b>Axe Y : </b>{{widget.selectY}}
-				<br>
 				<b>Section : </b>{{widget.sectionWidget}}
+				<br><br>
+				<button type="button" ng-click="openWidget(widget.nomWidget, widget.nbCol, widget.idCol, widget.Axes, widget.nbLignes, widget.jsonFile, widget.sectionWidget)" data-toggle="modal" data-target="#Ajout">Ouvrir Widget</button>
+				<br><br><br>
 			</div>
 		</div>
 
@@ -140,10 +137,28 @@
 										
 										<br><br>
 										
-										<div id="space-for-buttons"></div>
+										<div ng-switch on="colCount>=3">
+											<select id='divselecteds[2]' ng-switch-when="true" ng-model='selecteds[2]' ng-options='keys.indexOf(key) as key for key in keys'></select>
+										</div>
+										
+										<div ng-switch on="colCount>=4">
+											<select id='divselecteds[3]' ng-switch-when="true" ng-model='selecteds[3]' ng-options='keys.indexOf(key) as key for key in keys'></select>
+										</div>
+										
+										<div ng-switch on="colCount>=5">
+											<select id='divselecteds[4]' ng-switch-when="true" ng-model='selecteds[4]' ng-options='keys.indexOf(key) as key for key in keys'></select>
+										</div>
+										
+										<div ng-switch on="colCount>=6">
+											<select id='divselecteds[5]' ng-switch-when="true" ng-model='selecteds[5]' ng-options='keys.indexOf(key) as key for key in keys'></select>
+										</div>
+										
+										<div ng-switch on="colCount>=7">
+											<select id='divselecteds[6]' ng-switch-when="true" ng-model='selecteds[6]' ng-options='keys.indexOf(key) as key for key in keys'></select>
+										</div>
 										
 										<br>
-										<center><button ng-show="jsonSrc" class="btn btn-success" ng-click="widgetAdd(lignes[0], keys[selecteds[0]],keys[selecteds[1]], sectionWidget, widgetName)" data-dismiss="modal">Sauvegarder Widget</button></center>
+										<center><button ng-show="jsonSrc" class="btn btn-success" ng-click="widgetAdd(widgetName, colCount, uniqId, selecteds, display_limit1, jsonSrc, sectionWidget)" data-dismiss="modal">Sauvegarder Widget</button></center>
 
 									</div>
 												
@@ -309,12 +324,6 @@
 								<tr ng-repeat="widget in listWidgets">
 									<td>
 										<b>Nom : </b>{{widget.nomWidget}}
-										<br>
-										<b>JSON : </b>{{widget.jsonName}}
-										<br>
-										<b>Axe X : </b>{{widget.selectX}}
-										<br>
-										<b>Axe Y : </b>{{widget.selectY}}
 										<br>
 										<b>Section : </b>{{widget.sectionWidget}}
 									</td>

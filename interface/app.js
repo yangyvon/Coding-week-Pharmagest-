@@ -1,11 +1,17 @@
 // Controller AngularJS
 var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, fileReader) {
 	
+	// Initialisation de la liste des Widgets contenus dans l'OffiBoard
+	$scope.listWidgets = [];
+	
 	// Nom du Widget par défaut
 	$scope.widgetName = "Nouveau Widget";
 	
-	// Nombre max de colonnes dans le tableau 2D
+	// Nombre de colonnes dans le tableau 2D (2 colonnes par défaut)
 	$scope.colCount = 2;
+	
+	// Nombre de lignes affichées dans le tableau (10 lignes par défaut)
+	$scope.display_limit1 = 10;
 	
 	// Initialisation des axes
 	$scope.selectedX = 0;
@@ -16,14 +22,17 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 	$scope.selectedZ4 = 5;
 	$scope.selectedZ5 = 6;
 	
+	// Identifiant des axes supplémentaires (de 2 à 6)
+	$scope.uniqId = 2;
+	
 	// Liste des axes
 	$scope.selecteds = [$scope.selectedX, $scope.selectedY, $scope.selectedZ1, $scope.selectedZ2, $scope.selectedZ3, $scope.selectedZ4, $scope.selectedZ5];
 	
 	// Liste des différentes sections dans l'OffiBoard
 	$scope.listeSection = ["Ventes","Achats","Clients","Collectivites","Operateurs","Produits"];
 	
-	// Initialisation de la liste des Widgets contenus dans l'OffiBoard
-	$scope.listWidgets = [];
+	// Section du Widget
+	$scope.sectionWidget = "Ventes";
 	
 	// Initialisation de la liste des Checkboxes sélectionnées par l'utilisateur dans le modal "Supprimer des Widgets"
 	$scope.checkBoxId = [];
@@ -39,8 +48,8 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 	}
 		
 	// Ajoute un nouveau Widget dans la liste des Widgets
-	$scope.widgetAdd = function(jsonName, selectedX, selectedY, sectionWidg, nameWidg) {
-		$scope.listWidgets.push({"nomWidget":nameWidg, "jsonName":jsonName, "selectX":selectedX, "selectY":selectedY, "sectionWidget":sectionWidg});
+	$scope.widgetAdd = function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, sectionWidg) {
+		$scope.listWidgets.push({"nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg});
 	}
 		
 	// Supprime de la liste des Widgets les Widgets sélectionnés par l'utilisateur dans le modal "Supprimer des Widgets"
@@ -84,9 +93,6 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 		 var monthsNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
 		 return monthsNames;
 	}
-		
-	// Nombre de lignes affichées dans le tableau (10 = valeur par défaut)
-	$scope.display_limit1 = 10;
 
 	// Lecture du fichier JSON sélectionné, récupération des paires clés-valeurs et analyse sur le type des headers (date, number ou string)
 	$scope.getTextFile = function () {
@@ -144,10 +150,9 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 		};
 
 	};
-
-	$scope.uniqId = 2;
 	
-	function generateOption(){
+	// Fonction qui crée les options dans les balises select des axes supplémentaires
+	$scope.generateOption = function(){
 		var optionArr = [];
 		optionArr.push('<option value="">Choisir Axe</option>');
 		
@@ -157,8 +162,54 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 		
 		return optionArr.join('\n');
 	}
+	
+	// Fonction d'ouverture d'un Widget
+	$scope.openWidget = function(widgName, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, widgSection) {
+		
+		$scope.widgetName = widgName;
+		$scope.colCount = nbCol;
+		$scope.uniqId = idUniq;
+		$scope.selecteds = arraySelecteds;
+		$scope.display_limit1 = dispLim;
+		$scope.sectionWidget = widgSection;
+		$scope.checkBoxId = [];
+		
+		$scope.jsonSrc = jsonFile;
+		$scope.keys = [];
+		$scope.values = [];
+		$scope.lignes = JSON.parse($scope.jsonSrc);
+		header = $scope.lignes[0];
+		$scope.type = null;
+		$scope.types = [];
+		angular.forEach(header, function(value, key) {
+			$scope.keys.push(key);
+			$scope.values.push(value);
+			if (value.match(/(0\d{1}|1[0-2])\/([0-2]\d{1}|3[0-1])\/(19|20)\d{2}/)){
+				type = 'date';
+			}
+
+			else if (value.match(/^[\d ]+$/)){
+				type = 'number';
+			}
+			else {
+				type = 'string';
+			}
+			$scope.types.push(type);
+		})
+		
+		for (var j = 2 ; j < $scope.uniqId ; j++) {
+			var myEl = angular.element(document.querySelector("#space-for-buttons"));
+			var options = [];
+			for (key in $scope.keys) {
+				
+				options.push($scope.keys.indexOf(key));
+			}
+			myEl.append("<select id='divselecteds["+j+"]' ng-model='selecteds["+j+"]' ng-options='opt in options'></select>");
+		}
+	}
 };
 
+// Directive de sélection du fichier JSON par l'utilisateur
 app.directive("ngFileSelect",function(){
 
   return {
@@ -175,6 +226,7 @@ app.directive("ngFileSelect",function(){
   }
 });
 
+// Directive de lecture du fichier JSON sélectionné par l'utilisateur
 app.directive("readText", function() {
   return {
     link: function($scope,el) {
@@ -186,6 +238,7 @@ app.directive("readText", function() {
   }
 });
 
+// Directive pour les boutons + et - des axes supplémentaires dans le tableau
 app.directive("addbuttonsbutton", function(){
 	return {
 		restrict: "E",
@@ -193,14 +246,13 @@ app.directive("addbuttonsbutton", function(){
 	}
 });
 
+// Directive pour l'ajout d'un axe supplémentaire dans le tableau
 app.directive("addbuttons", function($compile){
 	return{
         link: function(scope, element, attrs){
 		element.bind("click", function(){
 			if (scope.uniqId <= 6) {
 				angular.element(document.getElementById('space-for-buttons')).append($compile("<select id='divselecteds["+scope.uniqId+"]' ng-model='selecteds["+scope.uniqId+"]' ng-options='keys.indexOf(key) as key for key in keys'></select>")(scope));
-				// angular.element(document.getElementById('space-for-buttons')).append($compile("<span ng-show='types[selecteds[1]]'>Axe : {{keys[selecteds["+scope.uniqId+"]]}}</span>")(scope));
-				//angular.element(document.getElementById('space-for-buttons')).append($compile("<button ng-click='ajoutCol()'>Ajout</button>")(scope));
 				scope.uniqId = scope.uniqId + 1;
 				scope.colCount = scope.colCount + 1;
 			}
@@ -209,6 +261,7 @@ app.directive("addbuttons", function($compile){
 	};
 });
 
+// Directive pour la suppression d'un axe supplémentaire dans le tableau
 app.directive("removebuttons", function($compile){
 	return{
         link: function(scope, element, attrs){
