@@ -83,6 +83,41 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 			$scope.remove1(nb);
 		}
 	}
+	
+	$scope.propertyName;
+	$scope.reverse = true;
+
+	$scope.sortBy = function(propertyName) {
+		$scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+		$scope.propertyName = propertyName;
+	};
+	
+	$scope.localeSensitiveComparator = function(v1, v2) {
+		
+		var type = '';
+		
+		if (v1.match(/(0\d{1}|1[0-2])\/([0-2]\d{1}|3[0-1])\/(19|20)\d{2}/) && v2.match(/(0\d{1}|1[0-2])\/([0-2]\d{1}|3[0-1])\/(19|20)\d{2}/)){
+			type = 'date';
+		}
+
+		else if (v1.match(/^[\d ]+$/) && v2.match(/^[\d ]+$/)){
+			type = 'number';
+		}
+		
+		else {
+			type = 'string';
+		}
+		
+		
+		if (angular.equals(type, 'number')) {
+		return (v1.index < v2.index) ? -1 : 1;
+		}
+
+		else {
+		
+			return v1.compare(v2);
+		}
+	};
 		
 	// Initialisation de l'horloge
 	$scope.clock = "loading clock...";

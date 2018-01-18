@@ -219,17 +219,27 @@
 										<input ng-model="display_limit1" type="text" size="5">
 												
 										<br><br>
+										
+										<pre>Sort by = {{propertyName}}; reverse = {{reverse}}</pre>
+										<hr/>
+										<button ng-click="propertyName = null; reverse = false">Set to unsorted</button>
+										<hr/>
+										<br><br>
 											
 										<table class="table table-bordered table-condensed table-striped">
+												
 												<tbody>
 													<tr>
 														<td colspan="{{colCount}}">
 															<div class="scrollit">
-																<table>
+																<table class="friends">
 																	<tr>
-																		<th ng-repeat="sel in selecteds | limitTo: colCount" width="200">{{keys[sel]}}</th>
+																		<th ng-repeat="sel in selecteds | limitTo: colCount" width="200">
+																			<button ng-click="sortBy(keys[sel])">{{keys[sel]}}</button>
+																			<span class="sortorder" ng-show="propertyName == keys[sel].toString()" ng-class="{reverse: reverse}"></span>
+																		</th>
 																	</tr>
-																	<tr ng-repeat="value in getValues(keys[0]) | limitTo:display_limit1" ng-init="parentIndex = $index">
+																	<tr ng-repeat="value in lignes | orderBy:propertyName:reverse | limitTo:display_limit1" ng-init="parentIndex = $index">
 																		<td ng-repeat="sel in selecteds | limitTo: colCount" width="200">
 																			{{ getValues(keys[sel])[parentIndex] }}
 																		</td>  
@@ -239,6 +249,31 @@
 														</td>
 													</tr>
 												</tbody>
+												
+												<!--
+												<tbody>
+													<tr>
+														<td colspan="{{colCount}}">
+															<div class="scrollit">
+																<table>
+																	<tr>
+																		<th ng-repeat="sel in selecteds | limitTo: colCount" width="200">{{keys[sel]}}
+																		<button ng-click="sortBy(propertyName)">{{keys[sel]}}</button>
+
+																		</th>
+																	</tr>
+																	<tr ng-repeat="value in lignes | orderBy: propertyName :reverse |limitTo:display_limit1" ng-init="parentIndex = $index">
+																		<td ng-repeat="sel in selecteds |  limitTo: colCount" width="200">
+																			{{ getValues(keys[sel])[parentIndex] }}
+
+																		</td>  
+																	</tr>
+																</table>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+												-->
 										</table>
 									</div>
 								</div>
