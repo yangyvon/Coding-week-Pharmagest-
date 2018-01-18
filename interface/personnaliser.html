@@ -65,7 +65,12 @@
 				<br>
 				<b>Section : </b>{{widget.sectionWidget}}
 				<br><br>
-				<button type="button" ng-click="openWidget(widget.nomWidget, widget.nbCol, widget.idCol, widget.Axes, widget.nbLignes, widget.jsonFile, widget.sectionWidget, widget.jsonName)" data-toggle="modal" data-target="#Ajout">Ouvrir Widget</button>
+				<button type="button"
+						ng-click="openWidget(widget.nomWidget, widget.nbCol, widget.idCol, widget.Axes, widget.nbLignes, widget.jsonFile, widget.sectionWidget, widget.jsonName)"
+						data-toggle="modal"
+						data-target="#Modifier">
+					Ouvrir Widget
+				</button>
 				<br><br><br>
 			</div>
 		</div>
@@ -73,12 +78,19 @@
 		<div id="droit">
 			<ul>
 				<a href="#"><button type="button"  data-toggle="modal" data-target="#Ajout">Ajouter</button></a>
-				<a href="#"><button type="button" data-toggle="modal" data-target="#Modifier">Modifier</button></a>
+				<!--<a href="#"><button type="button" data-toggle="modal" data-target="#Modifier">Modifier</button></a>
+				-->
 				<a href="#"><button type="button" data-toggle="modal" data-target="#Supprimer">Supprimer</button></a>
+				<select ng-model="sectionWidget" ng-init="sectionWidget = listeSection[0]" ng-options="option for option in listeSection">
+				</select>
 			</ul>
 		</div>
 
-		<!-- Modal -->
+		<!-- Modal
+
+			Ajouter un widget
+
+		-->
 		<div class="modal fade" id="Ajout" role="dialog" style="width:100%;">
 		
 			<div class="modal-dialog" style="width:100%; height:575px;">
@@ -160,7 +172,9 @@
 										</div>
 										
 										<br>
-										<center><button ng-show="jsonSrc" class="btn btn-success" ng-click="widgetAdd(widgetName, colCount, uniqId, selecteds, display_limit1, jsonSrc, sectionWidget, jsonFileName)" data-dismiss="modal">Sauvegarder Widget</button></center>
+										<center><button ng-show="jsonSrc" class="btn btn-success" ng-click="widgetAdd(widgetName, colCount, uniqId, selecteds, display_limit1, jsonSrc, sectionWidget, jsonFileName)" data-dismiss="modal">
+											Sauvegarder Widget
+										</button></center>
 
 									</div>
 												
@@ -219,17 +233,173 @@
 								</div>
 							</div>
 						</form>
+
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<!-- Modal -->
+
+		<!-- Modal
+
+			modifier un widget
+
+		-->
+		<div class="modal fade" id="Modifier" role="dialog" style="width:100%;">
+
+			<div class="modal-dialog" style="width:100%; height:575px;">
+
+				<!-- Modal content-->
+				<div class="modal-content" style="width:100%; height:575px;">
+
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" ng-click="closeWidget()">&times;</button>
+						<h4 class="modal-title">Modifier un Widget</h4>
+					</div>
+
+					<div class="modal-body" style="width:100%;">
+
+						<form>
+							<div id="flexDisplay">
+
+								<div id="conteneur" style="margin: 0;">
+
+									<div class="col-md-8">
+
+										<form>
+											<input id="selectedFile" type="file" ng-model="selectedJson" read-text="onFileSelect($files)" style="display: none;">
+											<input type="button" value="Choix du JSON" onclick="document.getElementById('selectedFile').click();"/>
+											<span>Json sélectionné : {{jsonFileName}}</span>
+										</form>
+										<br>
+										<i ng-hide="jsonSrc">Aucun json sélectionné</i>
+
+										<span ng-show="jsonSrc"><b>Nom du Widget :</b></span>
+										<input ng-show="jsonSrc" ng-model="widgetName" type="text" placeholder="">
+										<br>
+
+										<span ng-show="jsonSrc"><b>Section du Widget :</b></span>
+										<select ng-show="jsonSrc" ng-model="sectionWidget" ng-init="sectionWidget = listeSection[0]" ng-options="option for option in listeSection">
+										</select>
+
+										<br>
+
+										<span><b ng-show="jsonSrc">Choisir le premier axe :</b></span>
+										<select ng-show="jsonSrc" ng-model="selecteds[0]" ng-options="keys.indexOf(key) as key for key in keys">
+										</select>
+										<!-- <span ng-show="types[selecteds[0]]"> Type du premier axe : {{types[selecteds[0]]}}</span> -->
+
+										<br>
+
+										<span><b ng-show="jsonSrc">Choisir le second axe :</b></span>
+										<select ng-show="jsonSrc" ng-model="selecteds[1]" ng-options="keys.indexOf(key2) as key2 for key2 in keys">
+										</select>
+
+										<!-- <span ng-show="types[selecteds[1]]">Type du second axe : {{types[selecteds[1]]}}</span> -->
+
+										<br>
+
+										<span ng-show="jsonSrc"><b>Axes supplémentaires<br>(5 maximum) :</b><br><br></span>
+
+										<addbuttonsbutton></addbuttonsbutton>
+
+										<br><br>
+
+										<div ng-switch on="colCount>=3">
+											<select id='divselecteds[2]' ng-switch-when="true" ng-model='selecteds[2]' ng-options='keys.indexOf(key) as key for key in keys'></select>
+										</div>
+
+										<div ng-switch on="colCount>=4">
+											<select id='divselecteds[3]' ng-switch-when="true" ng-model='selecteds[3]' ng-options='keys.indexOf(key) as key for key in keys'></select>
+										</div>
+
+										<div ng-switch on="colCount>=5">
+											<select id='divselecteds[4]' ng-switch-when="true" ng-model='selecteds[4]' ng-options='keys.indexOf(key) as key for key in keys'></select>
+										</div>
+
+										<div ng-switch on="colCount>=6">
+											<select id='divselecteds[5]' ng-switch-when="true" ng-model='selecteds[5]' ng-options='keys.indexOf(key) as key for key in keys'></select>
+										</div>
+
+										<div ng-switch on="colCount>=7">
+											<select id='divselecteds[6]' ng-switch-when="true" ng-model='selecteds[6]' ng-options='keys.indexOf(key) as key for key in keys'></select>
+										</div>
+
+										<br>
+										<center><button ng-show="jsonSrc" class="btn btn-success" ng-click="widgetAdd(widgetName, colCount, uniqId, selecteds, display_limit1, jsonSrc, sectionWidget, jsonFileName)" data-dismiss="modal">
+											Sauvegarder Widget
+										</button></center>
+
+									</div>
+
+								</div>
+
+								<div id="conteneur">
+									<div ng-show="types[selecteds[0]]=='date' && selecteds[1] ">
+										Fonction somme par mois :
+										<input type="text" placeholder="Choisissez l'année" ng-model="selectedYear">
+										<br>
+										<div ng-show="selectedYear">
+											<span>{{keys[selecteds[1]].toString()}} par mois en {{selectedYear}} :</span>
+											<br><br>
+											<table>
+												<tr>
+													<th>Mois</th><th>{{keys[selecteds[1]]}}</th>
+												</tr>
+												<tr ng-repeat="CA in sumValuesByMonth(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear)">
+													<td>{{ getMonthsNames()[$index] }}</td>
+													<td >{{ sumValuesByMonth(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear)[$index] }}</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+
+								<div id="conteneur" ng-show="keys[selecteds[0]] && keys[selecteds[1]]">
+
+									<div>
+										Lignes affichées (total : {{getValues(keys[0]).length}}) :
+										<input ng-model="display_limit1" type="text" size="5">
+
+										<br><br>
+
+										<table class="table table-bordered table-condensed table-striped">
+											<tbody>
+											<tr>
+												<td colspan="{{colCount}}">
+													<div class="scrollit">
+														<table>
+															<tr>
+																<th ng-repeat="sel in selecteds | limitTo: colCount" width="200">{{keys[sel]}}</th>
+															</tr>
+															<tr ng-repeat="value in getValues(keys[0]) | limitTo:display_limit1" ng-init="parentIndex = $index">
+																<td ng-repeat="sel in selecteds | limitTo: colCount" width="200">
+																	{{ getValues(keys[sel])[parentIndex] }}
+																</td>
+															</tr>
+														</table>
+													</div>
+												</td>
+											</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Modal
 		<div class="modal fade" id="Modifier" role="dialog">
 		
 			<div class="modal-dialog">
 
-				<!-- Modal content-->
+
 				<div class="modal-content">
 				
 					<div class="modal-header">
@@ -241,7 +411,7 @@
 
 						<form role="form">
 
-							<!--
+
 							<p>Choisir le Widget à modifier：</p>
 								
 							<select>
@@ -289,7 +459,7 @@
 							</select>
 							
 							<button type="submit" class="btn btn-success btn-block">Modifier</button>
-							-->
+
 						</form>
 					</div>
 					
@@ -299,8 +469,15 @@
 				</div>
 			</div>
 		</div>
+		-->
 
-		<!-- Modal -->
+
+
+		<!-- Modal
+
+		 	Supprimer
+
+		 -->
 		<div class="modal fade" id="Supprimer" role="dialog">
 		
 			<div class="modal-dialog">
