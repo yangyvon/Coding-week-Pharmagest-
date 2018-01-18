@@ -1,6 +1,9 @@
 // Controller AngularJS
 var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, fileReader) {
-	
+	// Label du bouton qui transitionne d'un graphe à un tableau
+	$scope.labelButtonGraphtoTable="Graphe";
+	// Booleen true -> tableau false -> graphe
+	$scope.booleenGrapheTableau=true;
 	// Nom du Widget par défaut
 	$scope.widgetName = "Nouveau Widget";
 	
@@ -78,7 +81,7 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 		$timeout(tick, $scope.tickInterval);
 	}
 	$timeout(tick, $scope.tickInterval);
-	
+
 	// Liste des mois de l'année (pour l'affichage du tableau mois par mois)
 	$scope.getMonthsNames = function() {
 		 var monthsNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
@@ -143,8 +146,69 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 			return(months);
 		};
 
-	};
+		//Fonction qui construit le graphe
+	$scope.getChart = function(cleX,cleY,annee) {
+      var Canvas = $("#Chart");
+      var chartOptions = {
+      responsive:false,
+      animation: {
+      	duration:0
+      },
+      title:{
+        display:true,
+        position:'top',
+        text: cleY+' par mois pour l\'année '+annee 
+      },
+      tooltips: {
+        enabled:true
+      },
+      legend: {
+        display: false,
+        labels: {
+          boxWidth: 80,
+          fontColor: 'black'
+        }
+      },
+      scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+      };
 
+      var barChart = new Chart(Canvas, {
+	    type: 'bar',
+	    data: {
+	    labels: $scope.getMonthsNames(),
+	    datasets: [{
+     	label: cleY,
+      	data: $scope.sumValuesByMonth(cleX,cleY,annee),
+      
+	      backgroundColor: [
+	        'rgba(255, 99, 132, 0.6)',
+	        'rgba(54, 162, 235, 0.6)',
+	        'rgba(255, 206, 86, 0.6)',
+	        'rgba(75, 192, 192, 0.6)',
+	        'rgba(153, 102, 255, 0.6)',
+	        'rgba(255, 159, 64, 0.6)',
+	        'rgba(255, 99, 132, 0.6)',
+	        'rgba(54, 162, 235, 0.6)',
+	        'rgba(255, 206, 86, 0.6)',
+	        'rgba(75, 192, 192, 0.6)',
+	        'rgba(153, 102, 255, 0.6)',
+	        'rgba(255, 159, 64, 0.6)'
+	      ]
+
+    	}]
+  		},
+  		options:chartOptions
+	  });
+ 	};
+
+	};
+	
 	$scope.uniqId = 2;
 	
 	function generateOption(){

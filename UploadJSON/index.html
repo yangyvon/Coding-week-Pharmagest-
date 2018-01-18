@@ -25,6 +25,8 @@
 
         <!-- ChartJS-->
         <script src=https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js></script>
+        <script src="node_modules/chart.js/Chart.min.js"></script>
+<script src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
 
 		<title>OffiBoard</title>
 		<script>document.write('<base href="' + document.location + '" />');</script>
@@ -49,7 +51,7 @@
 				
 					<div id="conteneur">
 					
-						<div style="margin: 0 auto;" class="col-md-6">
+						<div style="margin: 0 auto;" class="col-md-7">
 						
 							<form>
 								<input type="file" read-text="onFileSelect($files)">
@@ -86,7 +88,7 @@
 							<input type="text" placeholder="Choisissez l'année" ng-model="selectedYear"/>
 							<br>
 							<div ng-show="selectedYear">
-								<div class="row-xs-12">
+								<div>
 								<canvas id="Chart">
 									{{getChart(keys[selectedX].toString(),keys[selectedY].toString(),selectedYear)}}
 								</canvas>

@@ -23,7 +23,10 @@
 		<!-- ng-table -->
 		<link rel="stylesheet" href="http://cdn.jsdelivr.net/angular.ngtable/0.3.2/ng-table.css">
         <script src="http://cdn.jsdelivr.net/angular.ngtable/0.3.2/ng-table.js"></script>
-		
+
+         <!-- ChartJS-->
+        <script src=https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js></script>
+        		
 		<!-- Dates en français -->
 		<script src="angular-locale_fr-fr.js"></script>
 		
@@ -153,10 +156,14 @@
 									<div ng-show="types[selecteds[0]]=='date' && selecteds[1] ">
 										Fonction somme par mois : 
 										<input type="text" placeholder="Choisissez l'année" ng-model="selectedYear">
+										<button ng-click="afficherGrapheTableau()" ng-bind="labelButtonGraphtoTable"></button>
 										<br>
 										<div ng-show="selectedYear">
 											<span>{{keys[selecteds[1]].toString()}} par mois en {{selectedYear}} :</span>
 											<br><br>
+											<canvas id="Chart">
+												{{getChart(keys[selectedX].toString(),keys[selectedY].toString(),selectedYear)}}
+											</canvas>
 											<table>
 												<tr>
 													<th>Mois</th><th>{{keys[selecteds[1]]}}</th>
