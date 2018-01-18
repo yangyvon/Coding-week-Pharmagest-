@@ -71,6 +71,20 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 			
 		$scope.checkBoxId = [];
 	}
+
+    $scope.widgetMod =  function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, sectionWidg, nameJson) {
+        var newWidget= {"nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg, "jsonName":nameJson};
+
+        var oldW = $scope.listWidgets.find(function (x) {
+
+            return x.nomWidget === nameWidg;
+        })
+        var indexW= $scope.listWidgets.indexOf(oldW);
+
+        $scope.listWidgets.splice(indexW,1,newWidget);
+
+
+    }
 		
 	// Ajoute ou enlève le numéro de la checkbox de la liste checkBoxId lors d'un clic utilisateur
 	$scope.checkBoxClick = function(nb) {
