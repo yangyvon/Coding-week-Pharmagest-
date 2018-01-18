@@ -65,7 +65,7 @@
 				<br>
 				<b>Section : </b>{{widget.sectionWidget}}
 				<br><br>
-				<button type="button" ng-click="openWidget(widget.nomWidget, widget.nbCol, widget.idCol, widget.Axes, widget.nbLignes, widget.jsonFile, widget.sectionWidget)" data-toggle="modal" data-target="#Ajout">Ouvrir Widget</button>
+				<button type="button" ng-click="openWidget(widget.nomWidget, widget.nbCol, widget.idCol, widget.Axes, widget.nbLignes, widget.jsonFile, widget.sectionWidget, widget.jsonName)" data-toggle="modal" data-target="#Ajout">Ouvrir Widget</button>
 				<br><br><br>
 			</div>
 		</div>
@@ -87,7 +87,7 @@
 				<div class="modal-content" style="width:100%; height:575px;">
 				
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<button type="button" class="close" data-dismiss="modal" ng-click="closeWidget()">&times;</button>
 						<h4 class="modal-title">Ajouter un Widget</h4>
 					</div>
 					
@@ -101,7 +101,9 @@
 									<div class="col-md-8">
 											
 										<form>
-											<input type="file" ng-model="selectedJson" read-text="onFileSelect($files)">
+											<input id="selectedFile" type="file" ng-model="selectedJson" read-text="onFileSelect($files)" style="display: none;">
+											<input type="button" value="Choix du JSON" onclick="document.getElementById('selectedFile').click();"/>
+											<span>Json sélectionné : {{jsonFileName}}</span>
 										</form>
 										<br>
 										<i ng-hide="jsonSrc">Aucun json sélectionné</i>
@@ -158,7 +160,7 @@
 										</div>
 										
 										<br>
-										<center><button ng-show="jsonSrc" class="btn btn-success" ng-click="widgetAdd(widgetName, colCount, uniqId, selecteds, display_limit1, jsonSrc, sectionWidget)" data-dismiss="modal">Sauvegarder Widget</button></center>
+										<center><button ng-show="jsonSrc" class="btn btn-success" ng-click="widgetAdd(widgetName, colCount, uniqId, selecteds, display_limit1, jsonSrc, sectionWidget, jsonFileName)" data-dismiss="modal">Sauvegarder Widget</button></center>
 
 									</div>
 												

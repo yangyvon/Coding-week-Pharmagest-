@@ -48,8 +48,10 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 	}
 		
 	// Ajoute un nouveau Widget dans la liste des Widgets
-	$scope.widgetAdd = function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, sectionWidg) {
-		$scope.listWidgets.push({"nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg});
+	$scope.widgetAdd = function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, sectionWidg, nameJson) {
+		$scope.listWidgets.push({"nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg, "jsonName":nameJson});
+	
+		$scope.closeWidget();
 	}
 		
 	// Supprime de la liste des Widgets les Widgets sélectionnés par l'utilisateur dans le modal "Supprimer des Widgets"
@@ -98,6 +100,8 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 	$scope.getTextFile = function () {
 		fileReader.readAsText($scope.file, $scope).then(function(result) {
 			$scope.jsonSrc = result;
+			var fileInput = document.getElementById('selectedFile');    
+			$scope.jsonFileName = fileInput.files[0].name;
 			$scope.keys = [];
 			$scope.values = [];
 			$scope.lignes = JSON.parse($scope.jsonSrc);
@@ -164,7 +168,7 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 	}
 	
 	// Fonction d'ouverture d'un Widget
-	$scope.openWidget = function(widgName, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, widgSection) {
+	$scope.openWidget = function(widgName, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, widgSection, jsonName) {
 		
 		$scope.widgetName = widgName;
 		$scope.colCount = nbCol;
@@ -172,6 +176,7 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 		$scope.selecteds = arraySelecteds;
 		$scope.display_limit1 = dispLim;
 		$scope.sectionWidget = widgSection;
+		$scope.jsonFileName = jsonName;
 		$scope.checkBoxId = [];
 		
 		$scope.jsonSrc = jsonFile;
@@ -196,16 +201,37 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 			}
 			$scope.types.push(type);
 		})
+	}
+	
+	// Fonction lorsque l'on quitte le modal contenant un Widget
+	$scope.closeWidget = function() {
 		
-		for (var j = 2 ; j < $scope.uniqId ; j++) {
-			var myEl = angular.element(document.querySelector("#space-for-buttons"));
-			var options = [];
-			for (key in $scope.keys) {
-				
-				options.push($scope.keys.indexOf(key));
-			}
-			myEl.append("<select id='divselecteds["+j+"]' ng-model='selecteds["+j+"]' ng-options='opt in options'></select>");
-		}
+		$scope.widgetName = "Nouveau Widget " + ($scope.listWidgets.length+1);
+		$scope.colCount = 2;
+		$scope.uniqId = 2;
+		$scope.selectedX = 0;
+		$scope.selectedY = 1;
+		$scope.selectedZ1 = 2;
+		$scope.selectedZ2 = 3;
+		$scope.selectedZ3 = 4;
+		$scope.selectedZ4 = 5;
+		$scope.selectedZ5 = 6;
+		$scope.selecteds = [$scope.selectedX, $scope.selectedY, $scope.selectedZ1, $scope.selectedZ2, $scope.selectedZ3, $scope.selectedZ4, $scope.selectedZ5];
+		$scope.display_limit1 = 10;
+		$scope.sectionWidget = "Ventes";
+		$scope.jsonFileName = "";
+		$scope.checkBoxId = [];
+		
+		document.getElementById("selectedFile").value = "";
+		$scope.jsonSrc = "";
+		$scope.selectedJson = "";
+		$scope.json = "";
+		$scope.keys = [];
+		$scope.values = [];
+		//$scope.lignes = null;
+		header = null;
+		$scope.type = null;
+		$scope.types = [];
 	}
 };
 
