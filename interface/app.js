@@ -1,12 +1,22 @@
 // Controller AngularJS
 var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, fileReader) {
 	
+	// Nom du Widget par défaut
+	$scope.widgetName = "Nouveau Widget";
+	
 	// Nombre max de colonnes dans le tableau 2D
 	$scope.colCount = 2;
 	
+	// Initialisation des axes
 	$scope.selectedX = 0;
 	$scope.selectedY = 1;
+	$scope.selectedZ1 = 2;
+	$scope.selectedZ2 = 3;
+	$scope.selectedZ3 = 4;
+	$scope.selectedZ4 = 5;
+	$scope.selectedZ5 = 6;
 	
+	// Liste des axes
 	$scope.selecteds = [$scope.selectedX, $scope.selectedY, $scope.selectedZ1, $scope.selectedZ2, $scope.selectedZ3, $scope.selectedZ4, $scope.selectedZ5];
 	
 	// Liste des différentes sections dans l'OffiBoard
@@ -147,11 +157,6 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 		
 		return optionArr.join('\n');
 	}
-	
-	$scope.ajoutCol = function() {
-	
-		$scope.colCount = $scope.colCount + 1;
-	}
 };
 
 app.directive("ngFileSelect",function(){
@@ -181,23 +186,39 @@ app.directive("readText", function() {
   }
 });
 
-//Directive that returns an element which adds buttons on click which show an alert on click
 app.directive("addbuttonsbutton", function(){
 	return {
 		restrict: "E",
-		template: "<button addbuttons ng-show=\"jsonSrc\" id=\"ajoutAxe\">+</button>"
+		template: "<button addbuttons ng-show=\"jsonSrc\">+</button><button removebuttons ng-show=\"jsonSrc\">-</button>"
 	}
 });
 
-//Directive for adding buttons on click that show an alert on click
 app.directive("addbuttons", function($compile){
 	return{
         link: function(scope, element, attrs){
 		element.bind("click", function(){
-			angular.element(document.getElementById('space-for-buttons')).append($compile("<select ng-model='selecteds["+scope.uniqId+"]' ng-options='keys.indexOf(key) as key for key in keys'></select>")(scope));
-			// angular.element(document.getElementById('space-for-buttons')).append($compile("<span ng-show='types[selecteds[1]]'>Axe : {{keys[selecteds["+scope.uniqId+"]]}}</span>")(scope));
-			angular.element(document.getElementById('space-for-buttons')).append($compile("<button ng-click='ajoutCol()'>Ajout</button>")(scope));
-			scope.uniqId = scope.uniqId + 1;
+			if (scope.uniqId <= 6) {
+				angular.element(document.getElementById('space-for-buttons')).append($compile("<select id='divselecteds["+scope.uniqId+"]' ng-model='selecteds["+scope.uniqId+"]' ng-options='keys.indexOf(key) as key for key in keys'></select>")(scope));
+				// angular.element(document.getElementById('space-for-buttons')).append($compile("<span ng-show='types[selecteds[1]]'>Axe : {{keys[selecteds["+scope.uniqId+"]]}}</span>")(scope));
+				//angular.element(document.getElementById('space-for-buttons')).append($compile("<button ng-click='ajoutCol()'>Ajout</button>")(scope));
+				scope.uniqId = scope.uniqId + 1;
+				scope.colCount = scope.colCount + 1;
+			}
+		});
+        }
+	};
+});
+
+app.directive("removebuttons", function($compile){
+	return{
+        link: function(scope, element, attrs){
+		element.bind("click", function(){
+			if (scope.uniqId > 2) {
+				var i = scope.uniqId - 1;
+				angular.element(document.getElementById("divselecteds["+i+"]")).remove();
+				scope.uniqId = scope.uniqId - 1;
+				scope.colCount = scope.colCount - 1;
+			}
 		});
         }
 	};

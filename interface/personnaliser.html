@@ -108,36 +108,48 @@
 										</form>
 										<br>
 										<i ng-hide="jsonSrc">Aucun json sélectionné</i>
-												
+										
+										<span ng-show="jsonSrc"><b>Nom du Widget :</b></span>
+										<input ng-show="jsonSrc" ng-model="widgetName" type="text" placeholder="">
 										<br>
-												
+									
+										<span ng-show="jsonSrc"><b>Section du Widget :</b></span>
+										<select ng-show="jsonSrc" ng-model="sectionWidget" ng-init="sectionWidget = listeSection[0]" ng-options="option for option in listeSection">
+										</select>
+											
+										<br>
+											
 										<span><b ng-show="jsonSrc">Choisir le premier axe :</b></span> 
 										<select ng-show="jsonSrc" ng-model="selecteds[0]" ng-options="keys.indexOf(key) as key for key in keys">
 										</select>
-										<br>
-										<span ng-show="types[selecteds[0]]"> Type du premier axe : {{types[selecteds[0]]}} </span>
+										<!-- <span ng-show="types[selecteds[0]]"> Type du premier axe : {{types[selecteds[0]]}}</span> -->
 												
-										<br><br>
+										<br>
 												
 										<span><b ng-show="jsonSrc">Choisir le second axe :</b></span> 
 										<select ng-show="jsonSrc" ng-model="selecteds[1]" ng-options="keys.indexOf(key2) as key2 for key2 in keys">
 										</select>
-										<!--<button ng-show="jsonSrc" id="ajoutAxe">+</button>-->
-										<br>
-										<span ng-show="types[selecteds[1]]">Type du second axe : {{types[selecteds[1]]}}</span>
-										<div id="axesY"></div>
+										
+										<!-- <span ng-show="types[selecteds[1]]">Type du second axe : {{types[selecteds[1]]}}</span> -->
 										
 										<br>
+										
+										<span ng-show="jsonSrc"><b>Axes supplémentaires<br>(5 maximum) :</b><br><br></span>
 										
 										<addbuttonsbutton></addbuttonsbutton>
 										
+										<br><br>
+										
 										<div id="space-for-buttons"></div>
+										
+										<br>
+										<center><button ng-show="jsonSrc" class="btn btn-success" ng-click="widgetAdd(lignes[0], keys[selecteds[0]],keys[selecteds[1]], sectionWidget, widgetName)" data-dismiss="modal">Ajouter</button></center>
 
 									</div>
 												
 								</div>
 
-								<div id="conteneur"  style="margin: 0 auto;">
+								<div id="conteneur">
 									<div ng-show="types[selecteds[0]]=='date' && selecteds[1] ">
 										Fonction somme par mois : 
 										<input type="text" placeholder="Choisissez l'année" ng-model="selectedYear">
@@ -188,19 +200,6 @@
 												</tbody>
 										</table>
 									</div>
-								</div>
-								
-								<div style="margin: 0 auto;">
-									<b>Nom du Widget :</b>
-									<input ng-model="widgetName" type="text" placeholder="">
-									<br><br>
-									
-									<b>Section du Widget :</b>
-									<select ng-model="sectionWidget" ng-init="sectionWidget = listeSection[0]" ng-options="option for option in listeSection">
-									</select>
-									
-									<br><br>
-									<center><button class="btn btn-success" ng-click="widgetAdd(lignes[0], keys[selecteds[0]],keys[selecteds[1]], sectionWidget, widgetName)" data-dismiss="modal">Ajouter</button></center>
 								</div>
 							</div>
 						</form>
