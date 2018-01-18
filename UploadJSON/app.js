@@ -1,11 +1,11 @@
 var JsonUploadController = function ($scope, $filter, ngTableParams, fileReader) {
-
 	$scope.getMonthsNames = function() {
      var monthsNames= ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
      return monthsNames;
-    }
-	
-	$scope.display_limit1 = 10;
+    };
+
+
+	  $scope.display_limit1 = 10;
  
     $scope.$on("fileProgress", function(e, progress) {
         $scope.progress = progress.loaded / progress.total;
@@ -53,29 +53,53 @@ var JsonUploadController = function ($scope, $filter, ngTableParams, fileReader)
       var date;
       for (var i = 0; i < $scope.lignes.length; i++) {
         date = new Date($scope.lignes[i][cleDate]);
-      if (date.getFullYear() == annee) {
+        if (date.getFullYear() == annee) {
         var input = $scope.lignes[i][cleY]; //Pour gérer les espaces dans les chaines de caractères issues de l'offiReport
         var processed = input.replace(/ /g, '');
         var output = parseInt(processed, 10);
         //Fait la somme par mois
         months[date.getMonth()] += +output;
+        }
       }
-    }
     return(months);
-  };
+    };
 
     $scope.getChart = function(cleX,cleY,annee) {
       var Canvas = $("#Chart");
+      var chartOptions = {
+      responsive:false,
+      title:{
+        display:true,
+        position:'top',
+        text: cleY+' par mois pour l\'année '+annee 
+      },
+      tooltips: {
+        enabled:true
+      },
+      legend: {
+        display: false,
+        labels: {
+          boxWidth: 80,
+          fontColor: 'black'
+        }
+      },
+      scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+      };
+
       var barChart = new Chart(Canvas, {
-  type: 'bar',
-  data: {
+    type: 'bar',
+    data: {
     labels: $scope.getMonthsNames(),
-    tooltips:{
-      enabled:false
-    },
     datasets: [{
       label: cleY,
       data: $scope.sumValuesByMonth(cleX,cleY,annee),
+      
       backgroundColor: [
         'rgba(255, 99, 132, 0.6)',
         'rgba(54, 162, 235, 0.6)',
@@ -90,8 +114,10 @@ var JsonUploadController = function ($scope, $filter, ngTableParams, fileReader)
         'rgba(153, 102, 255, 0.6)',
         'rgba(255, 159, 64, 0.6)'
       ]
+
     }]
-  }
+  },
+  options:chartOptions
 });
   };
 
