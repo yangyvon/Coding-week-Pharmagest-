@@ -161,12 +161,12 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 
 		//Fonction qui construit le graphe
 	$scope.getChart = function(cleX,cleY,annee) {
-      var Canvas = $("#Chart");
+      var Canvas = $("#ChartCanvas");
       var chartOptions = {
-      responsive:false,
-      animation: {
+      animation:{
       	duration:0
       },
+      responsive:false,
       title:{
         display:true,
         position:'top',
@@ -219,8 +219,22 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
   		options:chartOptions
 	  });
  	};
-
+ 	$scope.showCanvas = function(cleX,cleY,annee){
+	  var Canvas= $("#ChartCanvas");
+	  Canvas.remove(); 
+	  $('#visualisationContainer').append('<canvas ng-hide="!booleenGrapheTableau" id="ChartCanvas"><canvas>');
+	  $scope.getChart(cleX,cleY,annee);
 	};
+	$scope.afficherGrapheTableau=function(){
+		if($scope.booleenGrapheTableau){ //on a un tableau donc on veut passer à un graphe
+			$scope.labelButtonGraphtoTable="Tableau";
+			$scope.booleenGrapheTableau=false;
+		}else{//on a un graphe donc on veut passer à un tableau
+			$scope.labelButtonGraphtoTable="Graphe";
+			$scope.booleenGrapheTableau=true;
+		}
+	};
+};
 	
 	$scope.uniqId = 2;
 	

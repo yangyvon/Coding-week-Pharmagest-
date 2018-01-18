@@ -189,12 +189,16 @@
 										<input type="text" placeholder="Choisissez l'année" ng-model="selectedYear">
 										<button ng-click="afficherGrapheTableau()" ng-bind="labelButtonGraphtoTable"></button>
 										<br>
-										<div ng-show="selectedYear">
-											<span>{{keys[selecteds[1]].toString()}} par mois en {{selectedYear}} :</span>
+										<div id="visualisationContainer" ng-show="!booleenGrapheTableau && selectedYear">
 											<br><br>
-											<canvas id="Chart">
-												{{getChart(keys[selectedX].toString(),keys[selectedY].toString(),selectedYear)}}
+											<canvas id="ChartCanvas">
+												{{showCanvas(keys[selectedX].toString(),keys[selecteds[1]].toString(),selectedYear)}}
+												
 											</canvas>
+
+
+										</div>
+										<div ng-show="booleenGrapheTableau && selectedYear">
 											<table>
 												<tr>
 													<th>Mois</th><th>{{keys[selecteds[1]]}}</th>
@@ -204,7 +208,7 @@
 													<td >{{ sumValuesByMonth(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear)[$index] }}</td>
 												</tr>
 											</table>
-										</div>
+									</div>
 									</div>
 								</div>
 										
