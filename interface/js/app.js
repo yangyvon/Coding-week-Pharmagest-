@@ -134,17 +134,17 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 		}
 	}
 		
-	// Initialisation de l'horloge
+	/*// Initialisation de l'horloge
 	$scope.clock = "loading clock...";
 	$scope.tickInterval = 1000;
 
 	// Affichage de la date et de l'heure en temps réel
-	var tick = function () {
+	$scope.tick = function () {
 		$scope.clock = Date.now();
-		$timeout(tick, $scope.tickInterval);
+		$timeout($scope.tick, $scope.tickInterval);
 	}
-	$timeout(tick, $scope.tickInterval);
-
+	$timeout($scope.tick, $scope.tickInterval);
+	*/
 	// Liste des mois de l'année (pour l'affichage du tableau mois par mois)
 	$scope.getMonthsNames = function() {
 		 var monthsNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
@@ -229,7 +229,7 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
       animation:{
       	duration:1000
       },
-      responsive:false,
+      responsive:true,
       title:{
         display:true,
         position:'top',
@@ -429,6 +429,7 @@ app.directive("addbuttons", function($compile){
 				angular.element(document.getElementById('space-for-buttons')).append($compile("<select id='divselecteds["+scope.uniqId+"]' ng-model='selecteds["+scope.uniqId+"]' ng-options='keys.indexOf(key) as key for key in keys'></select>")(scope));
 				scope.uniqId = scope.uniqId + 1;
 				scope.colCount = scope.colCount + 1;
+				scope.$apply();
 			}
 		});
         }
@@ -445,6 +446,8 @@ app.directive("removebuttons", function($compile){
 				angular.element(document.getElementById("divselecteds["+i+"]")).remove();
 				scope.uniqId = scope.uniqId - 1;
 				scope.colCount = scope.colCount - 1;
+				scope.$apply();
+
 			}
 		});
         }
