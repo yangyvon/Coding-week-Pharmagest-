@@ -1,151 +1,150 @@
-<!DOCTYPE html>
-<html ng-app="TestUploadFile">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 	<head>
-		<!-- Encodage -->
-		<meta charset="utf-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>OffiBoard</title>
+		<link rel="stylesheet" href="css/style.css"/>
 		
-		<!-- Feuille de style -->
-		<link rel="stylesheet" type="text/css" href="styleDSQ.css">
-		
-		<!-- Bootstrap -->
-		<link data-require="bootstrap-css@3.0.0-rc2" data-semver="3.0.0-rc2" rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap.min.css" />
+		<!-- Bootstraps -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		
 		<!-- AngularJS -->
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
-		<script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.5/angular-material.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-		<!-- ng-table -->
-		<link rel="stylesheet" href="http://cdn.jsdelivr.net/angular.ngtable/0.3.2/ng-table.css">
-        <script src="http://cdn.jsdelivr.net/angular.ngtable/0.3.2/ng-table.js"></script>
-
-		<title>OffiBoard</title>
-		<script>document.write('<base href="' + document.location + '" />');</script>
-		<link rel="stylesheet" href="styleDSQ.css" />
-		<script data-require="angular.js@1.0.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js" data-semver="1.0.8"></script>
-		<script> 
-			var app = angular.module('TestUploadFile', ["ngTable"]);
-		</script>
-
-		<script src="upload.js"></script>
-		<script src="app.js"></script>
+		<script src= "http://cdn.bootcss.com/angular.js/1.4.6/angular.min.js"></script>
+		
+		<!-- Dates en français -->
+		<script src="js/angular-locale_fr-fr.js"></script>
 	</head>
 
-	<body>
- 
-		<div ng-controller="JsonUploadController" class="container">
-			
-			<div style="float:left;">
-				<button class="btn btn-success" onclick="myFunc()">Ajouter</button>
-			</div>
-			
-			<div id="flexDisplay">
-				
-					<div id="conteneur">
-					
-						<div style="margin: 0 auto;" class="col-md-6">
-						
-							<form>
-								<input type="file" read-text="onFileSelect($files)">
-							</form>
-							<br>
-							<i ng-hide="jsonSrc">Aucun json sélectionné</i>
-							
-							<br>
-							
-							<span><b ng-show="jsonSrc">Choisir le premier axe :</b></span> 
-							<select ng-show="jsonSrc" ng-model="selectedX" ng-options="keys.indexOf(key) as key for key in keys">
-							</select>
-							<br>
-							<span ng-show="types[selectedX]"> Type du premier axe : {{types[selectedX]}} </span>
-							
-							<br><br>
-							
-							<span><b ng-show="jsonSrc">Choisir le second axe :</b></span> 
-							<select ng-show="jsonSrc" ng-model="selectedY" ng-options="keys.indexOf(key2) as key2 for key2 in keys">
-							</select>
-							<button ng-show="jsonSrc" id="ajoutAxe">+</button>
-							<br>
-							<span ng-show="types[selectedY]">Type du second axe : {{types[selectedY]}}</span>
-							<div id="axesY"></div>
+	<body ng-app="app">
 
-						</div>
-							
-					</div>
-
-					<div id="conteneur">
-						<div ng-show="types[selectedX]=='date' && selectedY ">
-							Fonction somme par mois : 
-							<input type="text" placeholder="Choisissez l'année" ng-model="selectedYear">
-							<br>
-							<div ng-show="selectedYear">
-								<span>{{keys[selectedY].toString()}} par mois pour l'année {{selectedYear}} :</span>
-								<br><br>
-								<table style="margin: 0 auto;">
-									<tr>
-										<th>Mois</th><th>{{keys[selectedY]}}</th>
-									</tr>
-									<tr ng-repeat="CA in sumValuesByMonth(keys[selectedX].toString(),keys[selectedY].toString(),selectedYear)">
-										<td>{{ getMonthsNames()[$index] }}</td>
-										<td >{{ sumValuesByMonth(keys[selectedX].toString(),keys[selectedY].toString(),selectedYear)[$index] }}</td>
-									</tr>
-								</table>
-							</div>
-						</div>
-					</div>
-					
-					<div id="conteneur" ng-show="keys[selectedX] && keys[selectedY]">
-					
-						<div>
-							Nombre de lignes affichées :
-							<input ng-model="display_limit1" type="text">
-							
-							<br><br>
-						
-							<table class="table table-bordered table-condensed table-striped" style="margin: 0 auto;">
-								<thead>
-									<tr>
-										<th width="200">{{keys[selectedX]}}</th><th width="200">{{keys[selectedY]}}</th>
-									</tr>
-								</thead>
-								<div class="scrollit">
-									<tbody>
-										<tr>
-											<td colspan="2">
-												<div class="scrollit">
-													<table>
-														<tr ng-repeat="value in getValues(keys[selectedX]) | limitTo:display_limit1">
-															<td width="200">
-																{{ getValues(keys[selectedX])[$index] }}
-															</td>
-															<td width="200">
-																{{ getValues(keys[selectedY])[$index] }}
-															</td>   
-														</tr>
-													</table>
-												</div>
-											</td>
-										</tr>
-									</tbody>
-								</div>
-							</table>
-						</div>
-					</div>
-			</div>
+		<ul id="navigation" class="nav-main">
+			<li class="offiTitle">OffiBoard</li>
+			<li><a href="index.html">Accueil</a></li>
+			<li><a href="#">Ventes</a></li>
+			<li><a href="#">Achats</a></li>
+			<li><a href="#">Clients</a></li>
+			<li><a href="#">Collectivités</a></li>
+			<li><a href="#">Opérateurs</a></li>
+			<li><a href="#">Produits</a></li>
+			<li><a href="personnaliser.html">Personnaliser</a></li>
+		</ul>
+		
+		<p>
+		<div class="container" ng-controller='TimeCtrl'>
+			<p style="float: right;">Le {{ clock | date:"EEEE dd MMMM yyyy"}} à {{ clock | date:"HH:mm:ss"}}</p>
 		</div>
+		</p>
+
+		<br>
+		
+		<div class="flexDisplayHoriz">
+		
+			<div class="flexDisplayVert">
+			
+				<div class="col" style="margin: 0 auto;">
+			
+					<span>CA HT Octobre 2016 - Septembre 2017</span>
+					<br><br>
+					
+					<span style="font-size: 24px;">398 €</span>
+					<br><br>
+					
+					<span style="font-size: 24px; color:red;">-99,74 %</span>
+					<br><br>
+					
+					<span style="font-size: 8px;">par rapport à Octobre 2015 - Septembre 2016</span>
+				
+				</div>
+			
+			</div>
+			
+			<div class="flexDisplayVert">
+			
+				<div class="col" style="margin: 0 auto;">
+			
+					<span>CA HT Septembre 2017</span>
+					<br><br>
+					
+					<span style="font-size: 24px;">0 €</span>
+					<br><br>
+					
+					<span style="color:red; font-size: 24px;">-100 %</span>
+					<br><br>
+					
+					<span style="font-size: 8px;">par rapport à Septembre 2016</span>
+				
+				</div>
+			
+			</div>
+			
+			<div class="flexDisplayVert">
+			
+				<div class="col" style="margin: 0 auto;">
+			
+					<span>CA HT  - </span>
+					<br><br>
+					
+					<span style="font-size: 24px;">-</span>
+					<br><br>
+					
+					<span style="font-size: 24px;">-</span>
+					<br><br>
+				
+					<span style="font-size: 8px;">par rapport à -</span>
+					
+				</div>
+			
+			</div>
+			
+			<div class="flexDisplayVert">
+			
+				<div class="col" style="margin: 0 auto;">
+			
+					<span>Objectif non atteint Octobre 2017</span>
+					<br><br>
+				
+					<span style="color:red; font-size: 24px;">0 %</span>
+					
+				</div>
+			
+			</div>
+		
+		</div>
+		
+		<br>
+		
+		<div class="flexDisplayHoriz">
+		
+			<div>
+				<img src="img/offi1.PNG" style="width:70%; margin-left:15%"></img>
+			</div>
+			
+			<div>
+				<img src="img/offi2.PNG" style="width:70%; margin-left:15%"></img>
+			</div>
+		
+		</div>
+
 	</body>
 	
 	<script>
 	
-	function myFunc() {
-		
-		console.log("Ajout du Widget");
-	}
-			
-	</script>
+		var app = angular.module("app", []);
+	
+		app.controller("TimeCtrl", function($scope, $timeout) {
+			$scope.clock = "loading clock...";
+			$scope.tickInterval = 1000
 
+			var tick = function () {
+				$scope.clock = Date.now()
+				$timeout(tick, $scope.tickInterval);
+			}
+
+			$timeout(tick, $scope.tickInterval);
+		});
+	</script>
 </html>
