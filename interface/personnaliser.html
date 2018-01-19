@@ -5,7 +5,6 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>OffiBoard - Personnaliser</title>
-		<link href="dropdown-menu.css" media="screen" rel="stylesheet" type="text/css" />
 		
 		<!-- Bootstraps -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -17,25 +16,25 @@
          <!-- ChartJS-->
         <script src=https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js></script>
 		
-		<link rel="stylesheet" href="styleDSQ.css" />
+		<link rel="stylesheet" href="css/style.css"/>
 		<script data-require="angular.js@1.0.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js" data-semver="1.0.8"></script>
 		
 			<!-- Dates en français -->
-		<script src="angular-locale_fr-fr.js"></script>
+		<script src="js/angular-locale_fr-fr.js"></script>
 		
 		<script> 
 			var app = angular.module('TestUploadFile', []);
 		</script>
 
-		<script src="upload.js"></script>
-		<script src="app.js"></script>
+		<script src="js/upload.js"></script>
+		<script src="js/app.js"></script>
 	</head>
 
 	<body ng-app="TestUploadFile" ng-controller="JsonUploadController">
 
 		<ul id="navigation" class="nav-main">
 			<li class="offiTitle">OffiBoard</li>
-			<li><a href="accueil.html">Accueil</a></li>
+			<li><a href="index.html">Accueil</a></li>
 			<li><a href="#">Ventes</a></li>
 			<li><a href="#">Achats</a></li>
 			<li><a href="#">Clients</a></li>
@@ -45,9 +44,11 @@
 			<li><a href="personnaliser.html">Personnaliser</a></li>
 		</ul>
 		
+		<p>
 		<div class="container">
 			<p style="float: right;">Le {{ clock | date:"EEEE dd MMMM yyyy"}} à {{ clock | date:"HH:mm:ss"}}</p>
 		</div>
+		</p>
 
 		<span><center><h3>Liste des Widgets</h3></center></span>
 		
@@ -72,7 +73,7 @@
 				<br>
 				<b>Section : </b>{{widget.sectionWidget}}
 				<br><br>
-				<button type="button"
+				<button type="button" class="btn btn-info"
 						ng-click="openWidget(widget.idWidget, widget.nomWidget, widget.nbCol, widget.idCol, widget.Axes, widget.nbLignes, widget.jsonFile, widget.sectionWidget, widget.jsonName)"
 						data-toggle="modal"
 						data-target="#Modifier">
@@ -169,7 +170,7 @@
 										
 										<br>
 										<center><button ng-show="jsonSrc" class="btn btn-success" ng-click="widgetAdd(widgetName, colCount, uniqId, selecteds, display_limit1, jsonSrc, sectionWidget, jsonFileName)" data-dismiss="modal">
-											Sauvegarder Widget
+											Ajouter Widget
 										</button></center>
 
 									</div>
