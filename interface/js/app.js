@@ -120,6 +120,8 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 		}
 		
         $scope.listWidgets.splice(indexW, 1, newWidget);
+		
+		$scope.closeWidget();
     }
 		
 	// Ajoute ou enlève le numéro de la checkbox de la liste checkBoxId lors d'un clic utilisateur
