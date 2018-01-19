@@ -1,7 +1,7 @@
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
 
 #conteneur {
-  width :25%;
+  width :33%;
   display:flex;
   flex-direction: row;
 }
