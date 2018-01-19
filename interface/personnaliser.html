@@ -58,13 +58,39 @@
 			<ul>
 				<a href="#"><button type="button" class="btn btn-success"  data-toggle="modal" data-target="#Ajout" style="margin-bottom:3px">Ajouter un Widget</button></a>
 				<a href="#"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Supprimer" style="margin-bottom:3px">Supprimer un Widget</button></a>
-				<select ng-model="sectionWidget" ng-init="sectionWidget = listeSection[0]" ng-options="option for option in listeSection"></select>
+
+				<select ng-change ="comparer(sectionWidget2)" ng-model="sectionWidget2"
+						ng-init="sectionWidget2 = listeSection2[0]"
+						ng-options="option for option in listeSection2">
+				</select>
 			</ul>
 		</div>
 
 		<div id="flexDisplay2" class="container">
-			
-			<div id="resultsWidg" ng-repeat="widget in listWidgets" style="margin-right: auto;">
+
+			<div id="resultsWidg" ng-repeat="widget in listWidgets" style="margin-right: auto;" ng-show="flag">
+				<b>Nom : </b>{{widget.nomWidget}}
+				<br>
+				<b>Id : </b>{{widget.idWidget}}
+				<br>
+				<b>Json : </b>{{widget.jsonName}}
+				<br>
+				<b>Section : </b>{{widget.sectionWidget}}
+				<br><br>
+				<button type="button" class="btn btn-info"
+						ng-click="openWidget(widget.idWidget, widget.nomWidget, widget.nbCol, widget.idCol, widget.Axes, widget.nbLignes, widget.jsonFile, widget.sectionWidget, widget.jsonName)"
+						data-toggle="modal"
+						data-target="#Modifier">
+					Ouvrir Widget
+				</button>
+				<br><br><br>
+			</div>
+
+
+
+
+
+			<div id="resultsWidg" ng-repeat="widget in listWidgets |filter : {sectionWidget : sectionWidget2}" style="margin-right: auto;">
 				<b>Nom : </b>{{widget.nomWidget}}
 				<br>
 				<b>Id : </b>{{widget.idWidget}}
