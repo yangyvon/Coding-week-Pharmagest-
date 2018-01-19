@@ -33,8 +33,12 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 	
 	// Identifiant des axes supplémentaires (de 2 à 6)
 	$scope.uniqId = 2;
-	
-	// Liste des axes
+
+	// distinguer les sections
+    $scope.flag="T";
+
+
+    // Liste des axes
 	$scope.selecteds = [$scope.selectedX, $scope.selectedY, $scope.selectedZ1, $scope.selectedZ2, $scope.selectedZ3, $scope.selectedZ4, $scope.selectedZ5];
 	
 	// Liste des différentes sections dans l'OffiBoard
@@ -42,11 +46,30 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 	
 	// Section du Widget
 	$scope.sectionWidget = "Ventes";
+
+    // Liste des différentes sections dans l'OffiBoard
+    $scope.listeSection2 = ["Tous","Ventes","Achats","Clients","Collectivites","Operateurs","Produits"];
+    // Section du Widget2
+    $scope.sectionWidget2 = "Tous";
 	
 	// Initialisation de la liste des Checkboxes sélectionnées par l'utilisateur dans le modal "Supprimer des Widgets"
 	$scope.checkBoxId = [];
-	
-	// Supprime l'élément à l'indice $index de la liste checkBoxId
+
+	//comparer la choix de section
+    $scope.comparer =function (a) {
+
+
+        if(a != "Tous"){
+            $scope.flag = '';
+        }else {
+            $scope.flag= "T"
+        }
+        return  $scope.flag ;
+
+    }
+
+
+    // Supprime l'élément à l'indice $index de la liste checkBoxId
 	$scope.remove1 = function($index){ 
 		$scope.checkBoxId.splice($index, 1);     
 	}
