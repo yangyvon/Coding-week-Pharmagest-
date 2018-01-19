@@ -60,7 +60,7 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 	$scope.widgetAdd = function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, sectionWidg, nameJson) {
 		var newId = $scope.listWidgets.length;
 		$scope.listWidgets.push({"idWidget":newId, "nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg, "jsonName":nameJson});
-	
+		
 		$scope.closeWidget();
 	}
 		

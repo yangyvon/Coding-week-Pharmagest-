@@ -64,7 +64,7 @@
 
 		<div id="flexDisplay2" class="container">
 			
-			<div ng-repeat="widget in listWidgets" style="margin-right: auto;">
+			<div id="resultsWidg" ng-repeat="widget in listWidgets" style="margin-right: auto;">
 				<b>Nom : </b>{{widget.nomWidget}}
 				<br>
 				<b>Id : </b>{{widget.idWidget}}
@@ -408,86 +408,6 @@
 				</div>
 			</div>
 		</div>
-
-
-		<!-- Modal
-		<div class="modal fade" id="Modifier" role="dialog">
-		
-			<div class="modal-dialog">
-
-
-				<div class="modal-content">
-				
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Modifier un Widget</h4>
-					</div>
-					
-					<div class="modal-body">
-
-						<form role="form">
-
-
-							<p>Choisir le Widget à modifier：</p>
-								
-							<select>
-								<option value ="graphe1">Widget 1 </option>
-								<option value ="graphe2">Widget 2</option>
-								<option value="graphe3">Widget 3</option>
-								<option value="graphe4">Widget 4</option>
-							</select>
-							
-							<p>Axe</p>
-
-							<p><button ng-click="todoAdd()">Ajouter</button></p>
-
-							<br>
-
-							<div ng-repeat="x in todoList">
-								<input type="checkbox" ng-model="x.done"> <span ng-bind="x.todoText"></span>
-							</div>
-
-							<p><button ng-click="remove()">Supprimer</button></p>
-							<p>Modifier le type de graphe</p>
-							<select>
-								<option value ="Camembert">Camembert </option>
-								<option value ="Histogramme">Histogramme</option>
-								<option value="Diagramme">Diagramme en bâtons</option>
-								<option value="Nuage">Nuage de points</option>
-							</select>
-
-							<p>Graphes proposés</p>
-							<select>
-								<option value ="Camembert">Camembert </option>
-								<option value ="Histogramme">Histogramme</option>
-								<option value="Diagramme">Diagramme en bâtons</option>
-								<option value="Nuage">Nuage de points</option>
-							</select>
-
-							<p>Choisir la section du graphe</p>
-							<select>
-								<option value ="Ventes">Ventes </option>
-								<option value ="Achats">Achats</option>
-								<option value="Clients">Clients</option>
-								<option value="Collectivites">Collectivités</option>
-								<option value="Operateurs">Opérateurs</option>
-								<option value="Produits">Produits</option>
-							</select>
-							
-							<button type="submit" class="btn btn-success btn-block">Modifier</button>
-
-						</form>
-					</div>
-					
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		-->
-
-
 
 		<!-- Modal
 
