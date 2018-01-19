@@ -199,7 +199,7 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
       var Canvas = $("#ChartCanvas");
       var chartOptions = {
       animation:{
-      	duration:0
+      	duration:1000
       },
       responsive:false,
       title:{
