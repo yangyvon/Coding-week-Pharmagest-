@@ -35,15 +35,6 @@
             reader.onprogress = onProgress(reader, scope);
             return reader;
         };
- 
-        var readAsDataURL = function (file, scope) {
-            var deferred = $q.defer();
-             
-            var reader = getReader(deferred, scope);         
-            reader.readAsDataURL(file);
-             
-            return deferred.promise;
-        };
 
         var readAsText = function (file, scope) {
             var deferred = $q.defer();
@@ -55,7 +46,6 @@
         };
  
         return {
-            readAsDataUrl: readAsDataURL,
             readAsText: readAsText
         };
     };

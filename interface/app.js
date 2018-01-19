@@ -1,10 +1,14 @@
 // Controller AngularJS
-var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, fileReader) {
+var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
+	
+	// Id du Widget courant
+	$scope.idWidget = 0;
 
 	// Label du bouton qui transitionne d'un graphe à un tableau
 	$scope.labelButtonGraphtoTable="Graphe";
+	
 	// Booleen true -> tableau false -> graphe
-	$scope.booleenGrapheTableau=true;
+	$scope.booleenGrapheTableau = true;
 	
 	// Initialisation de la liste des Widgets contenus dans l'OffiBoard
 	$scope.listWidgets = [];
@@ -54,7 +58,8 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 		
 	// Ajoute un nouveau Widget dans la liste des Widgets
 	$scope.widgetAdd = function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, sectionWidg, nameJson) {
-		$scope.listWidgets.push({"nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg, "jsonName":nameJson});
+		var newId = $scope.listWidgets.length;
+		$scope.listWidgets.push({"idWidget":newId, "nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg, "jsonName":nameJson});
 	
 		$scope.closeWidget();
 	}
@@ -70,20 +75,28 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 		}
 			
 		$scope.checkBoxId = [];
+		
+		for (var j = 0 ; j < $scope.listWidgets.length ; j++) {
+		
+			$scope.listWidgets[j]["idWidget"] = j;
+		}
 	}
 
     $scope.widgetMod =  function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, sectionWidg, nameJson) {
-        var newWidget= {"nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg, "jsonName":nameJson};
+        var newWidget = {"idWidget":$scope.idWidget, "nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg, "jsonName":nameJson};
 
-        var oldW = $scope.listWidgets.find(function (x) {
-
-            return x.nomWidget === nameWidg;
-        })
-        var indexW= $scope.listWidgets.indexOf(oldW);
-
-        $scope.listWidgets.splice(indexW,1,newWidget);
-
-
+		var indexW = 0;
+		
+		for (var i = 0 ; i < $scope.listWidgets.length ; i++) {
+			
+			if (angular.equals($scope.listWidgets[i]["idWidget"], $scope.idWidget)) {
+				
+				//console.log("Found !");
+				indexW = i;
+			}
+		}
+		
+        $scope.listWidgets.splice(indexW, 1, newWidget);
     }
 		
 	// Ajoute ou enlève le numéro de la checkbox de la liste checkBoxId lors d'un clic utilisateur
@@ -102,6 +115,7 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 	$scope.reverse = true;
 
 	$scope.sortBy = function(propertyName) {
+		//$scope.display_limit1 = $scope.lignes.length;
 		$scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
 		$scope.propertyName = propertyName;
 	};
@@ -198,8 +212,9 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 				date = new Date($scope.lignes[i][cleDate]);
 				if (date.getFullYear() == annee) {
 					var input = $scope.lignes[i][cleY]; //Pour gérer les espaces dans les chaines de caractères issues de l'offiReport
-					var processed = input.replace(/ /g, '');
-					var output = parseInt(processed, 10);
+					//var processed = input.replace(/ /g, '');
+					//var output = parseInt(processed, 10);
+					var output = parseInt(input, 10);
 					months[date.getMonth()] += +output; //Fait la somme par mois
 				}
 			}
@@ -299,8 +314,9 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 	}
 	
 	// Fonction d'ouverture d'un Widget
-	$scope.openWidget = function(widgName, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, widgSection, jsonName) {
+	$scope.openWidget = function(idW, widgName, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, widgSection, jsonName) {
 		
+		$scope.idWidget = idW;
 		$scope.widgetName = widgName;
 		$scope.colCount = nbCol;
 		$scope.uniqId = idUniq;
@@ -337,6 +353,7 @@ var JsonUploadController = function ($scope, $filter, $timeout, ngTableParams, f
 	// Fonction lorsque l'on quitte le modal contenant un Widget
 	$scope.closeWidget = function() {
 		
+		$scope.idWidget = 0;
 		$scope.widgetName = "Nouveau Widget " + ($scope.listWidgets.length+1);
 		$scope.colCount = 2;
 		$scope.uniqId = 2;
