@@ -248,8 +248,9 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 
 
 		//Fonction qui construit le graphe
-	$scope.getChart = function(cleX,cleY,annee) {
-      var Canvas = $("#ChartCanvas");
+	$scope.getChart = function(cleX,cleY,annee,CanvasID) {
+      var Canvas = document.getElementById(CanvasID);
+      console.log("getChart canvas : "+Canvas);
       var chartOptions = {
       animation:{
       	duration:1000
@@ -307,77 +308,14 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
   		options:chartOptions
 	  });
  	};
-		//Fonction qui construit le graphe
-	$scope.getChart2 = function(cleX,cleY,annee) {
-      var Canvas = $("#ChartCanvas2");
-      var chartOptions = {
-      animation:{
-      	duration:1000
-      },
-      responsive:true,
-      title:{
-        display:true,
-        position:'top',
-        text: cleY+' par mois pour l\'année '+annee 
-      },
-      tooltips: {
-        enabled:true
-      },
-      legend: {
-        display: false,
-        labels: {
-          boxWidth: 80,
-          fontColor: 'black'
-        }
-      },
-      scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-      };
-
-      var barChart = new Chart(Canvas, {
-	    type: 'bar',
-	    data: {
-	    labels: $scope.getMonthsNames(),
-	    datasets: [{
-     	label: cleY,
-      	data: $scope.sumValuesByMonth(cleX,cleY,annee),
-      
-	      backgroundColor: [
-	        'rgba(255, 99, 132, 0.6)',
-	        'rgba(54, 162, 235, 0.6)',
-	        'rgba(255, 206, 86, 0.6)',
-	        'rgba(75, 192, 192, 0.6)',
-	        'rgba(153, 102, 255, 0.6)',
-	        'rgba(255, 159, 64, 0.6)',
-	        'rgba(255, 99, 132, 0.6)',
-	        'rgba(54, 162, 235, 0.6)',
-	        'rgba(255, 206, 86, 0.6)',
-	        'rgba(75, 192, 192, 0.6)',
-	        'rgba(153, 102, 255, 0.6)',
-	        'rgba(255, 159, 64, 0.6)'
-	      ]
-
-    	}]
-  		},
-  		options:chartOptions
-	  });
- 	};
- 	$scope.showCanvas = function(cleX,cleY,annee){
-	  var Canvas= $("#ChartCanvas");
-	  Canvas.remove(); 
-	  $("#visualisationContainer").append("<canvas ng-hide='!booleenGrapheTableau' id='ChartCanvas'><canvas>");
-	  $scope.getChart(cleX,cleY,annee);
-	};
-	$scope.showCanvas2 = function(cleX,cleY,annee){
-	  var Canvas= $("#ChartCanvas2");
-	  Canvas.remove(); 
-	  $("#visualisationContainer2").append("<canvas ng-hide='!booleenGrapheTableau' id='ChartCanvas2'><canvas>");
-	  $scope.getChart2(cleX,cleY,annee);
+	
+ 	$scope.showCanvas = function(cleX,cleY,annee,CanvasID){
+	  var Canvas= document.getElementById(CanvasID);
+	  console.log("showCanvas canvas : ");
+	  console.log(Canvas);
+	  Canvas.remove();
+	  $("#visualisationContainer"+CanvasID).append("<canvas ng-hide='!booleenGrapheTableau' id='"+CanvasID+"'><canvas>");
+	  $scope.getChart(cleX,cleY,annee,CanvasID);
 	};
 	$scope.afficherGrapheTableau=function(){
 		if($scope.booleenGrapheTableau){ //on a un tableau donc on veut passer à un graphe

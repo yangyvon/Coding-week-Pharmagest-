@@ -205,10 +205,10 @@
 										<input type="text" placeholder="Choisissez l'année" ng-model="selectedYear">
 										<button ng-click="afficherGrapheTableau()" ng-bind="labelButtonGraphtoTable"></button>
 										<br>
-										<div id="visualisationContainer" ng-show="!booleenGrapheTableau && selectedYear">
+										<div id="visualisationContainer1" ng-show="!booleenGrapheTableau && selectedYear">
 											<br><br>
-											<canvas id="ChartCanvas">
-												{{showCanvas(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear)}}
+											<canvas id="1">
+												{{showCanvas(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear,'1')}}
 												
 											</canvas>
 
@@ -384,8 +384,8 @@
 										<br>
 										<div id="visualisationContainer2" ng-show="!booleenGrapheTableau && selectedYear">
 											<br><br>
-											<canvas id="ChartCanvas2">
-												{{showCanvas2(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear)}}
+											<canvas id="2">
+												{{showCanvas(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear,"2")}}
 												
 											</canvas>
 
