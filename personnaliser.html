@@ -190,12 +190,12 @@
 											<div class="scrollit">
 												<table class="friends">
 													<tr>
-														<th ng-repeat="sel in selecteds | limitTo: widget.nbCol" width="200" class="widget.keys[sel]">
+														<th ng-repeat="sel in widget.Axes | limitTo: widget.nbCol" width="200" class="widget.keys[sel]">
 															{{widget.keys[sel]}} &nbsp;<a ng-click="sort_by2(widget.keys[sel], widget.idWidget)"><i class="icon-sort">#</i></a>
 														</th>
 													</tr>
 													<tr ng-repeat="value in widget.pagedItems[widget.currentPage] | orderBy:widget.sortingOrder:widget.reverse">
-														<td ng-repeat="sel in selecteds | limitTo: widget.nbCol" width="200">
+														<td ng-repeat="sel in widget.Axes | limitTo: widget.nbCol" width="200">
 															{{getValuesSimple(widget.keys[sel], value)}}
 														</td>  
 													</tr>
@@ -329,12 +329,12 @@
 											<div class="scrollit">
 												<table class="friends">
 													<tr>
-														<th ng-repeat="sel in selecteds | limitTo: widget.nbCol" width="200" class="widget.keys[sel]">
+														<th ng-repeat="sel in widget.Axes | limitTo: widget.nbCol" width="200" class="widget.keys[sel]">
 															{{widget.keys[sel]}} &nbsp;<a ng-click="sort_by2(widget.keys[sel], widget.idWidget)"><i class="icon-sort">#</i></a>
 														</th>
 													</tr>
 													<tr ng-repeat="value in widget.pagedItems[widget.currentPage] | orderBy:widget.sortingOrder:widget.reverse">
-														<td ng-repeat="sel in selecteds | limitTo: widget.nbCol" width="200">
+														<td ng-repeat="sel in  widget.Axes | limitTo: widget.nbCol" width="200">
 															{{getValuesSimple(widget.keys[sel], value)}}
 														</td>  
 													</tr>
@@ -472,7 +472,9 @@
 									</div>
 									</div>
 								</div>
-										
+
+
+								<!--
 								<div id="conteneur" ng-show="keys[selecteds[0]] && keys[selecteds[1]]">
 										
 									<div>
@@ -500,13 +502,13 @@
 												<div>
 													<input ng-model="currentPage" type="text" placeholder="" size="5" style="margin-right:20px;">
 												</div>
-												<!--
+												--
 												<li ng-repeat="n in range(pagedItems.length)"
 													ng-class="{active: n == currentPage}"
 												ng-click="setPage()">
 													<a href ng-bind="n + 1">1</a>
 												</li>
-												-->
+												--
 												<div ng-class="{disabled: currentPage == pagedItems.length - 1}" style="margin-right:20px;">
 													<a href ng-click="nextPage()">Next »</a>
 												</div>
@@ -541,6 +543,8 @@
 											
 									</div>
 								</div>
+
+								--->
 							</div>
 						</form>
 
@@ -674,7 +678,8 @@
 									</div>
 									</div>
 								</div>
-										
+
+								<!--
 								<div id="conteneur" ng-show="keys[selecteds[0]] && keys[selecteds[1]]">
 										
 									<div>
@@ -702,13 +707,13 @@
 												<div>
 													<input ng-model="currentPage" type="text" placeholder="" size="5" style="margin-right:20px;">
 												</div>
-												<!--
+												--
 												<li ng-repeat="n in range(pagedItems.length)"
 													ng-class="{active: n == currentPage}"
 												ng-click="setPage()">
 													<a href ng-bind="n + 1">1</a>
 												</li>
-												-->
+												--
 												<div ng-class="{disabled: currentPage == pagedItems.length - 1}" style="margin-right:20px;">
 													<a href ng-click="nextPage()">Next »</a>
 												</div>
@@ -743,11 +748,14 @@
 											
 									</div>
 								</div>
+
+								-->
+
 							</div>
 						</form>
 
 					</div>
-					
+
 				</div>
 			</div>
 		</div>
