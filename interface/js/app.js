@@ -3,6 +3,9 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 	
 	// Id du Widget courant
 	$scope.idWidget = 0;
+	
+	// Initialisation des lignes du json
+	$scope.lignes = [];
 
 	// Label du bouton qui transitionne d'un graphe à un tableau
 	$scope.labelButtonGraphtoTable="Graphe";
@@ -21,6 +24,12 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 	
 	// Nombre de lignes affichées dans le tableau (10 lignes par défaut)
 	$scope.display_limit1 = 10;
+	
+	$scope.filteredItems = [];
+	$scope.groupedItems = [];
+	$scope.itemsPerPage = 10;
+	$scope.pagedItems = [];
+	$scope.currentPage = 0;
 	
 	// Initialisation des axes
 	$scope.selectedX = 0;
@@ -56,7 +65,7 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 	$scope.checkBoxId = [];
 
 	//comparer la choix de section
-    $scope.comparer =function (a) {
+    $scope.comparer = function (a) {
 
 
         if(a != "Tous"){
@@ -80,9 +89,9 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 	}
 		
 	// Ajoute un nouveau Widget dans la liste des Widgets
-	$scope.widgetAdd = function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, sectionWidg, nameJson) {
+	$scope.widgetAdd = function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, sectionWidg, nameJson, scopeKeys, jsonLines, val, typ, filteredIt, groupedIt, itPerPage, pagedIt, curPage) {
 		var newId = $scope.listWidgets.length;
-		$scope.listWidgets.push({"idWidget":newId, "nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg, "jsonName":nameJson});
+		$scope.listWidgets.push({"idWidget":newId, "nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg, "jsonName":nameJson, "keys":scopeKeys, "lignes":jsonLines, "values":val, "types":typ, "filteredItems":filteredIt, "groupedItems":groupedIt, "itemsPerPage":itPerPage, "pagedItems":pagedIt, "currentPage":curPage});
 		
 		$scope.closeWidget();
 	}
@@ -105,8 +114,8 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 		}
 	}
 
-    $scope.widgetMod =  function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, sectionWidg, nameJson) {
-        var newWidget = {"idWidget":$scope.idWidget, "nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg, "jsonName":nameJson};
+    $scope.widgetMod =  function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, sectionWidg, nameJson, scopeKeys, jsonLines, val, typ, filteredIt, groupedIt, itPerPage, pagedIt, curPage) {
+        var newWidget = {"idWidget":$scope.idWidget, "nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg, "jsonName":nameJson, "keys":scopeKeys, "lignes":jsonLines, "values":val, "types":typ, "filteredItems":filteredIt, "groupedItems":groupedIt, "itemsPerPage":itPerPage, "pagedItems":pagedIt, "currentPage":curPage};
 
 		var indexW = 0;
 		
@@ -215,6 +224,9 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 				}
 			}
 			
+			// functions have been describe process the data for display
+			$scope.search();
+			
 		});
 
 		// Valeurs associées au header string
@@ -224,6 +236,24 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 				
 			for (var i = 0 ; i < $scope.lignes.length ; i++) {
 				res[i] = $scope.lignes[i][string];
+			}
+			
+			return res;
+		};
+		
+		// Valeurs associées au header string
+		$scope.getValuesSimple = function(i, val) {
+			
+			return val[i];
+		};
+		
+		// Valeurs associées au header string
+		$scope.getValues2 = function(string, lines) {
+		  
+			var res = [];
+				
+			for (var i = 0 ; i < lines.length ; i++) {
+				res[i] = lines[i][string];
 			}
 			
 			return res;
@@ -245,6 +275,102 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 			}
 			return(months);
 		};
+		
+		var searchMatch = function (haystack, needle) {
+		if (!needle) {
+			return true;
+		}
+		return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
+	};
+
+	$scope.search = function () {
+		$scope.filteredItems = $filter('filter')($scope.lignes, function (item) {
+			for(var attr in item) {
+				if (searchMatch(item[attr], $scope.query))
+					return true;
+			}
+			return false;
+		});
+		$scope.currentPage = 0;
+		$scope.groupToPages();
+	};
+		
+	$scope.groupToPages = function () {
+		$scope.pagedItems = [];
+			
+		for (var i = 0; i < $scope.filteredItems.length; i++) {
+			if (i % $scope.itemsPerPage === 0) {
+				$scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [ $scope.filteredItems[i] ];
+			} else {
+				$scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
+			}
+		}
+			
+	};
+		
+	$scope.range = function (start, end) {
+		var ret = [];
+		if (!end) {
+			end = start;
+			start = 0;
+		}
+		for (var i = start; i < end; i++) {
+			ret.push(i);
+		}
+		return ret;
+	};
+		
+	$scope.prevPage = function () {
+		if ($scope.currentPage > 0) {
+			$scope.currentPage--;
+		}
+	};
+		
+	$scope.nextPage = function () {
+		if ($scope.currentPage < $scope.pagedItems.length - 1) {
+			$scope.currentPage++;
+		}
+	};
+	
+	$scope.firstPage = function () {
+		if ($scope.currentPage > 0) {
+			$scope.currentPage = 0;
+		}
+	};
+		
+	$scope.lastPage = function () {
+		if ($scope.currentPage < $scope.pagedItems.length - 1) {
+			$scope.currentPage = $scope.pagedItems.length - 1;
+		}
+	};
+	
+	$scope.setPage = function () {
+		$scope.currentPage = this.n;
+	};
+	
+	$scope.prevPage2 = function (indexWidget) {
+		if ($scope.listWidgets[indexWidget].currentPage > 0) {
+			$scope.listWidgets[indexWidget].currentPage--;
+		}
+	};
+		
+	$scope.nextPage2 = function (indexWidget) {
+		if ($scope.listWidgets[indexWidget].currentPage < $scope.listWidgets[indexWidget].pagedItems.length - 1) {
+			$scope.listWidgets[indexWidget].currentPage++;
+		}
+	};
+	
+	$scope.firstPage2 = function (indexWidget) {
+		if ($scope.listWidgets[indexWidget].currentPage > 0) {
+			$scope.listWidgets[indexWidget].currentPage = 0;
+		}
+	};
+		
+	$scope.lastPage2 = function (indexWidget) {
+		if ($scope.listWidgets[indexWidget].currentPage < $scope.listWidgets[indexWidget].pagedItems.length - 1) {
+			$scope.listWidgets[indexWidget].currentPage = $scope.listWidgets[indexWidget].pagedItems.length - 1;
+		}
+	};
 
 
 		//Fonction qui construit le graphe
@@ -343,7 +469,7 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 	}
 	
 	// Fonction d'ouverture d'un Widget
-	$scope.openWidget = function(idW, widgName, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, widgSection, jsonName) {
+	$scope.openWidget = function(idW, widgName, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, widgSection, jsonName, scopeKeys, jsonLines, val, typ, filteredIt, groupedIt, itPerPage, pagedIt, curPage) {
 		
 		$scope.idWidget = idW;
 		$scope.widgetName = widgName;
@@ -354,29 +480,23 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 		$scope.sectionWidget = widgSection;
 		$scope.jsonFileName = jsonName;
 		$scope.checkBoxId = [];
+		$scope.filteredItems = filteredIt;
+		$scope.groupedItems = groupedIt;
+		$scope.itemsPerPage = itPerPage;
+		$scope.pagedItems = pagedIt;
+		$scope.currentPage = curPage;
 		
 		$scope.jsonSrc = jsonFile;
-		$scope.keys = [];
-		$scope.values = [];
-		$scope.lignes = JSON.parse($scope.jsonSrc);
+		$scope.keys = scopeKeys;
+		$scope.values = val;
+		$scope.lignes = jsonLines;
+		//$scope.lignes = JSON.parse($scope.jsonSrc);
 		header = $scope.lignes[0];
 		$scope.type = null;
-		$scope.types = [];
-		angular.forEach(header, function(value, key) {
-			$scope.keys.push(key);
-			$scope.values.push(value);
-			if (value.match(/(0\d{1}|1[0-2])\/([0-2]\d{1}|3[0-1])\/(19|20)\d{2}/)){
-				type = 'date';
-			}
-
-			else if (value.match(/^[\d ]+$/)){
-				type = 'number';
-			}
-			else {
-				type = 'string';
-			}
-			$scope.types.push(type);
-		})
+		$scope.types = typ;
+		
+		// functions have been describe process the data for display
+		$scope.search();
 	}
 	
 	// Fonction lorsque l'on quitte le modal contenant un Widget
@@ -410,6 +530,8 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 		$scope.type = null;
 		$scope.types = [];
 	}
+	
+	$inject = ['$scope', '$filter'];
 };
 
 // Directive de sélection du fichier JSON par l'utilisateur
