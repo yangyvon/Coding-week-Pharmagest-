@@ -8,7 +8,7 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 	$scope.lignes = [];
 
 	// Label du bouton qui transitionne d'un graphe à un tableau
-	$scope.labelButtonGraphtoTable="Graphe";
+	$scope.labelButtonGraphtoTable = "Graphe";
 	
 	// Booleen true -> tableau false -> graphe
 	$scope.booleenGrapheTableau = true;
@@ -25,6 +25,11 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 	// Nombre de lignes affichées dans le tableau (10 lignes par défaut)
 	$scope.display_limit1 = 10;
 	
+	$scope.query = "";
+	$scope.sortingOrder = "";
+    $scope.reverse = false;
+	
+	// Variables pour la pagination
 	$scope.filteredItems = [];
 	$scope.groupedItems = [];
 	$scope.itemsPerPage = 10;
@@ -43,9 +48,8 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 	// Identifiant des axes supplémentaires (de 2 à 6)
 	$scope.uniqId = 2;
 
-	// distinguer les sections
-    $scope.flag="T";
-
+	// Distinguer les sections
+    $scope.flag = "T";
 
     // Liste des axes
 	$scope.selecteds = [$scope.selectedX, $scope.selectedY, $scope.selectedZ1, $scope.selectedZ2, $scope.selectedZ3, $scope.selectedZ4, $scope.selectedZ5];
@@ -64,19 +68,17 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 	// Initialisation de la liste des Checkboxes sélectionnées par l'utilisateur dans le modal "Supprimer des Widgets"
 	$scope.checkBoxId = [];
 
-	//comparer la choix de section
+	// Comparer le choix de section
     $scope.comparer = function (a) {
 
-
-        if(a != "Tous"){
-            $scope.flag = '';
-        }else {
-            $scope.flag= "T"
+        if (a != "Tous") {
+			$scope.flag = '';
         }
-        return  $scope.flag ;
-
+		else {
+			$scope.flag = "T";
+        }
+        return $scope.flag;
     }
-
 
     // Supprime l'élément à l'indice $index de la liste checkBoxId
 	$scope.remove1 = function($index){ 
@@ -89,9 +91,9 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 	}
 		
 	// Ajoute un nouveau Widget dans la liste des Widgets
-	$scope.widgetAdd = function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, sectionWidg, nameJson, scopeKeys, jsonLines, val, typ, filteredIt, groupedIt, itPerPage, pagedIt, curPage) {
+	$scope.widgetAdd = function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, sectionWidg, nameJson, scopeKeys, jsonLines, val, typ, filteredIt, groupedIt, itPerPage, pagedIt, curPage, queryTab, sortOrder, reverseOrder) {
 		var newId = $scope.listWidgets.length;
-		$scope.listWidgets.push({"idWidget":newId, "nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg, "jsonName":nameJson, "keys":scopeKeys, "lignes":jsonLines, "values":val, "types":typ, "filteredItems":filteredIt, "groupedItems":groupedIt, "itemsPerPage":itPerPage, "pagedItems":pagedIt, "currentPage":curPage});
+		$scope.listWidgets.push({"idWidget":newId, "nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg, "jsonName":nameJson, "keys":scopeKeys, "lignes":jsonLines, "values":val, "types":typ, "filteredItems":filteredIt, "groupedItems":groupedIt, "itemsPerPage":itPerPage, "pagedItems":pagedIt, "currentPage":curPage, "query":queryTab, "sortingOrder":sortOrder, "reverse":reverseOrder});
 		
 		$scope.closeWidget();
 	}
@@ -114,8 +116,8 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 		}
 	}
 
-    $scope.widgetMod =  function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, sectionWidg, nameJson, scopeKeys, jsonLines, val, typ, filteredIt, groupedIt, itPerPage, pagedIt, curPage) {
-        var newWidget = {"idWidget":$scope.idWidget, "nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg, "jsonName":nameJson, "keys":scopeKeys, "lignes":jsonLines, "values":val, "types":typ, "filteredItems":filteredIt, "groupedItems":groupedIt, "itemsPerPage":itPerPage, "pagedItems":pagedIt, "currentPage":curPage};
+    $scope.widgetMod =  function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, sectionWidg, nameJson, scopeKeys, jsonLines, val, typ, filteredIt, groupedIt, itPerPage, pagedIt, curPage, queryTab, sortOrder, reverseOrder) {
+        var newWidget = {"idWidget":$scope.idWidget, "nomWidget":nameWidg, "jsonFile":jsonFile, "nbCol":nbCol, "idCol":idUniq, "Axes":arraySelecteds, "nbLignes":dispLim, "sectionWidget":sectionWidg, "jsonName":nameJson, "keys":scopeKeys, "lignes":jsonLines, "values":val, "types":typ, "filteredItems":filteredIt, "groupedItems":groupedIt, "itemsPerPage":itPerPage, "pagedItems":pagedIt, "currentPage":curPage, "query":queryTab, "sortingOrder":sortOrder, "reverse":reverseOrder};
 
 		var indexW = 0;
 		
@@ -144,16 +146,6 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 			$scope.remove1(nb);
 		}
 	}
-	
-	$scope.propertyName = 'age';
-	$scope.reverse = true;
-
-	$scope.sortBy = function(propertyName) {
-		//$scope.display_limit1 = $scope.lignes.length;
-		$scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
-		$scope.propertyName = propertyName;
-	};
-	
 	
 	$scope.parseValue = function(val) {
 		
@@ -184,115 +176,43 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 		 var monthsNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
 		 return monthsNames;
 	}
-
-	// Lecture du fichier JSON sélectionné, récupération des paires clés-valeurs et analyse sur le type des headers (date, number ou string)
-	$scope.getTextFile = function () {
-		fileReader.readAsText($scope.file, $scope).then(function(result) {
-			$scope.jsonSrc = result;
-			var fileInput = document.getElementById('selectedFile');    
-			$scope.jsonFileName = fileInput.files[0].name;
-			$scope.keys = [];
-			$scope.values = [];
-			$scope.lignes = JSON.parse($scope.jsonSrc);
-			
-			header = $scope.lignes[0];
-			$scope.type = null;
-			$scope.types = [];
-			angular.forEach(header, function(value, key) {
-				$scope.keys.push(key);
-				$scope.values.push(value);
-				if (value.match(/(0\d{1}|1[0-2])\/([0-2]\d{1}|3[0-1])\/(19|20)\d{2}/)){ //expression régulière pour les dates
-					type = 'date';
-				}
-
-				else if (value.match(/^[\d ]+$/)){ //expression régulière correspondant à des digits en acceptant les espaces
-					type = 'number';
-				}
-				else {
-					type = 'string';  //par défaut c'est un string
-				}
-				$scope.types.push(type);
-			})
-			
-			
-			for (i in $scope.lignes) {
-				
-				for (j in $scope.lignes[i]) {
-					
-					$scope.lignes[i][j] = $scope.parseValue($scope.lignes[i][j]);
-					//console.log($scope.lignes[i][j]);
-				}
-			}
-			
-			// functions have been describe process the data for display
-			$scope.search();
-			
-		});
-
-		// Valeurs associées au header string
-		$scope.getValues = function(string) {
-		  
-			var res = [];
-				
-			for (var i = 0 ; i < $scope.lignes.length ; i++) {
-				res[i] = $scope.lignes[i][string];
-			}
-			
-			return res;
-		};
-		
-		// Valeurs associées au header string
-		$scope.getValuesSimple = function(i, val) {
-			
-			return val[i];
-		};
-		
-		// Valeurs associées au header string
-		$scope.getValues2 = function(string, lines) {
-		  
-			var res = [];
-				
-			for (var i = 0 ; i < lines.length ; i++) {
-				res[i] = lines[i][string];
-			}
-			
-			return res;
-		};
-		
-		// Somme les valeurs en fonction du mois
-		$scope.sumValuesByMonth = function(cleDate, cleY, annee) {
-			var months = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-			var date;
-			for (var i = 0; i < $scope.lignes.length; i++) {
-				date = new Date($scope.lignes[i][cleDate]);
-				if (date.getFullYear() == annee) {
-					var input = $scope.lignes[i][cleY]; //Pour gérer les espaces dans les chaines de caractères issues de l'offiReport
-					//var processed = input.replace(/ /g, '');
-					//var output = parseInt(processed, 10);
-					var output = parseInt(input, 10);
-					months[date.getMonth()] += +output; //Fait la somme par mois
-				}
-			}
-			return(months);
-		};
-		
-		var searchMatch = function (haystack, needle) {
+	
+	$scope.searchMatch = function (haystack, needle) {
 		if (!needle) {
 			return true;
 		}
-		return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
-	};
+		var res = haystack.toString().indexOf(needle.toString()) !== -1;
+		return res;
+		};
 
 	$scope.search = function () {
 		$scope.filteredItems = $filter('filter')($scope.lignes, function (item) {
 			for(var attr in item) {
-				if (searchMatch(item[attr], $scope.query))
+				if ($scope.searchMatch(item[attr], $scope.query))
 					return true;
 			}
 			return false;
 		});
+		if ($scope.sortingOrder !== '') {
+            $scope.filteredItems = $filter('orderBy')($scope.filteredItems, $scope.sortingOrder, $scope.reverse);
+        }
 		$scope.currentPage = 0;
 		$scope.groupToPages();
+	};
+	
+	$scope.search2 = function(indexWidget) {
+		$scope.listWidgets[indexWidget].filteredItems = $filter('filter')($scope.listWidgets[indexWidget].lignes, function (item) {
+			for(var attr in item) {
+				if ($scope.searchMatch(item[attr], $scope.listWidgets[indexWidget].query))
+					return true;
+			}
+			return false;
+		});
+		if ($scope.listWidgets[indexWidget].sortingOrder !== '') {
+            $scope.listWidgets[indexWidget].filteredItems = $filter('orderBy')($scope.listWidgets[indexWidget].filteredItems, $scope.listWidgets[indexWidget].sortingOrder, $scope.listWidgets[indexWidget].reverse);
+        }
+		$scope.listWidgets[indexWidget].currentPage = 0;
+		$scope.groupToPages2(indexWidget);
 	};
 		
 	$scope.groupToPages = function () {
@@ -307,6 +227,45 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 		}
 			
 	};
+	
+	$scope.groupToPages2 = function (indexWidget) {
+		$scope.listWidgets[indexWidget].pagedItems = [];
+			
+		for (var i = 0; i < $scope.listWidgets[indexWidget].filteredItems.length; i++) {
+			if (i % $scope.listWidgets[indexWidget].itemsPerPage === 0) {
+				$scope.listWidgets[indexWidget].pagedItems[Math.floor(i / $scope.listWidgets[indexWidget].itemsPerPage)] = [ $scope.listWidgets[indexWidget].filteredItems[i] ];
+			} else {
+				$scope.listWidgets[indexWidget].pagedItems[Math.floor(i / $scope.listWidgets[indexWidget].itemsPerPage)].push($scope.listWidgets[indexWidget].filteredItems[i]);
+			}
+		}
+			
+	};
+	
+    $scope.sort_by = function(newSortingOrder) {
+		//console.log(newSortingOrder);
+        if ($scope.sortingOrder == newSortingOrder)
+            $scope.reverse = !$scope.reverse;
+
+        $scope.sortingOrder = newSortingOrder;
+		
+        $('th i').each(function(){
+            
+            $(this).removeClass().addClass('icon-sort');
+        });
+    };
+	
+	$scope.sort_by2 = function(newSortingOrder, indexWidget) {
+		//console.log(newSortingOrder);
+        if ($scope.listWidgets[indexWidget].sortingOrder == newSortingOrder)
+            $scope.listWidgets[indexWidget].reverse = !$scope.listWidgets[indexWidget].reverse;
+
+        $scope.listWidgets[indexWidget].sortingOrder = newSortingOrder;
+		
+        $('th i').each(function(){
+            
+            $(this).removeClass().addClass('icon-sort');
+        });
+    };
 		
 	$scope.range = function (start, end) {
 		var ret = [];
@@ -352,107 +311,217 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 		if ($scope.listWidgets[indexWidget].currentPage > 0) {
 			$scope.listWidgets[indexWidget].currentPage--;
 		}
+		
+		//console.log($scope.listWidgets[indexWidget].currentPage);
 	};
 		
 	$scope.nextPage2 = function (indexWidget) {
 		if ($scope.listWidgets[indexWidget].currentPage < $scope.listWidgets[indexWidget].pagedItems.length - 1) {
 			$scope.listWidgets[indexWidget].currentPage++;
 		}
+		
+		//console.log($scope.listWidgets[indexWidget].currentPage);
 	};
 	
 	$scope.firstPage2 = function (indexWidget) {
 		if ($scope.listWidgets[indexWidget].currentPage > 0) {
 			$scope.listWidgets[indexWidget].currentPage = 0;
 		}
+		
+		//console.log($scope.listWidgets[indexWidget].currentPage);
 	};
 		
 	$scope.lastPage2 = function (indexWidget) {
 		if ($scope.listWidgets[indexWidget].currentPage < $scope.listWidgets[indexWidget].pagedItems.length - 1) {
 			$scope.listWidgets[indexWidget].currentPage = $scope.listWidgets[indexWidget].pagedItems.length - 1;
 		}
+		
+		//console.log($scope.listWidgets[indexWidget].currentPage);
 	};
-
-
-		//Fonction qui construit le graphe
-	$scope.getChart = function(cleX,cleY,annee,CanvasID) {
-      var Canvas = document.getElementById(CanvasID);
-      console.log("getChart canvas : "+Canvas);
-      var chartOptions = {
-      animation:{
-      	duration:1000
-      },
-      responsive:true,
-      title:{
-        display:true,
-        position:'top',
-        text: cleY+' par mois pour l\'année '+annee 
-      },
-      tooltips: {
-        enabled:true
-      },
-      legend: {
-        display: false,
-        labels: {
-          boxWidth: 80,
-          fontColor: 'black'
-        }
-      },
-      scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-      };
-
-      var barChart = new Chart(Canvas, {
-	    type: 'bar',
-	    data: {
-	    labels: $scope.getMonthsNames(),
-	    datasets: [{
-     	label: cleY,
-      	data: $scope.sumValuesByMonth(cleX,cleY,annee),
-      
-	      backgroundColor: [
-	        'rgba(255, 99, 132, 0.6)',
-	        'rgba(54, 162, 235, 0.6)',
-	        'rgba(255, 206, 86, 0.6)',
-	        'rgba(75, 192, 192, 0.6)',
-	        'rgba(153, 102, 255, 0.6)',
-	        'rgba(255, 159, 64, 0.6)',
-	        'rgba(255, 99, 132, 0.6)',
-	        'rgba(54, 162, 235, 0.6)',
-	        'rgba(255, 206, 86, 0.6)',
-	        'rgba(75, 192, 192, 0.6)',
-	        'rgba(153, 102, 255, 0.6)',
-	        'rgba(255, 159, 64, 0.6)'
-	      ]
-
-    	}]
-  		},
-  		options:chartOptions
-	  });
- 	};
 	
- 	$scope.showCanvas = function(cleX,cleY,annee,CanvasID){
-	  var Canvas= document.getElementById(CanvasID);
-	  console.log("showCanvas canvas : ");
-	  console.log(Canvas);
-	  Canvas.remove();
-	  $("#visualisationContainer"+CanvasID).append("<canvas ng-hide='!booleenGrapheTableau' id='"+CanvasID+"'><canvas>");
-	  $scope.getChart(cleX,cleY,annee,CanvasID);
+	$scope.reinitOrder = function() {
+			
+		$scope.sortingOrder = "";
+	}
+	
+	$scope.reinitOrder2 = function(indexWidget) {
+			
+		$scope.listWidgets[indexWidget].sortingOrder = "";
+	}
+	
+	// Valeurs associées au header string
+	$scope.getValues = function(string) {
+		  
+		var res = [];
+				
+		for (var i = 0 ; i < $scope.lignes.length ; i++) {
+			res[i] = $scope.lignes[i][string];
+		}
+			
+		return res;
 	};
-	$scope.afficherGrapheTableau=function(){
-		if($scope.booleenGrapheTableau){ //on a un tableau donc on veut passer à un graphe
+		
+	// Valeurs associées au header string
+	$scope.getValuesSimple = function(i, val) {
+			
+		return val[i];
+	};
+		
+	// Valeurs associées au header string
+	$scope.getValues2 = function(string, lines) {
+		  
+		var res = [];
+				
+		for (var i = 0 ; i < lines.length ; i++) {
+			res[i] = lines[i][string];
+		}
+			
+		return res;
+	};
+		
+	// Somme les valeurs en fonction du mois
+	$scope.sumValuesByMonth = function(cleDate, cleY, annee) {
+		var months = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+		var date;
+		for (var i = 0; i < $scope.lignes.length; i++) {
+			date = new Date($scope.lignes[i][cleDate]);
+			if (date.getFullYear() == annee) {
+				var input = $scope.lignes[i][cleY]; //Pour gérer les espaces dans les chaines de caractères issues de l'offiReport
+				//var processed = input.replace(/ /g, '');
+				//var output = parseInt(processed, 10);
+				var output = parseInt(input, 10);
+				months[date.getMonth()] += +output; //Fait la somme par mois
+			}
+		}
+		return(months);
+	};
+
+	//Fonction qui construit le graphe
+	$scope.getChart = function(cleX,cleY,annee,CanvasID) {
+		var Canvas = document.getElementById(CanvasID);
+		// console.log("getChart canvas : "+Canvas);
+		var chartOptions = {
+			animation:{
+				duration:1000
+			},
+			responsive:true,
+			title:{
+				display:true,
+				position:'top',
+				text: cleY+' par mois pour l\'année '+annee 
+			},
+			tooltips: {
+				enabled:true
+			},
+			legend: {
+				display: false,
+				labels: {
+					boxWidth: 80,
+					fontColor: 'black'
+				}
+			},
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero:true
+					}
+				}]
+			}
+		};
+
+		var barChart = new Chart(Canvas, {
+			type: 'bar',
+			data: {
+				labels: $scope.getMonthsNames(),
+				datasets: [{
+					label: cleY,
+					data: $scope.sumValuesByMonth(cleX,cleY,annee),
+				  
+					backgroundColor: [
+						'rgba(255, 99, 132, 0.6)',
+						'rgba(54, 162, 235, 0.6)',
+						'rgba(255, 206, 86, 0.6)',
+						'rgba(75, 192, 192, 0.6)',
+						'rgba(153, 102, 255, 0.6)',
+						'rgba(255, 159, 64, 0.6)',
+						'rgba(255, 99, 132, 0.6)',
+						'rgba(54, 162, 235, 0.6)',
+						'rgba(255, 206, 86, 0.6)',
+						'rgba(75, 192, 192, 0.6)',
+						'rgba(153, 102, 255, 0.6)',
+						'rgba(255, 159, 64, 0.6)'
+					]
+
+				}]
+			},
+			options:chartOptions
+		});
+	};
+	
+	$scope.showCanvas = function(cleX,cleY,annee,CanvasID){
+		var Canvas= document.getElementById(CanvasID);
+		//console.log("showCanvas canvas : ");
+		//console.log(Canvas);
+		Canvas.remove();
+		$("#visualisationContainer"+CanvasID).append("<canvas ng-hide='!booleenGrapheTableau' id='"+CanvasID+"'><canvas>");
+		$scope.getChart(cleX,cleY,annee,CanvasID);
+	};
+		
+	$scope.afficherGrapheTableau = function() {
+		if($scope.booleenGrapheTableau) { //on a un tableau donc on veut passer à un graphe
 			$scope.labelButtonGraphtoTable="Tableau";
 			$scope.booleenGrapheTableau=false;
-		}else{//on a un graphe donc on veut passer à un tableau
+		}
+		else {//on a un graphe donc on veut passer à un tableau
 			$scope.labelButtonGraphtoTable="Graphe";
 			$scope.booleenGrapheTableau=true;
 		}
 	};
-};
+
+	// Lecture du fichier JSON sélectionné, récupération des paires clés-valeurs et analyse sur le type des headers (date, number ou string)
+	$scope.getTextFile = function () {
+		fileReader.readAsText($scope.file, $scope).then(function(result) {
+			$scope.jsonSrc = result;
+			var fileInput = document.getElementById('selectedFile');    
+			$scope.jsonFileName = fileInput.files[0].name;
+			$scope.keys = [];
+			$scope.values = [];
+			$scope.lignes = JSON.parse($scope.jsonSrc);
+			
+			header = $scope.lignes[0];
+			$scope.type = null;
+			$scope.types = [];
+			angular.forEach(header, function(value, key) {
+				$scope.keys.push(key);
+				$scope.values.push(value);
+				if (value.match(/(0\d{1}|1[0-2])\/([0-2]\d{1}|3[0-1])\/(19|20)\d{2}/)){ //expression régulière pour les dates
+					type = 'date';
+				}
+
+				else if (value.match(/^[\d ]+$/)){ //expression régulière correspondant à des digits en acceptant les espaces
+					type = 'number';
+				}
+				else {
+					type = 'string';  //par défaut c'est un string
+				}
+				$scope.types.push(type);
+			})
+			
+			
+			for (i in $scope.lignes) {
+				
+				for (j in $scope.lignes[i]) {
+					
+					$scope.lignes[i][j] = $scope.parseValue($scope.lignes[i][j]);
+					//console.log($scope.lignes[i][j]);
+				}
+			}
+			
+			// functions have been describe process the data for display
+			$scope.search();
+			
+		});
+	};
 	
 	$scope.uniqId = 2;
 	
@@ -469,7 +538,7 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 	}
 	
 	// Fonction d'ouverture d'un Widget
-	$scope.openWidget = function(idW, widgName, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, widgSection, jsonName, scopeKeys, jsonLines, val, typ, filteredIt, groupedIt, itPerPage, pagedIt, curPage) {
+	$scope.openWidget = function(idW, widgName, nbCol, idUniq, arraySelecteds, dispLim, jsonFile, widgSection, jsonName, scopeKeys, jsonLines, val, typ, filteredIt, groupedIt, itPerPage, pagedIt, curPage, queryTab, sortOrder, reverseOrder) {
 		
 		$scope.idWidget = idW;
 		$scope.widgetName = widgName;
@@ -485,6 +554,9 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 		$scope.itemsPerPage = itPerPage;
 		$scope.pagedItems = pagedIt;
 		$scope.currentPage = curPage;
+		$scope.query = queryTab;
+		$scope.sortingOrder = sortOrder;
+		$scope.reverse = reverseOrder;
 		
 		$scope.jsonSrc = jsonFile;
 		$scope.keys = scopeKeys;
@@ -518,6 +590,14 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 		$scope.sectionWidget = "Ventes";
 		$scope.jsonFileName = "";
 		$scope.checkBoxId = [];
+		$scope.query = "";
+		$scope.sortingOrder = "";
+		$scope.reverse = false;
+		$scope.filteredItems = [];
+		$scope.groupedItems = [];
+		$scope.itemsPerPage = 10;
+		$scope.pagedItems = [];
+		$scope.currentPage = 0;
 		
 		document.getElementById("selectedFile").value = "";
 		$scope.jsonSrc = "";
@@ -530,9 +610,8 @@ var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
 		$scope.type = null;
 		$scope.types = [];
 	}
-	
-	$inject = ['$scope', '$filter'];
 };
+//$inject = ['$scope', '$filter'];
 
 // Directive de sélection du fichier JSON par l'utilisateur
 app.directive("ngFileSelect",function(){
