@@ -190,12 +190,12 @@
 											<div class="scrollit">
 												<table class="friends">
 													<tr>
-														<th ng-repeat="sel in selecteds | limitTo: colCount" width="200" class="widget.keys[sel]">
+														<th ng-repeat="sel in selecteds | limitTo: widget.nbCol" width="200" class="widget.keys[sel]">
 															{{widget.keys[sel]}} &nbsp;<a ng-click="sort_by2(widget.keys[sel], widget.idWidget)"><i class="icon-sort">#</i></a>
 														</th>
 													</tr>
 													<tr ng-repeat="value in widget.pagedItems[widget.currentPage] | orderBy:widget.sortingOrder:widget.reverse">
-														<td ng-repeat="sel in selecteds | limitTo: colCount" width="200">
+														<td ng-repeat="sel in selecteds | limitTo: widget.nbCol" width="200">
 															{{getValuesSimple(widget.keys[sel], value)}}
 														</td>  
 													</tr>
@@ -329,12 +329,12 @@
 											<div class="scrollit">
 												<table class="friends">
 													<tr>
-														<th ng-repeat="sel in selecteds | limitTo: colCount" width="200" class="widget.keys[sel]">
+														<th ng-repeat="sel in selecteds | limitTo: widget.nbCol" width="200" class="widget.keys[sel]">
 															{{widget.keys[sel]}} &nbsp;<a ng-click="sort_by2(widget.keys[sel], widget.idWidget)"><i class="icon-sort">#</i></a>
 														</th>
 													</tr>
 													<tr ng-repeat="value in widget.pagedItems[widget.currentPage] | orderBy:widget.sortingOrder:widget.reverse">
-														<td ng-repeat="sel in selecteds | limitTo: colCount" width="200">
+														<td ng-repeat="sel in selecteds | limitTo: widget.nbCol" width="200">
 															{{getValuesSimple(widget.keys[sel], value)}}
 														</td>  
 													</tr>
