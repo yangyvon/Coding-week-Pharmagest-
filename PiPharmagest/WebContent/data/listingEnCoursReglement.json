@@ -1,0 +1,6 @@
+[
+	{"typeEncours": "1","typeEncoursFR": "Ventes en Attente","typeEncoursNL": "Verkoop in wacht","nb": "0","montant": "0"},
+	{"typeEncours": "2","typeEncoursFR": "Av.Prod Part OA","typeEncoursNL": "Voorschot product per VI","nb": "16","montant": "621"},
+	{"typeEncours": "3","typeEncoursFR": "Crédits Facturation","typeEncoursNL": "Krediet facturatie","nb": "6 081","montant": "140 175"},
+	{"typeEncours": "4","typeEncoursFR": "Crédits Client","typeEncoursNL": "Krediet klant","nb": "11","montant": "55"}
+]

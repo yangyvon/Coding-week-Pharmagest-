@@ -1,0 +1,6 @@
+[
+	{"valeur": "242082.801","typeInfosStock": "1","dateinfos": "01/01/2017","typeFR": "Valeur du stock (en PAMP)","typeNL": "Waarde van de stock (GGAP)"},
+	{"valeur": "78899.105","typeInfosStock": "2","dateinfos": "01/01/2017","typeFR": "Valeur des périmés à 3 mois","typeNL": "Waarde van de vervalde producten na 3 maanden"},
+	{"valeur": "240303.734","typeInfosStock": "3","dateinfos": "01/01/2017","typeFR": "Valeur des invendus depuis 6 mois","typeNL": "Waarde van de onverkochte producten sinds 6 maanden"},
+	{"valeur": "163.75","typeInfosStock": "4","dateinfos": "01/01/2017","typeFR": "Rotation du stock (en jours)","typeNL": "Rotatie van de stock (in dagen)"}
+]

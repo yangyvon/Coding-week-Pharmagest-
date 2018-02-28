@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>OffiBoard</title>
+		<link rel="icon" type="image/png" href="img/favicon.png"/>
+		
+		<!-- Bootstraps -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+         <!-- ChartJS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+		
+		<link rel="stylesheet" href="css/style.css"/>
+		<script data-require="angular.js@1.0.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js" data-semver="1.0.8"></script>
+		
+		<!-- Dates en français -->
+		<script src="js/angular-locale_fr-fr.js"></script>
+		
+		<script>
+	
+			var app = angular.module("app", []);
+		
+			app.controller("TimeCtrl", function($scope, $timeout) {
+				$scope.clock = "loading clock...";
+				$scope.tickInterval = 1000
+	
+				var tick = function () {
+					$scope.clock = Date.now()
+					$timeout(tick, $scope.tickInterval);
+				}
+	
+				$timeout(tick, $scope.tickInterval);
+			});
+		</script>
+	</head>
+
+	<body ng-app="app">
+
+		<div class="navigation">
+			<ul class="nav-main">
+				<li class="offiTitle">OffiBoard</li>
+				<li><a href="index.html">Accueil</a></li>
+				<li><a href="#">Ventes</a></li>
+				<li><a href="#">Achats</a></li>
+				<li><a href="#">Clients</a></li>
+				<li><a href="#">Collectivités</a></li>
+				<li><a href="#">Opérateurs</a></li>
+				<li><a href="#">Produits</a></li>
+				<li><a href="personnaliser.html">Personnaliser</a></li>
+			</ul>
+		</div>
+		
+		<div class="container" ng-controller='TimeCtrl'>
+			<p style="float: right;">Le {{ clock | date:"EEEE dd MMMM yyyy"}} à {{ clock | date:"HH:mm:ss"}}</p>
+		</div>
+		
+		<br/>
+		
+		<div class="flexDisplayHoriz">
+		
+			<div class="flexDisplayVert">
+			
+				<div class="col" style="margin: 0 auto;">
+			
+					<span>CA HT Octobre 2016 - Septembre 2017</span>
+					<br/><br/>
+					
+					<span style="font-size: 24px;">398 €</span>
+					<br/><br/>
+					
+					<span style="font-size: 24px; color:red;">-99,74 %</span>
+					<br/><br/>
+					
+					<span style="font-size: 8px;">par rapport à Octobre 2015 - Septembre 2016</span>
+				
+				</div>
+			
+			</div>
+			
+			<div class="flexDisplayVert">
+			
+				<div class="col" style="margin: 0 auto;">
+			
+					<span>CA HT Septembre 2017</span>
+					<br/><br/>
+					
+					<span style="font-size: 24px;">0 €</span>
+					<br/><br/>
+					
+					<span style="color:red; font-size: 24px;">-100 %</span>
+					<br/><br/>
+					
+					<span style="font-size: 8px;">par rapport à Septembre 2016</span>
+				
+				</div>
+			
+			</div>
+			
+			<div class="flexDisplayVert">
+			
+				<div class="col" style="margin: 0 auto;">
+			
+					<span>CA HT  - </span>
+					<br/><br/>
+					
+					<span style="font-size: 24px;">-</span>
+					<br/><br/>
+					
+					<span style="font-size: 24px;">-</span>
+					<br/><br/>
+				
+					<span style="font-size: 8px;">par rapport à -</span>
+					
+				</div>
+			
+			</div>
+			
+			<div class="flexDisplayVert">
+			
+				<div class="col" style="margin: 0 auto;">
+			
+					<span>Objectif non atteint Octobre 2017</span>
+					<br/><br/>
+				
+					<span style="color:red; font-size: 24px;">0 %</span>
+					
+				</div>
+			
+			</div>
+		
+		</div>
+		
+		<br/>
+		
+		<div class="flexDisplayHoriz">
+		
+			<div>
+				<img src="img/offi1.PNG" style="width:70%; margin-left:15%"></img>
+			</div>
+			
+			<div>
+				<img src="img/offi2.PNG" style="width:70%; margin-left:15%"></img>
+			</div>
+		
+		</div>
+
+	</body>
+	
+</html>
