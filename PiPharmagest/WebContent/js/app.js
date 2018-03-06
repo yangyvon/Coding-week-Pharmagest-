@@ -1,5 +1,5 @@
 // Controller AngularJS
-var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReader) {
+var JsonUploadController = function ($scope, $http, $filter, $timeout, $route, $window, fileReader) {
 	
 	// Initialisation de la liste des Widgets contenus dans l'OffiBoard
 	$scope.listWidgets = [];
@@ -213,7 +213,9 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 			jsonFile, widgSection, jsonName, scopeKeys, jsonLines, val, typ, filteredIt, groupedIt,
 			itPerPage, pagedIt, curPage, queryTab, sortOrder, reverseOrder, lbGrToTa, boolGrTa,
 			selYear) {
-
+		
+		$("#visu"+idW).remove();
+		
 		$scope.idWidget = idW;
 		$scope.widgetName = widgName;
 		$scope.colCount = nbCol;
@@ -273,7 +275,13 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 
 		});
 		
+		/*
+		var ctx = document.querySelector("#visu" + idW);
+		ctx.getContext('2d').clearRect(0,0,ctx.width,ctx.height);
+		*/
+		//$scope.$apply();
 		$scope.remove2($scope.idWidget);
+		
 		$scope.closeWidget();
 		
 		for (var j = 0 ; j < $scope.listWidgets.length ; j++) {
@@ -281,6 +289,17 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 			$scope.listWidgets[j]["idWidget"] = j;
 			$scope.listWidgets[j]["visuContainer"] = "visualisationContainer" + j;
 		}
+		
+		//$route.reload();
+		
+		/*
+		$timeout(function() {
+			$("#visu"+idW).remove();
+			$scope.$apply();
+		});
+		*/
+		
+		$window.location.reload();
 	};
 
 	$scope.parseValue = function(val) {
@@ -530,13 +549,11 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 		return(months);
 	};
 
-	$scope.showCanvas = function(cleX, cleY, annee, ajOrMod) {
+	$scope.showCanvas = function(cleX, cleY, annee, ajOrMod, divName) {
 		
-		$(ajOrMod).remove();
-		
-		var ctx = document.getElementById(ajOrMod);
-		ctx.width = "50px";
-		ctx.heigth = "50px";
+		$("#" + ajOrMod).remove();
+		$("#" + divName).append("<canvas id='" + ajOrMod + "' ng-bind='showCanvas(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear," + ajOrMod +", " + divName + ")'></canvas>");
+		var ctx = document.querySelector("#" + ajOrMod);
 		
 		var chartOptions = {
 				animation:{
@@ -598,11 +615,9 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 	
 	$scope.showCanvasDb = function(cleX, cleY, annee, lines, idW) {
 		
-		$("visu"+idW).remove();
-		
-		var ctx = document.getElementById("visu"+idW);
-		ctx.width = "50px";
-		ctx.heigth = "50px";
+		$("#visu"+idW).remove();
+		$("#visuContainer"+idW).append("<canvas id='visu" + idW + "' ng-bind='showCanvasDb(widget.keys[widget.Axes[0]].toString(),widget.keys[widget.Axes[1]].toString(),widget.selectedYear,widget.lignes, widget.idWidget)'></canvas>");
+		var ctx = document.querySelector('#visu'+idW);
 
 		var chartOptions = {
 				animation:{
@@ -634,34 +649,35 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 				}
 		};
 
-		new Chart(ctx, {
-			type: 'bar',
-			data: {
-				labels: $scope.getMonthsNames(),
-				datasets: [{
-					label: cleY,
-					data: $scope.sumValuesByMonthDb(cleX,cleY,annee,lines),
-
-					backgroundColor: [
-					                  'rgba(255, 99, 132, 0.6)',
-					                  'rgba(54, 162, 235, 0.6)',
-					                  'rgba(255, 206, 86, 0.6)',
-					                  'rgba(75, 192, 192, 0.6)',
-					                  'rgba(153, 102, 255, 0.6)',
-					                  'rgba(255, 159, 64, 0.6)',
-					                  'rgba(255, 99, 132, 0.6)',
-					                  'rgba(54, 162, 235, 0.6)',
-					                  'rgba(255, 206, 86, 0.6)',
-					                  'rgba(75, 192, 192, 0.6)',
-					                  'rgba(153, 102, 255, 0.6)',
-					                  'rgba(255, 159, 64, 0.6)'
-					                  ]
-
-				}]
-			},
-			options:chartOptions
-		});
-		
+		if (ctx != null) {
+			new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: $scope.getMonthsNames(),
+					datasets: [{
+						label: cleY,
+						data: $scope.sumValuesByMonthDb(cleX,cleY,annee,lines),
+	
+						backgroundColor: [
+						                  'rgba(255, 99, 132, 0.6)',
+						                  'rgba(54, 162, 235, 0.6)',
+						                  'rgba(255, 206, 86, 0.6)',
+						                  'rgba(75, 192, 192, 0.6)',
+						                  'rgba(153, 102, 255, 0.6)',
+						                  'rgba(255, 159, 64, 0.6)',
+						                  'rgba(255, 99, 132, 0.6)',
+						                  'rgba(54, 162, 235, 0.6)',
+						                  'rgba(255, 206, 86, 0.6)',
+						                  'rgba(75, 192, 192, 0.6)',
+						                  'rgba(153, 102, 255, 0.6)',
+						                  'rgba(255, 159, 64, 0.6)'
+						                  ]
+	
+					}]
+				},
+				options:chartOptions
+			});
+		}
 	};
 
 	$scope.afficherGrapheTableau = function() {

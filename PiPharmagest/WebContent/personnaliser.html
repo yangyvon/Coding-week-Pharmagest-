@@ -91,7 +91,7 @@
 					  widget.sectionWidget, widget.jsonName, widget.keys, widget.lignes,
 					   widget.values, widget.types, widget.filteredItems, widget.groupedItems,
 					    widget.itemsPerPage, widget.pagedItems, widget.currentPage, widget.query,
-					     widget.sortingOrder, widget.reverse, widget.labelButtonGraphToTable,
+					     widget.sortingOrder, widget.reverse, widget.labelButtonGraphtoTable,
 					     widget.booleenGrapheTableau, widget.selectedYear)"
 					data-toggle="modal" data-target="#Modifier">Modifier</button>
 				<button type="button" class="btn btn-danger"
@@ -128,36 +128,60 @@
 				</div>
 
 				<div id="conteneur">
-					<div
-						ng-show="widget.types[widget.Axes[0]] == 'date' && widget.Axes[1] ">
-						Fonction somme par mois : <input type="text"
-							placeholder="Choisissez l'année" ng-model="widget.selectedYear" />
-						<input type="button"
-							ng-click="afficherGrapheTableauDb(widget.idWidget)"
-							value="{{widget.labelButtonGraphtoTable}}" /> <br />
-
-						<div id="visualisationContainer1" style="position: relative; height: 50vh"
-							ng-show="!widget.booleenGrapheTableau && widget.selectedYear">
-							<br /> <br />
-							<canvas id="visu{{widget.idWidget}}" 
-								ng-bind="showCanvasDb(widget.keys[widget.Axes[0]].toString(),widget.keys[widget.Axes[1]].toString(),widget.selectedYear,widget.lignes, widget.idWidget)">
-								</canvas>
+				
+					<div ng-show="widget.types[widget.Axes[0]] == 'date' && widget.Axes[1] "
+						class="pagination"
+						style="display: flex; flex-direction: column; justify-content: center">
+						
+						<div id="flexDisplay" style="justify-content: center;">
+							<div>
+								<span style="margin-right: 20px; margin-left: 20px;">Année : </span>
+							</div>
+							
+							<div>
+								<input 	type="text"
+									placeholder="" 
+									ng-model="widget.selectedYear" 
+									size="5" style="margin-right: 20px;"/>
+							</div>
+								
+							<div>
+								<input 	type="button"
+										ng-click="afficherGrapheTableauDb(widget.idWidget)"
+										value="{{widget.labelButtonGraphtoTable}}" style="margin-right: 20px;"/> 
+							
+							</div>	
+							
+							<br />
 
 						</div>
-						<div ng-show="widget.booleenGrapheTableau && widget.selectedYear">
-							<table>
-								<tr>
-									<th>Mois</th>
-									<th>{{widget.keys[widget.Axes[1]]}}</th>
-								</tr>
-								<tr
-									ng-repeat="CA in sumValuesByMonthDb(widget.keys[widget.Axes[0]].toString(),widget.keys[widget.Axes[1]].toString(),widget.selectedYear, widget.lignes)">
-									<td>{{ getMonthsNames()[$index] }}</td>
-									<td>{{
-										sumValuesByMonthDb(widget.keys[widget.Axes[0]].toString(),widget.keys[widget.Axes[1]].toString(),widget.selectedYear,
-										widget.lignes)[$index] }}</td>
-								</tr>
-							</table>
+						
+						<div>
+						
+							<div id="visuContainer{{widget.idWidget}}" style="position: relative; height: 50vh"
+								ng-show="!widget.booleenGrapheTableau && widget.selectedYear">
+								<br /> <br />
+								<canvas id="visu{{widget.idWidget}}"
+								ng-bind="showCanvasDb(widget.keys[widget.Axes[0]].toString(),widget.keys[widget.Axes[1]].toString(),widget.selectedYear,widget.lignes, widget.idWidget)">
+									</canvas>
+	
+							</div>
+							<br /><br />
+							<div id="flexDisplay" style="justify-content: center;" ng-show="widget.booleenGrapheTableau && widget.selectedYear">
+								<table>
+									<tr>
+										<th>Mois</th>
+										<th>{{widget.keys[widget.Axes[1]]}}</th>
+									</tr>
+									<tr
+										ng-repeat="CA in sumValuesByMonthDb(widget.keys[widget.Axes[0]].toString(),widget.keys[widget.Axes[1]].toString(),widget.selectedYear, widget.lignes)">
+										<td>{{ getMonthsNames()[$index] }}</td>
+										<td>{{
+											sumValuesByMonthDb(widget.keys[widget.Axes[0]].toString(),widget.keys[widget.Axes[1]].toString(),widget.selectedYear,
+											widget.lignes)[$index] }}</td>
+									</tr>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -339,7 +363,13 @@
 								<div style="justify-content: center;">
 									<input value="Ajouter Widget" ng-show="jsonSrc"
 										class="btn btn-success"
-										ng-click="widgetAddToDb(widgetName, colCount, uniqId, selecteds, display_limit1, jsonSrc, sectionWidget, jsonFileName, keys, lignes, values, types, filteredItems, groupedItems, itemsPerPage, pagedItems, currentPage, query, sortingOrder, reverse)"
+										ng-click="widgetAddToDb(widgetName, colCount, 
+										uniqId, selecteds, display_limit1, jsonSrc, 
+										sectionWidget, jsonFileName, keys, lignes, 
+										values, types, filteredItems, groupedItems, 
+										itemsPerPage, pagedItems, currentPage, query, 
+										sortingOrder, reverse, labelButtonGraphtoTable,
+										 booleenGrapheTableau, selectedYear)"
 										data-dismiss="modal" />
 								</div>
 
@@ -358,7 +388,7 @@
 									ng-show="!booleenGrapheTableau && selectedYear">
 									<br /> <br />
 									<canvas id="visuAjout" 
-										ng-bind="showCanvas(keys[selecteds[0]].toString(), keys[selecteds[1]].toString(), selectedYear, 'visuAjout')">
+										ng-bind="showCanvas(keys[selecteds[0]].toString(), keys[selecteds[1]].toString(), selectedYear, 'visuAjout', 'visualisationContainer')">
 									</canvas>
 
 								</div>
@@ -553,7 +583,13 @@
 
 								<div style="justify-content: center;">
 									<input value="Sauvegarder Widget" class="btn btn-success"
-										ng-click="widgetUpdateToDb(widgetName, colCount, uniqId, selecteds, display_limit1, jsonSrc, sectionWidget, jsonFileName, keys, lignes, values, types, filteredItems, groupedItems, itemsPerPage, pagedItems, currentPage, query, sortingOrder, reverse)"
+										ng-click="widgetUpdateToDb(widgetName, colCount, 
+										uniqId, selecteds, display_limit1, jsonSrc, 
+										sectionWidget, jsonFileName, keys, lignes, 
+										values, types, filteredItems, groupedItems, 
+										itemsPerPage, pagedItems, currentPage, query, 
+										sortingOrder, reverse, labelButtonGraphtoTable,
+										 booleenGrapheTableau, selectedYear)"
 										data-dismiss="modal" />
 								</div>
 
@@ -571,7 +607,7 @@
 								<div id="visualisationContainer2" style="position: relative; height: 50vh"
 									ng-show="!booleenGrapheTableau && selectedYear">
 									<br /> <br />
-									<canvas id="visuMod" ng-bind="showCanvas(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear,'visuMod')">
+									<canvas id="visuMod" ng-bind="showCanvas(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear,'visuMod', 'visualisationContainer2')">
 									</canvas>
 
 								</div>
