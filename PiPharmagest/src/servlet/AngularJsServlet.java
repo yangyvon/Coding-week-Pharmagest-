@@ -26,9 +26,6 @@ import com.google.gson.Gson;
 @WebServlet("/AngularJsServlet")
 public class AngularJsServlet extends HttpServlet{ 
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public AngularJsServlet() {
@@ -149,23 +146,6 @@ public class AngularJsServlet extends HttpServlet{
 
 			@SuppressWarnings("unused")
 			int flag2 = st.executeUpdate(sql2);
-			
-			/*
-			Statement st2 = con.createStatement();
-
-			String sql2 = "SET @pos := -1;";
-
-			@SuppressWarnings("unused")
-			int flag2 = st2.executeUpdate(sql2);
-			
-			Statement st3 = con.createStatement();
-
-			String sql3 = "UPDATE widgets2 SET idWidget = ( SELECT @pos := @pos + 1 )";
-
-			@SuppressWarnings("unused")
-			int flag3 = st3.executeUpdate(sql3);
-			*/
-
 		} catch (JSONException e) {
 			e.printStackTrace();
 		} catch (SQLException ex) {

@@ -151,6 +151,7 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 		$scope.closeWidget();
 	};
 
+	// Modification d'un Widget
 	$scope.widgetUpdateToDb = function(nameWidg, nbCol, idUniq, arraySelecteds, dispLim,
 			jsonFile, sectionWidg, nameJson, scopeKeys, jsonLines, val, typ, filteredIt,
 			groupedIt, itPerPage, pagedIt, curPage, queryTab, sortOrder, reverseOrder,
@@ -529,9 +530,14 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 		return(months);
 	};
 
-	// Fonction qui construit le graphe
-	$scope.getChart = function(cleX, cleY, annee, CanvasID) {
-		var Canvas = document.getElementById(CanvasID);
+	$scope.showCanvas = function(cleX, cleY, annee, ajOrMod) {
+		
+		$(ajOrMod).remove();
+		
+		var ctx = document.getElementById(ajOrMod);
+		ctx.width = "50px";
+		ctx.heigth = "50px";
+		
 		var chartOptions = {
 				animation:{
 					duration:1000
@@ -561,13 +567,13 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 				}
 		};
 
-		var barChart = new Chart(Canvas, {
+		new Chart(ctx, {
 			type: 'bar',
 			data: {
 				labels: $scope.getMonthsNames(),
 				datasets: [{
 					label: cleY,
-					data: $scope.sumValuesByMonth(cleX,cleY,annee),
+					data: $scope.sumValuesByMonth(cleX, cleY, annee),
 
 					backgroundColor: [
 					                  'rgba(255, 99, 132, 0.6)',
@@ -590,14 +596,20 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 		});
 	};
 	
-	// Fonction qui construit le graphe
-	$scope.getChartDb = function(cleX, cleY, annee, CanvasID, lines) {
-		var Canvas = document.getElementById(CanvasID);
+	$scope.showCanvasDb = function(cleX, cleY, annee, lines, idW) {
+		
+		$("visu"+idW).remove();
+		
+		var ctx = document.getElementById("visu"+idW);
+		ctx.width = "50px";
+		ctx.heigth = "50px";
+
 		var chartOptions = {
 				animation:{
 					duration:1000
 				},
 				responsive:true,
+				maintainAspectRatio: false,
 				title:{
 					display:true,
 					position:'top',
@@ -622,7 +634,7 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 				}
 		};
 
-		var barChart = new Chart(Canvas, {
+		new Chart(ctx, {
 			type: 'bar',
 			data: {
 				labels: $scope.getMonthsNames(),
@@ -649,20 +661,7 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 			},
 			options:chartOptions
 		});
-	};
-
-	$scope.showCanvas = function(cleX, cleY, annee, CanvasID) {
-		var Canvas = document.getElementById(CanvasID);
-		Canvas.remove();
-		$("#visualisationContainer").append("<canvas ng-hide='!booleenGrapheTableau' id='"+CanvasID+"'><canvas>");
-		$scope.getChart(cleX,cleY,annee,CanvasID);
-	};
-	
-	$scope.showCanvasDb = function(cleX, cleY, annee, CanvasID, lines) {
-		var Canvas = document.getElementById(CanvasID);
-		Canvas.remove();
-		$("#visualisationContainer"+CanvasID).append("<canvas ng-hide='!booleenGrapheTableau' id='"+CanvasID+"'><canvas>");
-		$scope.getChartDb(cleX,cleY,annee,CanvasID, lines);
+		
 	};
 
 	$scope.afficherGrapheTableau = function() {
@@ -677,6 +676,7 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 	};
 	
 	$scope.afficherGrapheTableauDb = function(idWidg) {
+		
 		if($scope.listWidgets[idWidg].booleenGrapheTableau) { // on a un tableau donc on veut passer à un graphe
 			$scope.listWidgets[idWidg].labelButtonGraphtoTable = "Tableau";
 			$scope.listWidgets[idWidg].booleenGrapheTableau = false;
@@ -685,6 +685,7 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 			$scope.listWidgets[idWidg].labelButtonGraphtoTable = "Graphe";
 			$scope.listWidgets[idWidg].booleenGrapheTableau = true;
 		}
+		
 	};
 
 	// Lecture du fichier JSON sélectionné, récupération des paires clés-valeurs et analyse sur le type des headers (date, number ou string)
@@ -732,18 +733,6 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 	};
 
 	$scope.uniqId = 2;
-
-	// Fonction qui crée les options dans les balises select des axes supplémentaires
-	$scope.generateOption = function(){
-		var optionArr = [];
-		optionArr.push('<option value="">Choisir Axe</option>');
-
-		$.each($scope.lignes[0], function(key, val){
-			optionArr.push('<option value="'+ key +'">'+ key +'</option>');
-		});
-
-		return optionArr.join('\n');
-	};
 
 	// Fonction d'ouverture d'un Widget
 	$scope.openWidget = function(idW, widgName, nbCol, idUniq, arraySelecteds, dispLim,
@@ -832,7 +821,6 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 		if ($scope.uniqId <= 6) {
 			$scope.uniqId = $scope.uniqId + 1;
 			$scope.colCount = $scope.colCount + 1;
-			// scope.$apply();
 		}
 	};
 
@@ -841,14 +829,11 @@ var JsonUploadController = function ($scope, $http, $filter, $timeout, fileReade
 		if ($scope.uniqId > 2) {
 			$scope.uniqId = $scope.uniqId - 1;
 			$scope.colCount = $scope.colCount - 1;
-			// scope.$apply();
-
 		}
 	};
 };
-//$inject = ['$scope', '$filter'];
 
-//Directive de sélection du fichier JSON par l'utilisateur
+// Directive de sélection du fichier JSON par l'utilisateur
 app.directive("ngFileSelect",function(){
 
 	return {
@@ -865,7 +850,7 @@ app.directive("ngFileSelect",function(){
 	};
 });
 
-//Directive de lecture du fichier JSON sélectionné par l'utilisateur
+// Directive de lecture du fichier JSON sélectionné par l'utilisateur
 app.directive("readText", function() {
 	return {
 		link: function($scope,el) {
@@ -877,6 +862,7 @@ app.directive("readText", function() {
 	};
 });
 
+// Filtre selon la section des Widgets affichés dans la liste
 app.filter('bySection', function() {
 
 	return function(listWidgets, sections) {

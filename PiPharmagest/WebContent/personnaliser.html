@@ -1,6 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -67,6 +67,10 @@
 		<button type="button" class="btn btn-success" data-toggle="modal"
 			data-target="#Ajout" style="margin-bottom: 3px">Ajouter un
 			Widget</button>
+			
+		<br /><br />
+			
+		<span><b>Filtrer par section :</b></span>
 
 		<select ng-model="sectionWidget2"
 			ng-init="sectionWidget2 = listeSection2[0]"
@@ -124,20 +128,20 @@
 				</div>
 
 				<div id="conteneur">
-					<div ng-show="widget.types[widget.Axes[0]] == 'date' && widget.Axes[1] ">
+					<div
+						ng-show="widget.types[widget.Axes[0]] == 'date' && widget.Axes[1] ">
 						Fonction somme par mois : <input type="text"
-							placeholder="Choisissez l'année" ng-model="widget.selectedYear" /> 
-							<input
-							type="button" ng-click="afficherGrapheTableauDb(widget.idWidget)"
+							placeholder="Choisissez l'année" ng-model="widget.selectedYear" />
+						<input type="button"
+							ng-click="afficherGrapheTableauDb(widget.idWidget)"
 							value="{{widget.labelButtonGraphtoTable}}" /> <br />
-						<div id="visualisationContainer1"
+
+						<div id="visualisationContainer1" style="position: relative; height: 50vh"
 							ng-show="!widget.booleenGrapheTableau && widget.selectedYear">
 							<br /> <br />
-							<canvas id="1">
-							{{showCanvasDb(widget.keys[widget.Axes[0]].toString(),widget.keys[widget.Axes[1]].toString(),widget.selectedYear,'1',widget.lignes)}}
-
-							</canvas>
-
+							<canvas id="visu{{widget.idWidget}}" 
+								ng-bind="showCanvasDb(widget.keys[widget.Axes[0]].toString(),widget.keys[widget.Axes[1]].toString(),widget.selectedYear,widget.lignes, widget.idWidget)">
+								</canvas>
 
 						</div>
 						<div ng-show="widget.booleenGrapheTableau && widget.selectedYear">
@@ -150,8 +154,8 @@
 									ng-repeat="CA in sumValuesByMonthDb(widget.keys[widget.Axes[0]].toString(),widget.keys[widget.Axes[1]].toString(),widget.selectedYear, widget.lignes)">
 									<td>{{ getMonthsNames()[$index] }}</td>
 									<td>{{
-										sumValuesByMonthDb(widget.keys[widget.Axes[0]].toString(),widget.keys[widget.Axes[1]].toString(),widget.selectedYear, widget.lignes)[$index]
-										}}</td>
+										sumValuesByMonthDb(widget.keys[widget.Axes[0]].toString(),widget.keys[widget.Axes[1]].toString(),widget.selectedYear,
+										widget.lignes)[$index] }}</td>
 								</tr>
 							</table>
 						</div>
@@ -252,17 +256,12 @@
 		</div>
 	</div>
 
-	<!-- Modal
-	
-				Ajouter un widget
-	
-			-->
+	<!-- Modal : Ajouter un Widget -->
 	<div class="modal fade" id="Ajout" role="dialog" style="width: 100%;">
 
-		<div class="modal-dialog" style="width: 100%; height: 95%;">
+		<div class="modal-dialog" style="width: 100%; height: 575px;">
 
-			<!-- Modal content-->
-			<div class="modal-content" style="width: 100%; height: 95%;">
+			<div class="modal-content" style="width: 100%; height: 575px;">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
@@ -354,14 +353,13 @@
 									placeholder="Choisissez l'année" ng-model="selectedYear" /> <input
 									type="button" ng-click="afficherGrapheTableau()"
 									value="{{labelButtonGraphtoTable}}" /> <br />
-								<div id="visualisationContainer"
+									
+								<div id="visualisationContainer" style="position: relative; height: 50vh"
 									ng-show="!booleenGrapheTableau && selectedYear">
 									<br /> <br />
-									<canvas id="1">
-									{{showCanvas(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear,'1')}}
-
+									<canvas id="visuAjout" 
+										ng-bind="showCanvas(keys[selecteds[0]].toString(), keys[selecteds[1]].toString(), selectedYear, 'visuAjout')">
 									</canvas>
-
 
 								</div>
 								<div ng-show="booleenGrapheTableau && selectedYear">
@@ -382,30 +380,40 @@
 							</div>
 						</div>
 
-						<div id="conteneur"
+						<div id="conteneurNew2"
 							ng-show="keys[selecteds[0]] && keys[selecteds[1]]">
 
 							<div>
-								<div id="flexDisplay">
-									<div>
-										<input name="query" type="text" ng-model="query"
-											ng-change="search()" placeholder="Search"
-											style="margin-right: 20px;" />
+							
+								<div class="pagination" style="display: flex; flex-direction: column; justify-content: center">
+								
+									<div id="flexDisplay" style="justify-content: center;">
+										<div>
+											<input name="query" type="text" ng-model="query"
+												ng-change="search()" size="12" placeholder="Search"
+												style="margin-right: 20px;" />
+										</div>
+	
+										<div>
+											<input type="button" class="btn btn-warning btn-sm"
+										value="Filter OFF" ng-click="reinitOrder()"
+												style="margin-right: 20px;" />
+										</div>
+	
+										<div>
+											<input name="itemsPerPage" type="text" ng-model="itemsPerPage"
+												ng-change="search()" placeholder="Items Per Page" size="1"
+												style="text-align: center; margin-right: 5px;" />
+										</div>
+										
+										<div>
+											<span>items par page</span>
+										</div>
 									</div>
-
-									<div>
-										<input type="button" value="=" ng-click="reinitOrder()"
-											style="margin-right: 20px;" />
-									</div>
-
-									<div>
-										<input name="itemsPerPage" type="text" ng-model="itemsPerPage"
-											ng-change="search()" placeholder="Items Per Page" size="5"
-											style="margin-right: 20px;" />
-									</div>
-								</div>
-								<div class="pagination">
-									<div id="flexDisplay">
+									
+									<br />
+									
+									<div id="flexDisplay"  style="justify-content: center;">
 										<div ng-class="{disabled: currentPage == 0}"
 											style="margin-right: 20px;">
 											<a ng-click="firstPage()">First</a>
@@ -415,8 +423,8 @@
 											<a ng-click="prevPage()">« Prev</a>
 										</div>
 										<div>
-											<input name="currentPage" ng-model="currentPage" type="text"
-												placeholder="" size="5" style="margin-right: 20px;" />
+											<input name="currentPage" ng-model="currentPage" type="text" style="text-align: center; margin-right: 20px;"
+												placeholder="" size="1" style="margin-right: 20px;" />
 										</div>
 
 										<div
@@ -441,7 +449,9 @@
 														<tr>
 															<th ng-repeat="sel in selecteds | limitTo: colCount"
 																width="200" class="keys[sel]">{{keys[sel]}} &nbsp;<a
-																ng-click="sort_by(keys[sel])"><i class="icon-sort">#</i></a>
+																ng-click="sort_by(keys[sel])"><i
+															class="icon-sort"><img type="image/png"
+																src="img/chevron.png" width="10" heigth="10"></img></i></a>
 															</th>
 														</tr>
 														<tr
@@ -464,17 +474,12 @@
 		</div>
 	</div>
 
-	<!-- Modal
-	
-	                    modifier un widget
-	
-	                -->
+	<!-- Modal : Modifier un Widget -->
 	<div class="modal fade" id="Modifier" role="dialog"
 		style="width: 100%;">
 
 		<div class="modal-dialog" style="width: 100%; height: 575px;">
 
-			<!-- Modal content-->
 			<div class="modal-content" style="width: 100%; height: 575px;">
 
 				<div class="modal-header">
@@ -563,14 +568,11 @@
 								<button ng-click="afficherGrapheTableau()"
 									ng-bind="labelButtonGraphtoTable"></button>
 								<br />
-								<div id="visualisationContainer2"
+								<div id="visualisationContainer2" style="position: relative; height: 50vh"
 									ng-show="!booleenGrapheTableau && selectedYear">
 									<br /> <br />
-									<canvas id="2">
-									{{showCanvas(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear,"2")}}
-
+									<canvas id="visuMod" ng-bind="showCanvas(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear,'visuMod')">
 									</canvas>
-
 
 								</div>
 
@@ -592,28 +594,36 @@
 							</div>
 						</div>
 
-						<div id="conteneur"
+						<div id="conteneurNew2"
 							ng-show="keys[selecteds[0]] && keys[selecteds[1]]">
 
 							<div>
-								<div id="flexDisplay">
-									<div>
-										<input type="text" ng-model="query" ng-change="search()"
-											placeholder="Search" style="margin-right: 20px;" />
+								<div class="pagination" style="display: flex; flex-direction: column; justify-content: center">
+									<div id="flexDisplay" style="justify-content: center;">
+										<div>
+											<input type="text" ng-model="query" ng-change="search()"
+												size="12" placeholder="Search" style="margin-right: 20px;" />
+										</div>
+	
+										<div>
+											<input type="button" class="btn btn-warning btn-sm"
+										value="Filter OFF"  ng-click="reinitOrder()" style="margin-right: 20px;"/>
+										</div>
+	
+										<div>
+											<input type="text" ng-model="itemsPerPage"
+												ng-change="search()" placeholder="Items Per Page" size="1"
+												style="text-align: center; margin-right: 5px;" />
+										</div>
+										
+										<div>
+											<span>items par page</span>
+										</div>
 									</div>
-
-									<div>
-										<button ng-click="reinitOrder()" style="margin-right: 20px;">=</button>
-									</div>
-
-									<div>
-										<input type="text" ng-model="itemsPerPage"
-											ng-change="search()" placeholder="Items Per Page" size="5"
-											style="margin-right: 20px;" />
-									</div>
-								</div>
-								<div class="pagination">
-									<div id="flexDisplay">
+									
+									<br />
+								
+									<div id="flexDisplay"  style="justify-content: center;">
 										<div ng-class="{disabled: currentPage == 0}"
 											style="margin-right: 20px;">
 											<a ng-click="firstPage()">First</a>
@@ -624,7 +634,7 @@
 										</div>
 										<div>
 											<input ng-model="currentPage" type="text" placeholder=""
-												size="5" style="margin-right: 20px;" />
+												size="1" style="text-align: center; margin-right: 20px;" />
 										</div>
 
 										<div
@@ -649,7 +659,9 @@
 														<tr>
 															<th ng-repeat="sel in selecteds | limitTo: colCount"
 																width="200" class="keys[sel]">{{keys[sel]}} &nbsp;<a
-																ng-click="sort_by(keys[sel])"><i class="icon-sort">#</i></a>
+																ng-click="sort_by(keys[sel])"><i
+															class="icon-sort"><img type="image/png"
+																src="img/chevron.png" width="10" heigth="10"></img></i></a>
 															</th>
 														</tr>
 														<tr

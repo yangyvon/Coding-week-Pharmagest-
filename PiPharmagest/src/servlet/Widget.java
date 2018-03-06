@@ -1,6 +1,5 @@
 package servlet;
 
-
 public class Widget {
 
 	private int idWidget;
