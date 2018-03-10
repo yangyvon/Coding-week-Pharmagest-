@@ -17,17 +17,21 @@
         <script src=https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js></script>
 		
 		<link rel="stylesheet" href="css/style.css"/>
-		<script data-require="angular.js@1.0.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js" data-semver="1.0.8"></script>
-		
+		<!-- <script data-require="angular.js@1.0.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js" data-semver="1.0.8"></script> -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+
 			<!-- Dates en français -->
 		<script src="js/angular-locale_fr-fr.js"></script>
-		
+		<!-- Drag and drop -->
+		<script src="js/angular-dragdrop.min.js"></script>
+   		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
 		<script> 
-			var app = angular.module('TestUploadFile', []);
+			var app = angular.module('TestUploadFile', ['ngDragDrop']);
 		</script>
 
 		<script src="js/upload.js"></script>
 		<script src="js/app.js"></script>
+
 	</head>
 
 	<body ng-app="TestUploadFile" ng-controller="JsonUploadController">
@@ -68,143 +72,144 @@
 			</ul>
 		</div>
 
-		<div id="flexDisplay2" class="container">
+		<div id="flexDisplay2">
 
-			<div id="resultsWidg" ng-repeat="widget in listWidgets" ng-show="flag">
-			
-				<div class="headerWidget">
-					<span>{{widget.nomWidget}}</span>
-					<button type="button" class="btn btn-info"
-						ng-click="openWidget(widget.idWidget, widget.nomWidget, widget.nbCol, widget.idCol, widget.Axes, widget.nbLignes, widget.jsonFile, widget.sectionWidget, widget.jsonName, widget.keys, widget.lignes, widget.values, widget.types, widget.filteredItems, widget.groupedItems, widget.itemsPerPage, widget.pagedItems, widget.currentPage, widget.query, widget.sortingOrder, widget.reverse)"
-						data-toggle="modal"
-						data-target="#Modifier">
-					Modifier
-					</button>
-				</div>
-			
-				<div id="flexDisplayNew">
-									
-					<div id="conteneurNew">
-										
-						<div class="col-md">
-											
-							<span><b>Json sélectionné :</b> {{widget.jsonName}}</span>
-							<br><br>
-									
-							<span><b>Section du Widget :</b> {{widget.sectionWidget}}</span>
-							<br><br>
-											
-							<span><b>Premier axe :</b> {{widget.keys[widget.Axes[0]]}}</span>
-							<br><br>
-							
-							<span><b>Deuxième axe :</b> {{widget.keys[widget.Axes[1]]}}</span>
-										
-							<!-- <span><b>Axes supplémentaires<br>(5 maximum) :</b><br><br></span> -->
-
-						</div>
-												
+			<div class="resultWidg btn-droppable" ng-repeat="widget in listWidgets" ng-show="flag" data-drop="true" ng-model='listWidgets' jqyoui-droppable="{index: {{$index}}}">
+			 
+				<div class="btn btn-draggable" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="listWidgets" jqyoui-draggable="{index: {{$index}},placeholder:true,animate:true}">
+					<div class="headerWidget">
+						<span>{{widget.nomWidget}}</span>
+						<button type="button" class="btn btn-info"
+							ng-click="openWidget(widget.idWidget, widget.nomWidget, widget.nbCol, widget.idCol, widget.Axes, widget.nbLignes, widget.jsonFile, widget.sectionWidget, widget.jsonName, widget.keys, widget.lignes, widget.values, widget.types, widget.filteredItems, widget.groupedItems, widget.itemsPerPage, widget.pagedItems, widget.currentPage, widget.query, widget.sortingOrder, widget.reverse)"
+							data-toggle="modal"
+							data-target="#Modifier">
+						Modifier
+						</button>
 					</div>
-
-					<!--
-					<div id="conteneur">
-						<div>
-							Fonction somme par mois : 
-							<input type="text" placeholder="Choisissez l'année" ng-model="selectedYear">
-							<button ng-click="afficherGrapheTableau()" ng-bind="labelButtonGraphtoTable"></button>
-							<br>
-							<div id="visualisationContainer2" ng-show="!booleenGrapheTableau && selectedYear">
-								<br><br>
-								<canvas id="ChartCanvas2">
-									{{showCanvas2(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear)}}
+					<div id="flexDisplayNew">
+										
+						<div id="conteneurNew">
+											
+							<div class="col-md">
 												
-								</canvas>
-
+								<span><b>Json sélectionné :</b> {{widget.jsonName}}</span>
+								<br><br>
+										
+								<span><b>Section du Widget :</b> {{widget.sectionWidget}}</span>
+								<br><br>
+												
+								<span><b>Premier axe :</b> {{widget.keys[widget.Axes[0]]}}</span>
+								<br><br>
+								
+								<span><b>Deuxième axe :</b> {{widget.keys[widget.Axes[1]]}}</span>
+											
+								<!-- <span><b>Axes supplémentaires<br>(5 maximum) :</b><br><br></span> -->
 
 							</div>
+													
+						</div>
+
+						<!--
+						<div id="conteneur">
+							<div>
+								Fonction somme par mois : 
+								<input type="text" placeholder="Choisissez l'année" ng-model="selectedYear">
+								<button ng-click="afficherGrapheTableau()" ng-bind="labelButtonGraphtoTable"></button>
+								<br>
+								<div id="visualisationContainer2" ng-show="!booleenGrapheTableau && selectedYear">
+									<br><br>
+									<canvas id="ChartCanvas2">
+										{{showCanvas2(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear)}}
+													
+									</canvas>
+
+
+								</div>
+											
+								<div ng-show="booleenGrapheTableau && selectedYear">
+									<table>
+										<tr>
+											<th>Mois</th><th>{{keys[selecteds[1]]}}</th>
+										</tr>
+										<tr ng-repeat="CA in sumValuesByMonth(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear)">
+											<td>{{ getMonthsNames()[$index] }}</td>
+											<td >{{ sumValuesByMonth(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear)[$index] }}</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+						-->
+											
+						<div id="conteneurNew">
+											
+							<div>
+								<div class="pagination">
+								
+									<div id="flexDisplay">
+										<div>
+											<input type="text" ng-model="widget.query" ng-change="search2(widget.idWidget)" placeholder="Search" style="margin-right:20px;">
+										</div>
+												
+										<div>
+											<button ng-click="reinitOrder2(widget.idWidget)" style="margin-right:20px;">=</button>
+										</div>
 										
-							<div ng-show="booleenGrapheTableau && selectedYear">
-								<table>
-									<tr>
-										<th>Mois</th><th>{{keys[selecteds[1]]}}</th>
-									</tr>
-									<tr ng-repeat="CA in sumValuesByMonth(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear)">
-										<td>{{ getMonthsNames()[$index] }}</td>
-										<td >{{ sumValuesByMonth(keys[selecteds[0]].toString(),keys[selecteds[1]].toString(),selectedYear)[$index] }}</td>
-									</tr>
+										<div>
+											<input type="text" ng-model="widget.itemsPerPage" ng-change="search2(widget.idWidget)" placeholder="Items Per Page" size="5" style="margin-right:20px;">
+										</div>
+									</div>
+									<br><br>
+									<div id="flexDisplay">
+										<div ng-class="{disabled: widget.currentPage == 0}" style="margin-right:20px;">
+											<a href ng-click="firstPage2(widget.idWidget)">First</a>
+										</div>
+										<div ng-class="{disabled: widget.currentPage == 0}" style="margin-right:20px;">
+											<a href ng-click="prevPage2(widget.idWidget)">« Prev</a>
+										</div>
+										<div>
+											<input ng-model="widget.currentPage" type="text" placeholder="" size="5" style="margin-right:20px;">
+										</div>
+										<!--
+										<li ng-repeat="n in range(pagedItems.length)"
+											ng-class="{active: n == currentPage}"
+											ng-click="setPage()">
+											<a href ng-bind="n + 1">1</a>
+										</li>
+										-->
+										<div ng-class="{disabled: widget.currentPage == widget.pagedItems.length - 1}" style="margin-right:20px;">
+											<a href ng-click="nextPage2(widget.idWidget)">Next »</a>
+										</div>
+										<div ng-class="{disabled: widget.currentPage == widget.pagedItems.length - 1}" style="margin-right:20px;">
+											<a href ng-click="lastPage2(widget.idWidget)">Last</a>
+										</div>
+									</div>
+								</div>
+				
+								<table class="table table-striped table-condensed table-hover">
+	                
+									<tbody>
+										<tr>
+											<td colspan="{{widget.nbCol}}">
+												<div class="scrollit">
+													<table class="friends">
+														<tr>
+															<th ng-repeat="sel in widget.Axes | limitTo: widget.nbCol" width="200" class="widget.keys[sel]">
+																{{widget.keys[sel]}} &nbsp;<a ng-click="sort_by2(widget.keys[sel], widget.idWidget)"><i class="icon-sort">#</i></a>
+															</th>
+														</tr>
+														<tr ng-repeat="value in widget.pagedItems[widget.currentPage] | orderBy:widget.sortingOrder:widget.reverse">
+															<td ng-repeat="sel in widget.Axes | limitTo: widget.nbCol" width="200">
+																{{getValuesSimple(widget.keys[sel], value)}}
+															</td>  
+														</tr>
+													</table>
+												</div>
+											</td>
+										</tr>
+									</tbody>
 								</table>
 							</div>
-						</div>
-					</div>
-					-->
-										
-					<div id="conteneurNew">
-										
-						<div>
-							<div class="pagination">
-							
-								<div id="flexDisplay">
-									<div>
-										<input type="text" ng-model="widget.query" ng-change="search2(widget.idWidget)" placeholder="Search" style="margin-right:20px;">
-									</div>
-											
-									<div>
-										<button ng-click="reinitOrder2(widget.idWidget)" style="margin-right:20px;">=</button>
-									</div>
-									
-									<div>
-										<input type="text" ng-model="widget.itemsPerPage" ng-change="search2(widget.idWidget)" placeholder="Items Per Page" size="5" style="margin-right:20px;">
-									</div>
-								</div>
-								<br><br>
-								<div id="flexDisplay">
-									<div ng-class="{disabled: widget.currentPage == 0}" style="margin-right:20px;">
-										<a href ng-click="firstPage2(widget.idWidget)">First</a>
-									</div>
-									<div ng-class="{disabled: widget.currentPage == 0}" style="margin-right:20px;">
-										<a href ng-click="prevPage2(widget.idWidget)">« Prev</a>
-									</div>
-									<div>
-										<input ng-model="widget.currentPage" type="text" placeholder="" size="5" style="margin-right:20px;">
-									</div>
-									<!--
-									<li ng-repeat="n in range(pagedItems.length)"
-										ng-class="{active: n == currentPage}"
-										ng-click="setPage()">
-										<a href ng-bind="n + 1">1</a>
-									</li>
-									-->
-									<div ng-class="{disabled: widget.currentPage == widget.pagedItems.length - 1}" style="margin-right:20px;">
-										<a href ng-click="nextPage2(widget.idWidget)">Next »</a>
-									</div>
-									<div ng-class="{disabled: widget.currentPage == widget.pagedItems.length - 1}" style="margin-right:20px;">
-										<a href ng-click="lastPage2(widget.idWidget)">Last</a>
-									</div>
-								</div>
-							</div>
-			
-							<table class="table table-striped table-condensed table-hover">
-                
-								<tbody>
-									<tr>
-										<td colspan="{{widget.nbCol}}">
-											<div class="scrollit">
-												<table class="friends">
-													<tr>
-														<th ng-repeat="sel in widget.Axes | limitTo: widget.nbCol" width="200" class="widget.keys[sel]">
-															{{widget.keys[sel]}} &nbsp;<a ng-click="sort_by2(widget.keys[sel], widget.idWidget)"><i class="icon-sort">#</i></a>
-														</th>
-													</tr>
-													<tr ng-repeat="value in widget.pagedItems[widget.currentPage] | orderBy:widget.sortingOrder:widget.reverse">
-														<td ng-repeat="sel in widget.Axes | limitTo: widget.nbCol" width="200">
-															{{getValuesSimple(widget.keys[sel], value)}}
-														</td>  
-													</tr>
-												</table>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
 						</div>
 					</div>
 				</div>

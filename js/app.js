@@ -1,6 +1,11 @@
 // Controller AngularJS
 var JsonUploadController = function ($scope, $filter, $timeout, fileReader) {
-	
+	$scope.list2 = [
+    { 'title': 'KnockoutJS', 'drag': true },
+    { 'title': 'EmberJS', 'drag': true },
+    { 'title': 'BackboneJS', 'drag': true },
+    { 'title': 'AngularJS', 'drag': true }
+  ];
 	// Id du Widget courant
 	$scope.idWidget = 0;
 	
